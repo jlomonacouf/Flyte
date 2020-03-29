@@ -10,7 +10,7 @@ import { Block } from "galio-framework";
 // screens
 import Home from "../screens/Home";
 import Onboarding from "../screens/Onboarding";
-import Trips from "../screens/Trips"; 
+import viewTrips from "../screens/viewTrips"; 
 import Pro from "../screens/Pro";
 import Profile from "../screens/Profile";
 import Register from "../screens/Register";
@@ -161,8 +161,8 @@ function HomeStack(props) {
         }}
       />
       <Stack.Screen
-        name="Trips"
-        component={Trips}
+        name="viewTrips"
+        component={viewTrips}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -177,7 +177,26 @@ function HomeStack(props) {
           headerTransparent: true
         }}
       />
-    </Stack.Navigator>
+
+    
+    <Stack.Screen
+    name="Register"
+    component={Register}
+    options={{
+      header: ({ navigation, scene }) => (
+        <Header
+          title=""
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
+ </Stack.Navigator>
   );
 }
 

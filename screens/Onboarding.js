@@ -13,6 +13,7 @@ const { height, width } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
+
 class Onboarding extends React.Component {
   render() {
     const { navigation } = this.props;
