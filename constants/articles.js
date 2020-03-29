@@ -1,29 +1,29 @@
 export default [
   {
-    title: 'Ice cream is made with carrageenan …',
-    image: 'https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80',
-    cta: 'View article', 
+    title: 'Romantic Nights in Paris',
+    image: 'https://www.jetsetter.com/uploads/sites/7/2019/04/GettyImages-924894324-1380x690.jpg',
+    cta: 'View Trip', 
     horizontal: true
   },
   {
-    title: 'Is makeup one of your daily esse …',
-    image: 'https://images.unsplash.com/photo-1519368358672-25b03afee3bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2004&q=80',
-    cta: 'View article'
+    title: 'When in Rome ... for 3 Days',
+    image: 'https://www.railbookers.com/content/uploads/2016/09/ultimate-venice-florence-rome.jpg',
+    cta: 'View Trip'
   },
   {
-    title: 'Coffee is more than just a drink: It’s …',
-    image: 'https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80',
-    cta: 'View article' 
+    title: 'A Locals Guide to New York',
+    image: 'https://www.pcclean.io/wp-content/uploads/2019/05/New-York-3.jpg',
+    cta: 'View Trip' 
   },
   {
-    title: 'Fashion is a popular style, especially in …',
-    image: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1326&q=80',
-    cta: 'View article' 
+    title: 'Stunning Views at Yosemite' ,
+    image: 'https://www.visittheusa.com/sites/default/files/styles/hero_m_1300x700/public/images/hero_media_image/2016-10/Yosemite_CROPPED_Web72DPI.jpg?itok=uvDdtCkC',
+    cta: 'View Trip' 
   },
   {
-    title: 'Argon is a great free UI packag …',
-    image: 'https://images.unsplash.com/photo-1482686115713-0fbcaced6e28?fit=crop&w=1947&q=80',
-    cta: 'View article', 
+    title: 'Summertime in Aspen, Colorado',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTENP0y1DtwDBhOw5AbdVG_S770FDJAjZ23XTHHjxFUQryvnewO',
+    cta: 'View Trip', 
     horizontal: true
   },
 ];
