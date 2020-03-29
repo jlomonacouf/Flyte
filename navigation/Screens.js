@@ -16,6 +16,9 @@ import Profile from "../screens/Profile";
 import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
+
+import CreateItinerary_Name from "../screens/CreateItinerary_Name";
+import CreateItinerary_Location from "../screens/CreateItinerary_Location";
 // drawer
 import CustomDrawerContent from "./Menu";
 
@@ -229,6 +232,8 @@ function AppStack(props) {
       <Drawer.Screen name="Account" component={Register} />
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
+
+      <Drawer.Screen name="Create Itinerary" component={CreateItinerary_Name} />
     </Drawer.Navigator>
   );
 }
