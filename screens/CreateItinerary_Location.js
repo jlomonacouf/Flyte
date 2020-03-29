@@ -41,7 +41,7 @@ class CreateItinerary_Location extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 325 }}>
                       <Input
                         borderless
-                        placeholder="The Perfect Night in Paris"
+                        placeholder="Location Page"
                         iconContent={
                           <Icon
                             size={16}
@@ -52,6 +52,7 @@ class CreateItinerary_Location extends React.Component {
                           />
                         }
                       />
+
                     </Block>
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>

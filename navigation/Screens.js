@@ -196,6 +196,46 @@ export default function OnboardingStack(props) {
   );
 }
 
+function ItineraryStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="screen">
+      <Stack.Screen
+        name="CreateItinerary_Name"
+        component={CreateItinerary_Name}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Name"
+              search
+              options
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" }
+        }}
+      />
+      <Stack.Screen
+        name="CreateItinerary_Location"
+        component={CreateItinerary_Location}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Location"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function AppStack(props) {
   return (
     <Drawer.Navigator
@@ -232,8 +272,9 @@ function AppStack(props) {
       <Drawer.Screen name="Account" component={Register} />
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
+      <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
 
-      <Drawer.Screen name="Create Itinerary" component={CreateItinerary_Name} />
+
     </Drawer.Navigator>
   );
 }
