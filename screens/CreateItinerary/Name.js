@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { Block, Text} from "galio-framework";
 
-import { Button, Icon, Input } from "../components";
-import { Images, argonTheme } from "../constants";
+import { Button, Icon, Input } from "../../components";
+import { Images, argonTheme } from "../../constants";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -41,7 +41,7 @@ class CreateItinerary_Name extends React.Component {
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 325 }}>
+                    <Block width={width * 0.8} height={height*0.55}>
                       <Input
                         borderless
                         placeholder="The Perfect Night in Paris"
@@ -60,7 +60,6 @@ class CreateItinerary_Name extends React.Component {
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
                          onPress={() => navigation.navigate("CreateItinerary_Location")}>
-                           >
                           NEXT
                         </Text>
                       </Button>

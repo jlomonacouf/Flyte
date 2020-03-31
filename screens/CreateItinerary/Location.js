@@ -8,15 +8,18 @@ import {
 } from "react-native";
 import { Block, Text} from "galio-framework";
 
-import { Button, Icon, Input } from "../components";
-import { Images, argonTheme } from "../constants";
+import { Button, Icon, Input } from "../../components";
+import { Images, argonTheme } from "../../constants";
 
 const { width, height } = Dimensions.get("screen");
 
-import { createStackNavigator } from "@react-navigation/stack";
+import {GOOGLE_PLACES_KEY} from '../../src/api_methods/api_keys'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 class CreateItinerary_Location extends React.Component {
   render() {
+    const { navigation } = this.props;
+
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -38,25 +41,42 @@ class CreateItinerary_Location extends React.Component {
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 325 }}>
-                      <Input
-                        borderless
-                        placeholder="Location Page"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
-
+                    <Block width={width * 0.8} height={height*0.55}>
+                    <GooglePlacesAutocomplete
+                      placeholder='Enter Location'
+                      minLength={2}
+                      autoFocus={false}
+                      returnKeyType={'default'}
+                      fetchDetails={true}
+                      keyboardShouldPersistTaps="handled"
+                      query={{
+                        key: GOOGLE_PLACES_KEY,
+                        language: 'en', // language of the results
+                      }}
+                      styles={{
+                        textInputContainer: {
+                          backgroundColor: 'rgba(0,0,0,0)',
+                          borderTopWidth: 0,
+                          borderBottomWidth:0,
+                        },
+                        textInput: {
+                          marginLeft: 0,
+                          marginRight: 0,
+                          height: 38,
+                          color: '#5d5d5d',
+                          fontSize: 16,
+                        },
+                        predefinedPlacesDescription: {
+                          color: '#1faadb',
+                        },
+                      }}
+                      currentLocation={false}
+                    />
                     </Block>
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}>
+                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
+                        onPress={() => navigation.navigate("CreateItinerary_Text")}>
                           NEXT
                         </Text>
                       </Button>

@@ -17,14 +17,16 @@ import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 
-import CreateItinerary_Name from "../screens/CreateItinerary_Name";
-import CreateItinerary_Location from "../screens/CreateItinerary_Location";
+import CreateItinerary_Name from "../screens/CreateItinerary/Name";
+import CreateItinerary_Location from "../screens/CreateItinerary/Location";
+import CreateItinerary_Text from "../screens/CreateItinerary/Text"
 // drawer
 import CustomDrawerContent from "./Menu";
 
 // header for screens
 import { Icon, Header } from "../components";
 import { argonTheme, tabs } from "../constants";
+import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
 
 const { width } = Dimensions.get("screen");
 
@@ -120,7 +122,7 @@ function ProfileStack(props) {
           headerTransparent: true
         }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="Pro"
         component={Pro}
         options={{
@@ -217,7 +219,7 @@ export default function OnboardingStack(props) {
 
 function ItineraryStack(props) {
   return (
-    <Stack.Navigator mode="card" headerMode="screen">
+    <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
         name="CreateItinerary_Name"
         component={CreateItinerary_Name}
@@ -241,6 +243,40 @@ function ItineraryStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="CreateItinerary_Location"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="CreateItinerary_Text"
+        component={CreateItinerary_Text}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Text"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="CreateItinerary_Tag"
+        component={CreateItinerary_Tag}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Tag"
               back
               white
               transparent
