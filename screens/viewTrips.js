@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   StyleSheet,
+  Image,
   ImageBackground,
   Dimensions,
   StatusBar,
@@ -11,7 +12,6 @@ import { Block, theme, Text } from 'galio-framework';
 import { Card, Button, Icon, Input } from '../components';
 import articles from '../constants/articles';
 import { Images, argonTheme } from "../constants";
-import images from "../constants/Images";
 
 const { height, width } = Dimensions.get('screen');
 
@@ -26,22 +26,22 @@ class viewTrips extends React.Component {
         <ScrollView
              showsVerticalScrollIndicator={false}
              contentContainerStyle={styles.articles}>
+  
+      <Block style={styles.registerContainer}>
       <ImageBackground
           source={Images.RegisterBackground}
           style={{ width, height, zIndex: 1 }}
         >
-         
-      <Block style={styles.registerContainer}>
+  
       <Block flex middle>
       <Block center>
-      <Image source={images.Logo} style={styles.logo} />
+      <Image source={Images.Logo} style={styles.logo} />
       </Block>
-            <Text bold size={25} style={styles.primaryText}> FLYTE </Text>
+            <Text bold size={40} style={styles.primaryText}> FLYTE </Text>
                 <Block >
-                <Text size={14}  style={styles.primaryText} > It looks like you're not logged in  </Text>
-  
+                <Text size={20}  style={styles.primaryText} > It looks like you're not logged in  </Text>
                       <Button color="primary" style={styles.createButton}>
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}
+                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
                         onPress={() => navigation.navigate("Register")}>>
                          LOG IN
                         </Text>
@@ -49,8 +49,9 @@ class viewTrips extends React.Component {
                     </Block>
 
       </Block>
-      </Block>
       </ImageBackground>
+      </Block>
+    
         </ScrollView>
       )
 
@@ -80,7 +81,7 @@ class viewTrips extends React.Component {
   render() {
     const isLoggedIn = false; 
     return (
-      <Block flex center style={styles.home}>
+      <Block flex middle style={styles.home}>
         {this.props.isLoggedIn ? this.renderArticles(): this.renderLogin()}
       </Block>
     );
@@ -89,11 +90,14 @@ class viewTrips extends React.Component {
 
 const styles = StyleSheet.create({
     primaryText: {
-      padding: 10  
+      padding: 25,
+      color: 'white',
+      fontWeight: 'bold',
+      //fontSize: 20
     },
     registerContainer: {
-      width: width * 0.9,
-      height: height * 0.78,
+      width: width,
+      height: height,
       backgroundColor: "#F4F5F7",
       borderRadius: 4,
       shadowColor: argonTheme.COLORS.BLACK,
@@ -104,7 +108,7 @@ const styles = StyleSheet.create({
       shadowRadius: 8,
       shadowOpacity: 0.1,
       elevation: 1,
-      overflow: "hidden"
+      overflow: "hidden",
     },
     logo: {
       width: 200,
@@ -113,8 +117,14 @@ const styles = StyleSheet.create({
       position: 'relative',
       marginTop: '-50%'
     },
+    createButton: {
+      width: width * 0.80,
+      marginTop: 15
+    },
   home: {
-    width: width,    
+    width: width,  
+    height: height , 
+    backgroundColor: "black",
   },
   articles: {
     width: width - theme.SIZES.BASE * 2,

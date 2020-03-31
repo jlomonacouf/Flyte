@@ -1,7 +1,7 @@
 // local imgs
 const Onboarding = require("../assets/imgs/bg.png");
 const Logo = require("../assets/imgs/icon.png");
-const LogoOnboarding = require("../assets/imgs/argon-logo-onboarding.png");
+const LogoOnboarding = require("../assets/imgs/icon.png");
 const ProfileBackground = require("../assets/imgs/profile-screen-bg.png");
 const RegisterBackground = require("../assets/imgs/register-bg.png");
 const Pro = require("../assets/imgs/getPro-bg.png");
