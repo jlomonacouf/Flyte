@@ -37,7 +37,16 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Profile":
+        case "Create Itinerary":
+          return (
+            <Icon
+              name="spaceship"
+              family="ArgonExtra"
+              size={14}
+              color={focused ? "white" : argonTheme.COLORS.PRIMARY}
+            />
+          );
+      case "Account":
         return (
           <Icon
             name="chart-pie-35"
@@ -46,7 +55,7 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : argonTheme.COLORS.WARNING}
           />
         );
-      case "Account":
+      case "Profile":
         return (
           <Icon
             name="calendar-date"
