@@ -78,7 +78,7 @@ class CreateItinerary_Tag extends React.Component {
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
-                                text="Family"
+                                text="Relaxation"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
                                 source={require('../../assets/imgs/bg.png')}/>
@@ -101,7 +101,7 @@ class CreateItinerary_Tag extends React.Component {
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
-                                text="Chill"
+                                text="Family"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
                                 source={require('../../assets/imgs/bg.png')}/>
