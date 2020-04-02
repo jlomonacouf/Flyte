@@ -20,13 +20,14 @@ import Articles from "../screens/Articles";
 import CreateItinerary_Name from "../screens/CreateItinerary/Name";
 import CreateItinerary_Location from "../screens/CreateItinerary/Location";
 import CreateItinerary_Text from "../screens/CreateItinerary/Text"
+import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
+import CreateItinerary_Image from "../screens/CreateItinerary/Image.js";
 // drawer
 import CustomDrawerContent from "./Menu";
 
 // header for screens
 import { Icon, Header } from "../components";
 import { argonTheme, tabs } from "../constants";
-import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
 
 const { width } = Dimensions.get("screen");
 
@@ -277,6 +278,23 @@ function ItineraryStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="CreateItinerary_Tag"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="CreateItinerary_Image"
+        component={CreateItinerary_Image}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Image"
               back
               white
               transparent

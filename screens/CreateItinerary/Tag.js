@@ -19,22 +19,22 @@ class CreateItinerary_Tag extends React.Component {
     render() {
         const MyTagInput = () => (
             <Tags
-                initialText="monkey"
                 textInputProps={{
-                placeholder: "Any type of animal"
+                placeholder: "Or add your own!"
                 }}
-                initialTags={["dog", "cat", "chicken"]}
+                maxNumberOfTags={3}
                 onChangeTags={tags => console.log(tags)}
                 onTagPress={(index, tagLabel, event, deleted) =>
                 console.log(index, tagLabel, event, deleted ? "deleted" : "not deleted")
                 }
-                containerStyle={{ justifyContent: "center" }}
-                inputStyle={{ backgroundColor: "white" }}
+                containerStyle={{ justifyContent: "center", backgroundColor: "#cccccc" }}
+                tagContainerStyle={{ padding: 5}}
+                inputStyle={{ backgroundColor: "white", fontSize: 16}}
                 renderTag={({ tag, index, onPress, deleteTagOnPress, readonly }) => (
                 <TouchableOpacity key={`${tag}-${index}`} onPress={onPress}>
                     <Text>{tag}</Text>
                 </TouchableOpacity>
-                )}
+                )} 
             />
         );
 
@@ -110,7 +110,7 @@ class CreateItinerary_Tag extends React.Component {
                         <Block flex bottom>
                         <Button color="primary" style={styles.createButton}>
                             <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                            onPress={() => navigation.navigate("CreateItinerary_Location")}>
+                            onPress={() => navigation.navigate("CreateItinerary_Image")}>
                             NEXT
                             </Text>
                         </Button>
