@@ -14,6 +14,7 @@
     "url": "git+https://github.com/creativetimofficial/argon-react-native.git"
   },
   "dependencies": {
+    "@react-native-community/cameraroll": "^1.5.2",
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/bottom-tabs": "^5.0.6",
     "@react-navigation/compat": "^5.0.0",
@@ -23,6 +24,7 @@
     "expo": "^36.0.0",
     "expo-asset": "~8.0.0",
     "expo-font": "~8.0.0",
+    "expo-image-picker": "^8.0.2",
     "galio-framework": "^0.6.3",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
