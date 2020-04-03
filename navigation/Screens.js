@@ -14,6 +14,7 @@ import viewTrips from "../screens/viewTrips";
 import Pro from "../screens/Pro";
 import Profile from "../screens/Profile";
 import Register from "../screens/Register";
+import Login from "../screens/Login";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 import Trip from "../screens/Trip"; 
@@ -181,7 +182,23 @@ function HomeStack(props) {
           headerTransparent: true
         }}
       />
-
+<Stack.Screen
+    name="Login"
+    component={Login}
+    options={{
+      header: ({ navigation, scene }) => (
+        <Header
+          title=""
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
     
     <Stack.Screen
     name="Register"
@@ -306,6 +323,23 @@ function ItineraryStack(props) {
           headerTransparent: true
         }}
       />
+      <Stack.Screen
+    name="Login"
+    component={Login}
+    options={{
+      header: ({ navigation, scene }) => (
+        <Header
+          title=""
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
     </Stack.Navigator>
   );
 }
@@ -348,6 +382,9 @@ function AppStack(props) {
       <Drawer.Screen name="Articles" component={ArticlesStack} />
       <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
       <Drawer.Screen name="Trip" component ={Trip} />
+      <Drawer.Screen name="Pro" component ={Pro} />
+      <Drawer.Screen name="Login" component ={Login} />
+
 
 
     </Drawer.Navigator>
