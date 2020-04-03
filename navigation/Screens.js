@@ -182,6 +182,23 @@ function HomeStack(props) {
           headerTransparent: true
         }}
       />
+       <Stack.Screen
+        name="Trip"
+        component={Trip}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title=""
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
 <Stack.Screen
     name="Login"
     component={Login}
