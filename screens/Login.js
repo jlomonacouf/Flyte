@@ -13,40 +13,29 @@ import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
-import { backendEndpoint, REGISTER_URL} from "../src/api_methods/shared_base";
+import { backendEndpoint, LOGIN_URL } from "../src/api_methods/shared_base";
 import bcrypt from 'react-native-bcrypt';
 
 const { width, height } = Dimensions.get("screen");
 
-class Register extends React.Component {
+class Login extends React.Component {
 
 
   state = {
     username: "",
     password: "",
-    email: "",
-    approvesPolicy: false, 
   }; 
 
   handleChange = (name, val) => {
     this.setState({ [name]: val });
   };
 
-  onSignUpPress = async () => {
 
-    if (!this.state.approvesPolicy === false) {
-      console.log("NOT CHECKED");
-      alert("Please agree to the privacy policy");
-      return;
-    }
 
-    const { username, email, password } = this.state
-    console.log(backendEndpoint + REGISTER_URL)
+  onLoginPress = async () => {
+    const { username, password } = this.state
 
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
-
-    fetch(backendEndpoint + REGISTER_URL, {
+    fetch(backendEndpoint + LOGIN_URL, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -54,19 +43,24 @@ class Register extends React.Component {
       },
       body: JSON.stringify({
         username: username,
-        email: email,
-        password: hash,
-        password_salt: salt
-      })
-    }).then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      })
-    }; 
+        password: password
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      }).catch((err) => {
+        console.log('error logging in: ', err);
+      });
+  };
 
-  renderRegistration() {
+
+
+
+  renderLoginPg() {
+
     const { navigation } = this.props;
-    return (
+     return (
       <Block flex middle>
         <StatusBar hidden />
         <ImageBackground
@@ -76,42 +70,16 @@ class Register extends React.Component {
           <Block flex middle>
             <Block style={styles.registerContainer}>
               <Block flex={0.25} middle style={styles.socialConnect}>
-                <Text color="#8898AA" size={12}>
-                  Sign up with
-                </Text>
+               
                 <Block row style={{ marginTop: theme.SIZES.BASE }}>
-                  <Button style={{ ...styles.socialButtons, marginRight: 30 }}>
-                    <Block row>
-                      <Icon
-                        name="logo-github"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GITHUB</Text>
-                    </Block>
-                  </Button>
-                  <Button style={styles.socialButtons}>
-                    <Block row>
-                      <Icon
-                        name="logo-google"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GOOGLE</Text>
-                    </Block>
-                  </Button>
+                
+                <Block flex middle ={0.01} style={styles.header}>
+                  <Image styles={styles.logo} source={Images.Logo} />
+      </Block>
                 </Block>
               </Block>
               <Block flex>
-                <Block flex={0.17} middle>
-                  <Text color="#8898AA" size={12}>
-                    Or sign up the classic way
-                  </Text>
-                </Block>
+                <Block flex={0.17} middle></Block>
                 <Block flex center>
                   <KeyboardAvoidingView
                     style={{ flex: 1 }}
@@ -134,22 +102,7 @@ class Register extends React.Component {
                         onChangeText={val => this.handleChange('username', val)}
                       />
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Email"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="ic_mail_24px"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        onChangeText={val => this.handleChange('email', val)}
-                      />
-                    </Block>
+                   
                     <Block width={width * 0.8}>
                       <Input
                         password
@@ -166,48 +119,23 @@ class Register extends React.Component {
                         }
                         onChangeText={val => this.handleChange('password', val)}
                       />
-                      <Block row style={styles.passwordCheck}>
-                        <Text size={12} color={argonTheme.COLORS.MUTED}>
-                          password strength:
-                        </Text>
-                        <Text bold size={12} color={argonTheme.COLORS.SUCCESS}>
-                          {" "}
-                          strong
-                        </Text>
-                      </Block>
+                     
                     </Block>
                     <Block row width={width * 0.75}>
-                      <Checkbox
-                        checkboxStyle={{
-                          borderWidth: 3
-                        }}
-                        color={argonTheme.COLORS.PRIMARY}
-                        label="I agree with the"
-                        onChange={() => this.setState({ approvesPolicy: !this.state.approvesPolicy })}
-                      />
-                      <Button
-                        style={{ width: 100 }}
-                        color="transparent"
-                        textStyle={{
-                          color: argonTheme.COLORS.PRIMARY,
-                          fontSize: 14
-                        }}
-                      >
-                        Privacy Policy
+                     
+                
+                    </Block>
+                    <Block middle>
+                      <Button color="primary" style={styles.createButton} onPress={this.onLoginPress}>
+                        <Text bold size={14} color={argonTheme.COLORS.WHITE}> LOG IN</Text>
                       </Button>
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={this.onSignUpPress}>
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          CREATE ACCOUNT
-                        </Text>
-                      </Button>
-                    </Block>
-                    <Block middle>
-                        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                            <Text size={12} color="blue" >Already have an account? Login </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                            <Text color="blue" >Or sign up </Text>
                             </TouchableOpacity>
                       </Block>
+
                   </KeyboardAvoidingView>
                 </Block>
               </Block>
@@ -215,14 +143,16 @@ class Register extends React.Component {
           </Block>
         </ImageBackground>
       </Block>
-    );
+    )
   };
 
+
+ 
 
   render() {
     return (
       <Block flex center>
-          {this.renderRegistration()}
+          {this.renderLoginPg()}
       </Block>
     );
   }
@@ -288,4 +218,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Register;
+export default Login;

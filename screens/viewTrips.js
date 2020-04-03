@@ -42,7 +42,7 @@ class viewTrips extends React.Component {
                 <Text size={20}  style={styles.primaryText} > It looks like you're not logged in  </Text>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("Register")}>>
+                        onPress={() => navigation.navigate("Login")}>>
                          LOG IN
                         </Text>
                       </Button>
