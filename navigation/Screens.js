@@ -16,6 +16,7 @@ import Profile from "../screens/Profile";
 import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
+import Trip from "../screens/Trip"; 
 
 import CreateItinerary_Name from "../screens/CreateItinerary/Name";
 import CreateItinerary_Location from "../screens/CreateItinerary/Location";
@@ -346,6 +347,7 @@ function AppStack(props) {
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
       <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
+      <Drawer.Screen name="Trip" component ={Trip} />
 
 
     </Drawer.Navigator>
