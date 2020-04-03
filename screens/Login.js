@@ -35,6 +35,9 @@ class Login extends React.Component {
   onLoginPress = async () => {
     const { username, password } = this.state
 
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(password, salt);
+
     fetch(backendEndpoint + LOGIN_URL, {
       method: 'POST',
       headers: {
@@ -43,7 +46,7 @@ class Login extends React.Component {
       },
       body: JSON.stringify({
         username: username,
-        password: password
+        password: hash
       }),
     })
       .then((response) => response.json())
