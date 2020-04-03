@@ -10,10 +10,56 @@ import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
+import { backendEndpoint, REGISTER_URL } from "../src/api_methods/shared_base";
+import bcrypt from 'react-native-bcrypt';
 
 const { width, height } = Dimensions.get("screen");
 
 class Register extends React.Component {
+  state = {
+    username: "",
+    password: "",
+    email: "",
+    approvesPolicy: false
+  };
+
+  onSignUpPress = async () => {
+
+    if(!this.state.approvesPolicy === false)
+    {
+      console.log("NOT CHECKED");
+      alert("Please agree to the privacy policy");
+      return;
+    }
+
+    const {username, email, password} = this.state
+    console.log(backendEndpoint + REGISTER_URL)
+
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(password, salt);
+
+    fetch(backendEndpoint + REGISTER_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: hash,
+        password_salt: salt
+      })
+    }).then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+    })
+  }
+
+  handleChange = (name, val) => {
+    this.setState({ [name]: val });
+  }
+
   render() {
     return (
       <Block flex middle>
@@ -80,6 +126,7 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        onChangeText={val => this.handleChange('username', val)}
                       />
                     </Block>
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
@@ -95,6 +142,7 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        onChangeText={val => this.handleChange('email', val)}
                       />
                     </Block>
                     <Block width={width * 0.8}>
@@ -111,6 +159,7 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        onChangeText={val => this.handleChange('password', val)}
                       />
                       <Block row style={styles.passwordCheck}>
                         <Text size={12} color={argonTheme.COLORS.MUTED}>
@@ -129,6 +178,7 @@ class Register extends React.Component {
                         }}
                         color={argonTheme.COLORS.PRIMARY}
                         label="I agree with the"
+                        onChange={() => this.setState({approvesPolicy: !this.state.approvesPolicy})}
                       />
                       <Button
                         style={{ width: 100 }}
@@ -142,7 +192,7 @@ class Register extends React.Component {
                       </Button>
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton} onPress={this.onSignUpPress}>
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           CREATE ACCOUNT
                         </Text>
