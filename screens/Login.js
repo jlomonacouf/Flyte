@@ -13,7 +13,7 @@ import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
-import { backendEndpoint, LOGIN_URL } from "../src/api_methods/shared_base";
+import { backendEndpoint, LOGIN_URL, GET_SALT_URL } from "../src/api_methods/shared_base";
 import bcrypt from 'react-native-bcrypt';
 
 const { width, height } = Dimensions.get("screen");
@@ -34,27 +34,44 @@ class Login extends React.Component {
 
   onLoginPress = async () => {
     const { username, password } = this.state
-
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
-
-    fetch(backendEndpoint + LOGIN_URL, {
+    console.log("PASS    " + bcrypt.hashSync(password, 10));
+    console.log("DB HASH " + "$2a$10$zHKg6MrIVZgm7Lhlapb.O.oxWyn/YSRBIOAPTZ")
+    console.log(bcrypt.compareSync(password, "$2a$10$zHKg6MrIVZgm7Lhlapb.O.oxWyn/YSRBIOAPTZ"));
+    /*fetch(backendEndpoint + GET_SALT_URL, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username,
-        password: hash
+        username: username
       }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-      }).catch((err) => {
-        console.log('error logging in: ', err);
-      });
+    .then((response) => response.json())
+    .then((saltData) => {
+      var hash = bcrypt.hashSync(password, saltData.salt);
+      console.log(saltData.salt)
+      console.log(hash)
+      fetch(backendEndpoint + LOGIN_URL, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: hash
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        }).catch((err) => {
+          console.log('error logging in: ', err);
+        });
+    }).catch((err) => {
+      console.log('error logging in: ', err);
+    });*/
   };
 
 
@@ -130,7 +147,7 @@ class Login extends React.Component {
                     </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={this.onLoginPress}>
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}> LOG IN</Text>
+                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>LOG IN</Text>
                       </Button>
                     </Block>
                     <Block middle>

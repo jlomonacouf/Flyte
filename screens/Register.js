@@ -43,8 +43,8 @@ class Register extends React.Component {
     const { username, email, password } = this.state
     console.log(backendEndpoint + REGISTER_URL)
 
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
+    //var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(password, 10);
 
     fetch(backendEndpoint + REGISTER_URL, {
       method: 'POST',
@@ -56,7 +56,7 @@ class Register extends React.Component {
         username: username,
         email: email,
         password: hash,
-        password_salt: salt
+        password_salt: "123"
       })
     }).then((response) => response.json())
       .then((json) => {
