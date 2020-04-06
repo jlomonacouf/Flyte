@@ -59,6 +59,7 @@ class Register extends React.Component {
       })
     }).then((response) => response.json())
       .then((json) => {
+        //SET COOKIE/PROP HERE 
         console.log(json);
       })
   }; 
