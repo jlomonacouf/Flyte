@@ -113,15 +113,13 @@ function ArticlesStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
+              title="Loading"
               back
               white
-              transparent
               navigation={navigation}
               scene={scene}
             />
           ),
-          headerTransparent: true
         }}
       />
     </Stack.Navigator>
@@ -169,15 +167,15 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
+             title="Home"
+            search
+            options
+            navigation={navigation}
+            scene={scene}
             />
           ),
-          headerTransparent: true
+          cardStyle: { backgroundColor: "#F8F9FE" }
+
         }}/>
 
        <Stack.Screen
@@ -194,7 +192,6 @@ function HomeStack(props) {
               scene={scene}
             />
           ),
-          headerTransparent: true
         }}/>
     <Stack.Screen
       name="Login"
@@ -318,7 +315,7 @@ function TripStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="tripName"
+              title="Create Trip"
               search
               options
               navigation={navigation}
@@ -436,7 +433,7 @@ function ItineraryStack(props) {
               scene={scene}
             />
           ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
+          //cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
       <Stack.Screen

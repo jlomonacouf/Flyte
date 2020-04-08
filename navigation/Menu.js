@@ -22,7 +22,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Following", 
     "Itinerary", 
     "Trip",
-   // "Elements",
+   "Elements",
    "Articles",
     "Login", 
     "Loading", 
