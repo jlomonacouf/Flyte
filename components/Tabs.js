@@ -6,10 +6,10 @@ const { width } = Dimensions.get('screen');
 import argonTheme from '../constants/Theme';
 
 const defaultMenu = [
-  { id: 'popular', title: 'Popular', },
-  { id: 'beauty', title: 'Beauty', },
-  { id: 'cars', title: 'Cars', },
-  { id: 'motocycles', title: 'Motocycles', },
+  { id: 'Home', title: 'Popular', },
+  { id: 'Loading', title: 'Beauty', },
+  { id: 'Loading', title: 'Cars', },
+  { id: 'Loading', title: 'Motocycles', },
 ];
 
 export default class Tabs extends React.Component {
@@ -50,6 +50,7 @@ export default class Tabs extends React.Component {
 
   selectMenu = (id) => {
     this.setState({ active: id });
+    console.log(id); 
 
     this.menuRef.current.scrollToIndex({
       index: this.props.data.findIndex(item => item.id === id),

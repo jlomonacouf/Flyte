@@ -58,20 +58,20 @@ class viewTrips extends React.Component {
   }
 
 
-  renderArticles = () => {
+  renderUserTrips= () => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
   
         <Block flex>
-          <Card item={articles[0]} horizontal  />
+          <Card item={articles[0]} horizontal  nextScreen={'Trip'} />
           <Block flex row>
-            <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Card item={articles[2]} />
+            <Card item={articles[1]} nextScreen={'Trip'} style={{ marginRight: theme.SIZES.BASE }} />
+            <Card item={articles[2]} nextScreen={'Trip'} />
           </Block>
-          <Card item={articles[3]} horizontal />
-          <Card item={articles[4]} full />
+          <Card item={articles[3]} horizontal nextScreen={'Trip'} />
+          <Card item={articles[4]} full nextScreen={'Trip'}/>
         </Block>
         
       </ScrollView>
@@ -84,7 +84,7 @@ class viewTrips extends React.Component {
 
     return (
       <Block flex middle style={styles.home}>
-        {this.renderArticles()}
+        {this.renderUserTrips()}
       </Block>
     );
   }
