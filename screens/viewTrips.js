@@ -78,11 +78,13 @@ class viewTrips extends React.Component {
     )
   }
 
+
+
   render() {
-    const isLoggedIn = false; 
+
     return (
       <Block flex middle style={styles.home}>
-        {this.props.isLoggedIn ? this.renderArticles(): this.renderLogin()}
+        {this.renderArticles()}
       </Block>
     );
   }

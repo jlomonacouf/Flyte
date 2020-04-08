@@ -217,6 +217,14 @@ class Profile extends React.Component {
                           style={styles.thumb}
                         />
                       ))}
+                    <Block style ={{marginTop: 10, marginBottom:10}}>
+                    <Button medium  color="transparent" textStyle={{ padding:15, fontWeight: "bold",color: "#32325D", fontSize: 20 }}
+                      onPress={() => navigation.navigate('Create Trip', { item: currUser.username })}
+                    > New Trip 
+                    </Button>
+                    </Block>
+
+
                     </Block>
 
 
