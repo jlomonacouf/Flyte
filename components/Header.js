@@ -154,7 +154,15 @@ class Header extends React.Component {
         onChange={id => {
           navigation.setParams({ tabId: id })
           
+          
+          if(id==='beauty' || id==='cars' || id==='motocycles'){
+             navigation.navigate('Loading')
+          } else if (id === 'popular'){
+              //NOTHING
+          }else{
+        
           navigation.navigate(id)
+          }
         }
         }
          />
