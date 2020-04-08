@@ -11,10 +11,11 @@ import {
 //galio
 import { Block, Text, theme } from "galio-framework";
 //argon
+import MapView, {Marker} from 'react-native-maps';
 import { articles, Images, argonTheme } from "../constants/";
 import { Card } from "../components/";
 
-const { width } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
@@ -34,7 +35,36 @@ const categories = [
 
 const currUser = "Gremlin"; 
 
+const initialRegion={
+  latitude: 37.78825,
+  longitude: -122.4324,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+}; 
+
+
+
 class Trip extends React.Component {
+
+  state = {
+    region: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }, 
+    markers: [
+      {
+        latlng:{
+          latitude: 37.78825, 
+          longitude: -122.4324
+        }, 
+        title: "Stop 1",
+        description: "This is the first stop on the itinerary"
+      } 
+    ] 
+};
+
   renderProduct = (item, index) => {
     const { navigation } = this.props;
 
@@ -69,6 +99,10 @@ class Trip extends React.Component {
     );
   };
 
+  onRegionChange(region) {
+    this.setState({ region });
+  }; 
+
   renderCards = () => {
     const { navigation } = this.props;
 
@@ -79,7 +113,25 @@ class Trip extends React.Component {
          
 
             <Block flex shadow style={styles.category}>
-              <ImageBackground
+            {/* <Block style={styles.categoryTitle}>
+                  <Text size={18} bold color={theme.COLORS.WHITE}>
+                    City, Greece
+                  </Text>
+                </Block> */}
+            <Block style={styles.mapContainer} >
+              <MapView style={styles.mapStyle} 
+              region={this.state.region}
+              onRegionChange={this.onRegionChange}
+                >
+                  {this.state.markers.map(marker => (
+                    <Marker
+                      coordinate={marker.latlng}
+                      title={marker.title}
+                      description={marker.description}
+                    />
+                  ))}
+                </MapView>
+              {/* <ImageBackground
                 source={{ uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flonglivelearning.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fmaps-greekmyth.jpg&f=1&nofb=1" }} 
                 style={[
                   styles.imageBlock,
@@ -93,13 +145,10 @@ class Trip extends React.Component {
                   width: width, 
                   height: 255
                 }}
-              >
-                <Block style={styles.categoryTitle}>
-                  <Text size={18} bold color={theme.COLORS.WHITE}>
-                    City, Greece
-                  </Text>
-                </Block>
-              </ImageBackground>
+              > */}
+              </Block>
+               
+              {/* </ImageBackground> */}
             </Block>
         <Block>
         <Text bold size={24} style={styles.title}>
@@ -167,6 +216,15 @@ class Trip extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  mapContainer:{
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }, 
+  mapStyle: {
+    width:width,
+    height: 240
+  },
   title: {
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,

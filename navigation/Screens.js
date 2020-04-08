@@ -13,6 +13,7 @@ import { Block } from "galio-framework";
 //Examples
 
 import Basic from "../screens/Basic"; 
+import Itinerary_Ex from "../screens/Itinerary_Ex";
 
 // screens
 import Home from "../screens/Home";
@@ -602,7 +603,7 @@ function AppStack(props) {
 
       <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
       <Drawer.Screen name="Itinerary" component={Itinerary} />
-
+      <Drawer.Screen name="Itinerary_Ex" component={Itinerary_Ex} />
       <Drawer.Screen name="Create Trip" component={TripStack} />
       <Drawer.Screen name="Trip" component={TripStack} />
 

@@ -12,13 +12,33 @@ import { Block, Text, theme } from "galio-framework";
 //argon
 import { articles, Images, argonTheme } from "../constants/";
 import { Card } from "../components/";
+import MapView, {Marker} from 'react-native-maps';
 
-const { width } = Dimensions.get("screen");
+const { width,height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
 
 class Itinerary extends React.Component {
+  state = {
+    region: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }, 
+    markers: [
+      {
+        latlng:{
+          latitude: 37.78825, 
+          longitude: -122.4324
+        }, 
+        title: "Stop 1",
+        description: "This is the first stop on the itinerary"
+      } 
+    ] 
+};
+
   renderProduct = (item, index) => {
     const { navigation } = this.props;
 
@@ -66,28 +86,26 @@ class Itinerary extends React.Component {
 
         <Block flex>
         <Block flex card shadow style={styles.category}>
-              <ImageBackground
-                source={{ uri: Images.Products["View article"] }}
-                style={[
-                  styles.imageBlock,
-                  { width: width - theme.SIZES.BASE * 2, height: 252 }
-                ]}
-                imageStyle={{
-                  width: width - theme.SIZES.BASE * 2,
-                  height: 252
-                }}
-              >
-                <Block style={styles.categoryTitle}>
-                  <Text size={18} bold color={theme.COLORS.WHITE}>
-                    Google Maps Here 
-                  </Text>
-                </Block>
-              </ImageBackground>
+        <Block style={styles.mapContainer} >
+              <MapView style={styles.mapStyle} 
+              region={this.state.region}
+              onRegionChange={this.onRegionChange}
+                >
+                  {this.state.markers.map(marker => (
+                    <Marker
+                      coordinate={marker.latlng}
+                      title={marker.title}
+                      description={marker.description}
+                    />
+                  ))}
+                </MapView>
+
             </Block>
+           </Block>
 
 
             <Block flex style={{margin: 10}}>
-        <Text bold size={11} style={styles.title}>
+        <Text bold size={14} style={styles.title}>
           #SightSeeing #Outdoors #Exercise #Relaxation #Family 
         </Text>
         </Block>
@@ -125,6 +143,15 @@ class Itinerary extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  mapContainer:{
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }, 
+  mapStyle: {
+    width:width,
+    height: 240
+  },
   title: {
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
