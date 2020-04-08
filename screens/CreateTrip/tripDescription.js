@@ -4,55 +4,19 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import { Block, Text} from "galio-framework";
 
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import * as ImagePicker from 'expo-image-picker';
+import { TextInput } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("screen");
 
-class CreateItinerary_Image extends React.Component {
-
-  state = {
-    image: null,
-  };
-
-  componentDidMount() {
-    this.getPermissionAsync();
-    console.log('Permissions received');
-  }
-
-  getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    }
-  }
-
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      aspect: [4, 3],
-      quality: 1,
-      exif: false
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
-
+class tripDescription extends React.Component {
   render() {
-    let { image } = this.state;
-    
     const { navigation } = this.props;
 
     return (
@@ -67,7 +31,7 @@ class CreateItinerary_Image extends React.Component {
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#00" size={20}>
-                    Upload Photos
+                    Enter Trip Details
                   </Text>
                 </Block>
                 <Block flex center>
@@ -76,26 +40,22 @@ class CreateItinerary_Image extends React.Component {
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} height={height*0.55}>
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={this._pickImage}>
-                          Choose an image
-                        </Text>
-                      </Button>
+                    <Block width={width * 0.8} height={height * 0.55} style={{borderColor: '#cccccc', borderWidth: 1}}>
+                        <ScrollView>
+                        <TextInput
+                            style={{paddingLeft: 2, paddingRight: 2, textAlignVertical: 'top', fontSize:16}}
+                            height={height * 0.55}
+                            iconContent none
+                            placeholder="Tell us about what you did, where, for how long, ..."
+                            multiline
+                        />
+                        </ScrollView>
                     </Block>
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})}>
+                         onPress={() => navigation.navigate("tripTags")}>
                           NEXT
-                        </Text>
-                      </Button>
-
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("Itinerary")}>
-                          FINISH
                         </Text>
                       </Button>
                     </Block>
@@ -135,4 +95,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateItinerary_Image;
+export default tripDescription;

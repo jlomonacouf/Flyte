@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const { width, height } = Dimensions.get("screen");
 
-class CreateItinerary_Image extends React.Component {
+class tripImages extends React.Component {
 
   state = {
     image: null,
@@ -84,11 +84,20 @@ class CreateItinerary_Image extends React.Component {
                         </Text>
                       </Button>
                     </Block>
-                    <Block flex bottom>
+                    <Block flex row bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
                          onPress={() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})}>
                           NEXT
+                        </Text>
+                      </Button>
+                      <Block>
+                        
+                      </Block>
+                      <Button color="primary" style={styles.createButton}>
+                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
+                        onPress={() => navigation.navigate("Trip")}>
+                          FINISH
                         </Text>
                       </Button>
                     </Block>
@@ -128,4 +137,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateItinerary_Image;
+export default tripImages;

@@ -36,7 +36,7 @@ const categories = [
   }
 ];
 
-class Trip extends React.Component {
+class Itinerary extends React.Component {
   renderProduct = (item, index) => {
     const { navigation } = this.props;
 
@@ -216,4 +216,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Trip;
+export default Itinerary;
