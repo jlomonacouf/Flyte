@@ -36,6 +36,7 @@
     "react-native-google-places-autocomplete": "^1.4.1",
     "react-native-image-button-text": "^1.0.7",
     "react-native-loading-spinner-overlay": "^1.1.0",
+    "react-native-maps": "0.27.1",
     "react-native-modal-dropdown": "^0.7.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",

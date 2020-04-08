@@ -15,7 +15,8 @@ import { Images, argonTheme } from "../../constants";
 
 import DatePicker from 'react-native-datepicker';
 //import DatePicker from '@react-native-community/datetimepicker'; 
-
+//https://www.positronx.io/react-datepicker-tutorial-with-react-datepicker-examples/
+//Might HELP: https://reactnativemaster.com/react-native-ui-kitten-datepicker-example/
 const { width, height } = Dimensions.get("screen");
 
 
