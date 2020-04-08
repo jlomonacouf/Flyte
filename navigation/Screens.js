@@ -109,23 +109,6 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
-
-      
-            {/* <Stack.Screen
-        name="Loading"
-        component={Loading}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Loading"
-              back
-              white
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-        }}
-      /> */}
     </Stack.Navigator>
   );
 }
@@ -161,10 +144,6 @@ const userTripMenu= [
   {id: 'Register', title: 'Register',},
   {id: 'Account', title: 'Settings',}
 ]; 
-
-
-
-
 
   return (
    
@@ -208,10 +187,12 @@ const userTripMenu= [
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
+              title="3 Days, 2 Nights, 1 Trip "
+              white 
               back
-              white
-              transparent
+              bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="white" 
+              iconColor="white"
               navigation={navigation}
               scene={scene}
             />
@@ -356,8 +337,8 @@ function TripStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="tripLocation"
-              back
               white
+              back 
               transparent
               navigation={navigation}
               scene={scene}
@@ -424,17 +405,17 @@ function TripStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
+              title="3 Days, 2 Nights, 1 Trip "
+              white 
               back
-              white
-              transparent
+              bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="white" 
+              iconColor="white"
               navigation={navigation}
               scene={scene}
             />
           ),
-          headerTransparent: true
-        }}
-      />
+        }}/>
 
     </Stack.Navigator>
   );
@@ -558,10 +539,20 @@ function singleTripStack(props) {
       <Stack.Screen
         name="Trip"
         component={Trip}
-        option={{
-          headerTransparent: true
-        }}
-      />
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="3 Days, 2 Nights, 1 Trip "
+              white 
+              back
+              bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="white" 
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+        }}/>
       <Stack.Screen name="App" component={AppStack} />
     </Stack.Navigator>
   );
