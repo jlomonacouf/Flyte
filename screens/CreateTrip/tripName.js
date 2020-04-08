@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     marginRight: 12
   },
   createButton: {
-    width: width * 0.20,
+    width: width * 0.40,
     marginTop: 25
   }
 });

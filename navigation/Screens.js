@@ -9,6 +9,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Block } from "galio-framework";
 
+
+//Examples
+
+import Basic from "../screens/Basic"; 
+
 // screens
 import Home from "../screens/Home";
 import Onboarding from "../screens/Onboarding";
@@ -187,12 +192,12 @@ const userTripMenu= [
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="3 Days, 2 Nights, 1 Trip "
+              title="Single Trip "
               white 
               back
-              bgColor={argonTheme.COLORS.ACTIVE} 
-              titleColor="white" 
-              iconColor="white"
+             // bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="black" 
+              iconColor="black"
               navigation={navigation}
               scene={scene}
             />
@@ -408,7 +413,7 @@ function TripStack(props) {
               title="3 Days, 2 Nights, 1 Trip "
               white 
               back
-              bgColor={argonTheme.COLORS.ACTIVE} 
+              //bgColor={argonTheme.COLORS.ACTIVE} 
               titleColor="white" 
               iconColor="white"
               navigation={navigation}
@@ -492,38 +497,24 @@ function ItineraryStack(props) {
           headerTransparent: true
         }}
       />
-      <Stack.Screen
+       <Stack.Screen
         name="CreateItinerary_Image"
         component={CreateItinerary_Image}
         options={{
           header: ({ navigation, scene }) => (
-            <Header
-              title="CreateItinerary_Image"
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
+            <Header title="Upload Images" navigation={navigation} scene={scene} />
           ),
-          headerTransparent: true
+          cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
        <Stack.Screen
         name="Itinerary"
-        component={CreateItinerary_Image}
+        component={Itinerary}
         options={{
           header: ({ navigation, scene }) => (
-            <Header
-              title="Itinerary"
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
+            <Header title="Itinerary" navigation={navigation} scene={scene} />
           ),
-          headerTransparent: true
+          cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
     </Stack.Navigator>
@@ -533,63 +524,7 @@ function ItineraryStack(props) {
 }
 
 
-function singleTripStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="none">
-      <Stack.Screen
-        name="Trip"
-        component={Trip}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="3 Days, 2 Nights, 1 Trip "
-              white 
-              back
-              bgColor={argonTheme.COLORS.ACTIVE} 
-              titleColor="white" 
-              iconColor="white"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-        }}/>
-      <Stack.Screen name="App" component={AppStack} />
-    </Stack.Navigator>
-  );
-}
-function singleItineraryStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="none">
-      <Stack.Screen
-        name="Itinerary"
-        component={Itinerary}
-        option={{
-          headerTransparent: true
-        }}
-      />
-      <Stack.Screen name="App" component={AppStack} />
-    </Stack.Navigator>
-  );
-      }
 
-function followersAlone(props) {
-  return (
-
-    <Stack.Navigator mode="card" headerMode="none">
-    <Stack.Screen
-    name="Followers"
-    component={Followers}
-    options={{
-      header: ({ navigation, scene }) => (
-        <Header title="Loading" navigation={navigation} scene={scene} />
-      ),
-      cardStyle: { backgroundColor: "#F8F9FE" }
-    }}
-  />
-
-    </Stack.Navigator>
-  );
-}
 
 
 function AppStack(props) {
@@ -624,27 +559,27 @@ function AppStack(props) {
       initialRouteName="Home"
     >
 
-      <Drawer.Screen name="Loading" component={Loading} />
-
-      <Drawer.Screen name="Elements" component={ElementsStack} />
-      <Drawer.Screen name="Articles" component={ArticlesStack} />
-
-
       <Drawer.Screen name="Home" component={HomeStack} />
       <Drawer.Screen name="Profile" component={ProfileStack} />
-      <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
-      <Drawer.Screen name="Create Trip" component={TripStack} />
-
-
-
       <Drawer.Screen name="Account" component={Register} />
-      <Drawer.Screen name="Trip" component ={singleTripStack} />
-      <Drawer.Screen name="Itinerary" component ={singleItineraryStack} />
-      <Drawer.Screen name="Followers" component ={followersAlone} />
-      <Drawer.Screen name="Following" component ={Following} />
-      <Drawer.Screen name="Login" component ={Login} />
+      <Drawer.Screen name="Loading" component={Loading} />
+
+      <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
+      <Drawer.Screen name="Itinerary" component={Itinerary} />
+
+      <Drawer.Screen name="Create Trip" component={TripStack} />
+      <Drawer.Screen name="Trip" component={TripStack} />
+
+      
+      <Drawer.Screen name="Elements" component={ElementsStack} />
+      <Drawer.Screen name="Articles" component={ArticlesStack} />
+      <Drawer.Screen name="Basic" component={Basic} />
+
+ 
+
+  
+
 
     </Drawer.Navigator>
   );
 }
-

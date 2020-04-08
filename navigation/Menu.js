@@ -18,7 +18,8 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Account",
     "Itinerary", 
    "Elements",
-   "Articles",
+   "Articles", 
+   "Basic"
   ];
   return (
     <Block
