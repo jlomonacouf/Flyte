@@ -20,49 +20,101 @@ const { width, height } = Dimensions.get("screen");
 
 class Register extends React.Component {
 
+    
 
-  state = {
-    username: "",
-    password: "",
-    email: "",
-    approvesPolicy: false, 
-  }; 
+    state = {
+      first_name :"", 
+      last_name : "", 
+      phone_number: "", 
+      email: "",
+      username: "",
+      password: "",
 
+      approvesPolicy: false, 
+      signedin:false, 
+
+    }; 
+
+
+  componentDidUpdate() {
+      if(this.state.signedIn) {
+        this.props.navigation.replace({
+        component: Profile,
+        title: 'Profile',
+      })
+    }
+  }
+
+  componentDidMount() {
+      if(this.state.signedIn) {
+        this.props.navigation.replace({
+        component: Profile,
+        title: 'Profile',
+      })
+    }
+  }
+
+  changeView() {
+    this.setState({
+     signedIn: true
+   });
+  }
+
+ 
   handleChange = (name, val) => {
     this.setState({ [name]: val });
   };
 
+
   onSignUpPress = async () => {
 
+    //TEMPERORAY FUNCTION DELETE WHEN BACKEND IS DONE 
     if (!this.state.approvesPolicy === false) {
       console.log("NOT CHECKED");
       alert("Please agree to the privacy policy");
       return;
     }
+    this.changeView(); 
 
-    const { username, email, password } = this.state
-    console.log(backendEndpoint + REGISTER_URL)
-
-    //var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, 10);
-    console.log(hash)
-    fetch(backendEndpoint + REGISTER_URL, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        email: email,
-        password: hash,
-      })
-    }).then((response) => response.json())
-      .then((json) => {
-        //SET COOKIE/PROP HERE 
-        console.log(json);
-      })
+   
+      
   }; 
+
+  // onSignUpPress = async () => {
+
+  //   if (!this.state.approvesPolicy === false) {
+  //     console.log("NOT CHECKED");
+  //     alert("Please agree to the privacy policy");
+  //     return;
+  //   }
+
+  //   const { first_name,last_name, phone_number, email, username,password } = this.state
+  //   console.log(backendEndpoint + REGISTER_URL)
+
+  //   //var salt = bcrypt.genSaltSync(10);
+  //   var hash = bcrypt.hashSync(password, 10);
+  //   console.log(hash)
+  //   fetch(backendEndpoint + REGISTER_URL, {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       first_name : first_name, 
+  //       last_name : last_name, 
+  //       phone_number: phone_number, 
+  //       email: email,
+  //       username: username,
+  //       password: hash,
+  //     })
+  //   }).then((response) => response.json())
+  //     .then((json) => {
+  //       //SET COOKIE/PROP HERE 
+  //       //https://stackoverflow.com/questions/47850405/how-to-set-cookie-in-react-native-with-expo
+  //       console.log(json);
+  //     })
+  // }; 
 
   renderRegistration() {
     const { navigation } = this.props;
@@ -107,34 +159,64 @@ class Register extends React.Component {
                 </Block>
               </Block>
               <Block flex>
-                <Block flex={0.17} middle>
-                  <Text color="#8898AA" size={12}>
-                    Or sign up the classic way
-                  </Text>
-                </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                   <Block row width={width*0.8 } style={{ marginBottom:5}}>
+                     <Block width={width * 0.37}  style={{ marginRight: 22}}>
                       <Input
                         borderless
-                        placeholder="Username"
+                        placeholder="First Name"
                         iconContent={
                           <Icon
                             size={16}
                             color={argonTheme.COLORS.ICON}
-                            name="hat-3"
+                            name="ic_mail_24px"
                             family="ArgonExtra"
                             style={styles.inputIcons}
                           />
                         }
-                        onChangeText={val => this.handleChange('username', val)}
+                        onChangeText={val => this.handleChange('first_name', val)}
                       />
                     </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                    <Block width={width * 0.37} >
+                      <Input
+                        borderless
+                        placeholder="Last Name"
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="ic_mail_24px"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('last_name', val)}
+                      />
+                    </Block>
+                    </Block>
+
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Input
+                        borderless
+                        placeholder="800-000-0000"
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="ic_mail_24px"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('phone_number', val)}
+                      />
+                    </Block>
+                     <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                       <Input
                         borderless
                         placeholder="Email"
@@ -148,6 +230,22 @@ class Register extends React.Component {
                           />
                         }
                         onChangeText={val => this.handleChange('email', val)}
+                      />
+                    </Block>
+                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                      <Input
+                        borderless
+                        placeholder="Username"
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('username', val)}
                       />
                     </Block>
                     <Block width={width * 0.8}>
@@ -176,25 +274,24 @@ class Register extends React.Component {
                         </Text>
                       </Block>
                     </Block>
-                    <Block row width={width * 0.75}>
+                    <Block row width={width * 0.75}  style={{ marginBottom: 5 }, {marginLeft: 10}}>
                       <Checkbox
                         checkboxStyle={{
-                          borderWidth: 3
+                          borderWidth: 2
                         }}
                         color={argonTheme.COLORS.PRIMARY}
                         label="I agree with the"
                         onChange={() => this.setState({ approvesPolicy: !this.state.approvesPolicy })}
                       />
-                      <Button
-                        style={{ width: 100 }}
-                        color="transparent"
-                        textStyle={{
-                          color: argonTheme.COLORS.PRIMARY,
-                          fontSize: 14
-                        }}
-                      >
-                        Privacy Policy
-                      </Button>
+                      <TouchableOpacity>
+                            <Text style={{
+                                  width: 100,
+                                  color: argonTheme.COLORS.PRIMARY,
+                                fontSize: 13,
+                                marginTop: 2, 
+                                marginLeft: 4
+                        }} >Privacy Policy </Text>
+                            </TouchableOpacity>
                     </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={this.onSignUpPress}>
@@ -218,7 +315,6 @@ class Register extends React.Component {
     );
   };
 
-
   render() {
     return (
       <Block flex center>
@@ -238,7 +334,7 @@ const styles = StyleSheet.create({
   },
   registerContainer: {
     width: width * 0.9,
-    height: height * 0.78,
+    height: height * 0.9,
     backgroundColor: "#F4F5F7",
     borderRadius: 4,
     shadowColor: argonTheme.COLORS.BLACK,
@@ -250,7 +346,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 1,
     overflow: "hidden"
-  },
+  }, 
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -279,13 +375,35 @@ const styles = StyleSheet.create({
   },
   passwordCheck: {
     paddingLeft: 15,
-    paddingTop: 13,
-    paddingBottom: 30
+    paddingTop: 10,
+    paddingBottom: 25
   },
   createButton: {
     width: width * 0.5,
-    marginTop: 25
+    marginTop: 20,
+    marginBottom:2 
   }
 });
 
 export default Register;
+
+
+  /*
+<Block flex={0.17} middle>
+                  <Text color="#8898AA" size={12}>
+                    Or sign up the classic way
+                  </Text>
+                </Block>
+
+             <Button
+                        style={{ width: 100 }}
+                        color="transparent"
+                        textStyle={{
+                          color: argonTheme.COLORS.PRIMARY,
+                          fontSize: 12
+                        }}
+                      >
+                        Privacy Policy
+                      </Button>
+  */
+

@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("screen");
 import {GOOGLE_PLACES_KEY} from '../../src/api_methods/api_keys'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-class CreateItinerary_Location extends React.Component {
+class tripLocation extends React.Component {
   render() {
     const { navigation } = this.props;
 
@@ -76,7 +76,7 @@ class CreateItinerary_Location extends React.Component {
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("CreateItinerary_Text")}>
+                        onPress={() => navigation.navigate("tripDescription")}>
                           NEXT
                         </Text>
                       </Button>
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateItinerary_Location;
+export default tripLocation;

@@ -10,8 +10,8 @@ import {
 //galio
 import { Block, Text, theme } from "galio-framework";
 //argon
-import { articles, Images, argonTheme } from "../constants/";
-import { Card } from "../components/";
+import { articles, Images, argonTheme } from "../../constants";
+import { ProfileCard } from "../../components";
 
 const { width } = Dimensions.get("screen");
 
@@ -24,7 +24,7 @@ const categories = [
       "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
     image:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?fit=crop&w=840&q=80",
-    price: "05/05/2020"
+    price: "$125"
   },
   {
     title: "Events",
@@ -32,11 +32,11 @@ const categories = [
       "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
     image:
       "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=840&q=80",
-    price: "05/06/2020"
+    price: "$35"
   }
 ];
 
-class Trip extends React.Component {
+class Followers extends React.Component {
   renderProduct = (item, index) => {
     const { navigation } = this.props;
 
@@ -44,7 +44,7 @@ class Trip extends React.Component {
       <TouchableWithoutFeedback
         style={{ zIndex: 3 }}
         key={`product-${item.title}`}
-       onPress={() => navigation.navigate("Loading", { product: item })}
+        onPress={() => navigation.navigate("Profile", {user: item })}
       >
         <Block center style={styles.productItem}>
           <Image
@@ -81,44 +81,39 @@ class Trip extends React.Component {
   renderCards = () => {
     return (
       <Block flex style={styles.group}>
+        <Text bold size={16} style={styles.title}>
+          Followers 
+        </Text>
         <Block flex>
           <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-         
-
-            <Block flex shadow style={styles.category}>
+            <ProfileCard item={articles[0]} horizontal />
+            <Block flex row>
+              <ProfileCard
+                item={articles[1]}
+                style={{ marginRight: theme.SIZES.BASE }}
+              />
+              <ProfileCard item={articles[2]} />
+            </Block>
+            <ProfileCard item={articles[4]} full />
+            <Block flex card shadow style={styles.category}>
               <ImageBackground
-                source={{ uri: Images.Products["View article"] }} 
+                source={{ uri: Images.Products["View article"] }}
                 style={[
                   styles.imageBlock,
-                  { width: width - theme.SIZES.BASE *2, height: 252 }
+                  { width: width - theme.SIZES.BASE * 2, height: 252 }
                 ]}
                 imageStyle={{
-                  width: width - theme.SIZES.BASE *2,
+                  width: width - theme.SIZES.BASE * 2,
                   height: 252
                 }}
               >
                 <Block style={styles.categoryTitle}>
                   <Text size={18} bold color={theme.COLORS.WHITE}>
-                    City, Country 
+                    View article
                   </Text>
                 </Block>
               </ImageBackground>
             </Block>
-        <Block>
-        <Text bold size={20} style={styles.title}>
-          Title Here 
-        </Text>
-        <Block>
-        <Text bold size={15} style={styles.title}>
-          Feed me information please 
-        </Text>
-        </Block>
-
-        </Block>
-           
-
-                
-
           </Block>
           <Block flex style={{ marginTop: theme.SIZES.BASE / 2 }}>
             <ScrollView
@@ -144,15 +139,55 @@ class Trip extends React.Component {
     );
   };
 
+  renderAlbum = () => {
+    const { navigation } = this.props;
 
+    return (
+      <Block
+        flex
+        style={[styles.group, { paddingBottom: theme.SIZES.BASE * 5 }]}
+      >
+        <Text bold size={16} style={styles.title}>
+          Album
+        </Text>
+        <Block style={{ marginHorizontal: theme.SIZES.BASE * 2 }}>
+          <Block flex right>
+            <Text
+              size={12}
+              color={theme.COLORS.PRIMARY}
+              onPress={() => navigation.navigate("Home")}
+            >
+              View All
+            </Text>
+          </Block>
+          <Block
+            row
+            space="between"
+            style={{ marginTop: theme.SIZES.BASE, flexWrap: "wrap" }}
+          >
+            {Images.Viewed.map((img, index) => (
+              <Block key={`viewed-${img}`} style={styles.shadow}>
+                <Image
+                  resizeMode="cover"
+                  source={{ uri: img }}
+                  style={styles.albumThumb}
+                />
+              </Block>
+            ))}
+          </Block>
+        </Block>
+      </Block>
+    );
+  };
 
   render() {
     return (
       <Block flex center>
         <ScrollView
           showsVerticalScrollIndicator={false}
-        >
-          {this.renderCards()} 
+          >
+          {this.renderCards()}
+          {this.renderAlbum()}
         </ScrollView>
       </Block>
     );
@@ -164,8 +199,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
     marginTop: 22,
-    color: argonTheme.COLORS.HEADER,
-    alignSelf: "center"
+    color: argonTheme.COLORS.HEADER
   },
   group: {
     paddingTop: theme.SIZES.BASE
@@ -194,7 +228,7 @@ const styles = StyleSheet.create({
     borderRadius: 4
   },
   productItem: {
-    width: cardWidth - theme.SIZES.BASE * 3,
+    width: cardWidth - theme.SIZES.BASE * 2,
     marginHorizontal: theme.SIZES.BASE,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
@@ -203,7 +237,7 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: cardWidth - theme.SIZES.BASE,
-    height: cardWidth - theme.SIZES.BASE*2,
+    height: cardWidth - theme.SIZES.BASE,
     borderRadius: 3
   },
   productPrice: {
@@ -216,4 +250,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Trip;
+export default Followers;

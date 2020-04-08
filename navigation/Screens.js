@@ -1,4 +1,6 @@
 import React from "react";
+
+import PropTypes from 'prop-types';
 import { Easing, Animated, Dimensions } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,19 +13,39 @@ import { Block } from "galio-framework";
 import Home from "../screens/Home";
 import Onboarding from "../screens/Onboarding";
 import viewTrips from "../screens/viewTrips"; 
-import Pro from "../screens/Pro";
-import Profile from "../screens/Profile";
-import Register from "../screens/Register";
+import Loading from "../screens/Loading";
 import Login from "../screens/Login";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 import Trip from "../screens/Trip"; 
+import Itinerary from "../screens/Itinerary"; 
 
+//User Pages 
+
+import Profile from "../screens/User/Profile";
+import Register from "../screens/Register";
+import Account from "../screens/User/Account";
+import Followers from "../screens/User/Followers"; 
+import Following from "../screens/User/Following"; 
+
+
+//Creating Itinerary 
 import CreateItinerary_Name from "../screens/CreateItinerary/Name";
 import CreateItinerary_Location from "../screens/CreateItinerary/Location";
 import CreateItinerary_Text from "../screens/CreateItinerary/Text"
 import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
 import CreateItinerary_Image from "../screens/CreateItinerary/Image.js";
+
+
+//Creating Itinerary 
+import tripName from "../screens/CreateTrip/tripName";
+import tripLocation from "../screens/CreateTrip/tripLocation";
+import tripDescription from "../screens/CreateTrip/tripDescription"
+import tripTags from "../screens/CreateTrip/tripTags";
+import tripImages from "../screens/CreateTrip/tripImages";
+
+
+
 // drawer
 import CustomDrawerContent from "./Menu";
 
@@ -32,7 +54,6 @@ import { Icon, Header } from "../components";
 import { argonTheme, tabs } from "../constants";
 
 const { width } = Dimensions.get("screen");
-
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,8 +72,8 @@ function ElementsStack(props) {
         }}
       />
             <Stack.Screen
-        name="Pro"
-        component={Pro}
+        name="Loading"
+        component={Loading}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -84,9 +105,11 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
+
+      
             <Stack.Screen
-        name="Pro"
-        component={Pro}
+        name="Loading"
+        component={Loading}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -105,46 +128,21 @@ function ArticlesStack(props) {
   );
 }
 
-function ProfileStack(props) {
+export default function OnboardingStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
+    <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              transparent
-              white
-              title="Profile"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" },
+        name="Onboarding"
+        component={Onboarding}
+        option={{
           headerTransparent: true
         }}
       />
-      <Stack.Screen
-        name="Pro"
-        component={Pro}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
+      <Stack.Screen name="App" component={AppStack} />
     </Stack.Navigator>
   );
 }
+
 
 function HomeStack(props) {
   return (
@@ -163,8 +161,8 @@ function HomeStack(props) {
             />
           ),
           cardStyle: { backgroundColor: "#F8F9FE" }
-        }}
-      />
+        }} />
+      
       <Stack.Screen
         name="viewTrips"
         component={viewTrips}
@@ -180,8 +178,8 @@ function HomeStack(props) {
             />
           ),
           headerTransparent: true
-        }}
-      />
+        }}/>
+
        <Stack.Screen
         name="Trip"
         component={Trip}
@@ -197,26 +195,25 @@ function HomeStack(props) {
             />
           ),
           headerTransparent: true
-        }}
-      />
-<Stack.Screen
-    name="Login"
-    component={Login}
-    options={{
-      header: ({ navigation, scene }) => (
-        <Header
-          title=""
-          back
-          white
-          transparent
-          navigation={navigation}
-          scene={scene}
-        />
-      ),
-      headerTransparent: true
-    }}
-  />
-    
+        }}/>
+    <Stack.Screen
+      name="Login"
+      component={Login}
+      options={{
+        header: ({ navigation, scene }) => (
+          <Header
+            title=""
+            back
+            white
+            transparent
+            navigation={navigation}
+            scene={scene}
+          />
+        ),
+        headerTransparent: true
+      }}
+    />
+      
     <Stack.Screen
     name="Register"
     component={Register}
@@ -235,23 +232,193 @@ function HomeStack(props) {
     }}
   />
  </Stack.Navigator>
-  );
+ 
+ );
 }
 
-export default function OnboardingStack(props) {
+
+function ProfileStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+    <Stack.Screen
+    name="Profile"
+    component={Profile}
+    options={
+     {
+      
+      header: ({ navigation, scene }) => (
+        <Header
+          title=""
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
+
+    <Stack.Screen
+    name="Followers"
+    component={Followers}
+    options={
+     
+       {
+      
+      header: ({ navigation, scene }) => (
+        <Header
+          title="Followers"
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
+
+    <Stack.Screen
+    name="Following"
+    component={Following}
+    options={
+      ({ route }) => ({
+        title: route.params.item.name
+      })
+      , {
+      
+      header: ({ navigation, scene }) => (
+        <Header
+          title="Following"
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
+
+    </Stack.Navigator>
+
+  );
+} 
+
+function TripStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
-        name="Onboarding"
-        component={Onboarding}
-        option={{
+        name="tripName"
+        component={tripName}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripName"
+              search
+              options
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" }
+        }}
+      />
+      <Stack.Screen
+        name="tripLocation"
+        component={tripLocation}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripLocation"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
           headerTransparent: true
         }}
       />
-      <Stack.Screen name="App" component={AppStack} />
+      <Stack.Screen
+        name="tripDescription"
+        component={tripDescription}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripDescription"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="tripTags"
+        component={tripTags}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripTags"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="tripImages"
+        component={tripImages}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripImages"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+
+      <Stack.Screen
+        name="Trip"
+        component={Trip}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title=""
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+
     </Stack.Navigator>
   );
 }
+
 
 function ItineraryStack(props) {
   return (
@@ -340,26 +507,74 @@ function ItineraryStack(props) {
           headerTransparent: true
         }}
       />
+       <Stack.Screen
+        name="Itinerary"
+        component={CreateItinerary_Image}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Itinerary"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+    </Stack.Navigator>
+    
+
+  );
+}
+
+
+function singleTripStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
-    name="Login"
-    component={Login}
-    options={{
-      header: ({ navigation, scene }) => (
-        <Header
-          title=""
-          back
-          white
-          transparent
-          navigation={navigation}
-          scene={scene}
-        />
-      ),
-      headerTransparent: true
-    }}
-  />
+        name="Trip"
+        component={Trip}
+        option={{
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen name="App" component={AppStack} />
     </Stack.Navigator>
   );
 }
+function singleItineraryStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="Itinerary"
+        component={Itinerary}
+        option={{
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen name="App" component={AppStack} />
+    </Stack.Navigator>
+  );
+}
+
+function followersAlone(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="Followers"
+        component={Followers}
+        option={{
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen name="App" component={AppStack} />
+    </Stack.Navigator>
+  );
+}
+
 
 function AppStack(props) {
   return (
@@ -392,17 +607,26 @@ function AppStack(props) {
       }}
       initialRouteName="Home"
     >
-      <Drawer.Screen name="Home" component={HomeStack} />
-      <Drawer.Screen name="Profile" component={ProfileStack} />
-      <Drawer.Screen name="Account" component={Register} />
+
+      <Drawer.Screen name="Loading" component={Loading} />
+
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
+
+
+      <Drawer.Screen name="Home" component={HomeStack} />
+      <Drawer.Screen name="Profile" component={ProfileStack} />
       <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />
-      <Drawer.Screen name="Trip" component ={Trip} />
-      <Drawer.Screen name="Pro" component ={Pro} />
+      <Drawer.Screen name="Create Trip" component={TripStack} />
+
+
+
+      <Drawer.Screen name="Account" component={Register} />
+      <Drawer.Screen name="Trip" component ={singleTripStack} />
+      <Drawer.Screen name="Itinerary" component ={singleItineraryStack} />
+      <Drawer.Screen name="Followers" component ={followersAlone} />
+      <Drawer.Screen name="Following" component ={Following} />
       <Drawer.Screen name="Login" component ={Login} />
-
-
 
     </Drawer.Navigator>
   );

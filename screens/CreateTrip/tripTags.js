@@ -15,7 +15,7 @@ import {ImageButton} from 'react-native-image-button-text';
 import Tags from "react-native-tags";
 const { width, height } = Dimensions.get("screen");
 
-class CreateItinerary_Tag extends React.Component {
+class tripTags extends React.Component {
     render() {
         const MyTagInput = () => (
             <Tags
@@ -110,7 +110,7 @@ class CreateItinerary_Tag extends React.Component {
                         <Block flex bottom>
                         <Button color="primary" style={styles.createButton}>
                             <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                            onPress={() => navigation.navigate("CreateItinerary_Image")}>
+                            onPress={() => navigation.navigate("tripImages")}>
                             NEXT
                             </Text>
                         </Button>
@@ -151,4 +151,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateItinerary_Tag;
+export default tripTags;

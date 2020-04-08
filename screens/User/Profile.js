@@ -1,4 +1,6 @@
 import React from "react";
+
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   Dimensions,
@@ -9,16 +11,93 @@ import {
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
-import { Button } from "../components";
-import { Images, argonTheme } from "../constants";
-import { HeaderHeight } from "../constants/utils";
+import { Button } from "../../components";
+import { Images, argonTheme } from "../../constants";
+import { HeaderHeight } from "../../constants/utils";
+
 
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
+
+
 class Profile extends React.Component {
+
+
   render() {
+   const { navigation} = this.props;
+  //  const { route } = this.props;
+  //   const { item } = route.params;
+  //   const { name, home, species } = item; 
+
+                    // this.state ={
+                  //       isLoggedIn: false, 
+                  //       currUser : [
+                  //         id = '1', 
+                  //         username = 'Gremlin', 
+                  //         first_name =  'Nickan', 
+                  //         last_name =  'Hussaini', 
+                  //         email = 'n.hussaini@ufl.edu', 
+                  //         email_verified= 0, 
+                  //         phone_number= '786-999-4125',
+                  //         followers= 0,
+                  //         following = 2,
+                  //         created_at = '2020-04-06'
+                  //       ], 
+                  //       popularTrips :[],
+                  //   }
+
+
+                  // setUser = (userData) => {
+                  //   const {
+                  //       isLoggedIn, 
+                  //       currUser, 
+                  //   } = this.state
+
+                  //   this.setState({
+                  //     isLoggedIn: true, 
+                  //     currUser: userData,
+                  //   })
+
+                  // }
+
+                  // setPopular = () => {
+                  //   const {
+                  //     popularTrips,
+                  //   } = this.state 
+
+                  //   const tripData =[]; 
+
+                  //   this.setState({
+                  //     popularTrips: tripData, 
+                  //   })
+
+                //   // } 
+                //   const screenProps ={
+                //     //isLoggedIn: this.state.isLoggedIn,
+                //     user: {
+                //       name: 'John Doe',
+                //       username: 'johndoe123',
+                //       email: 'john@doe.com',
+                //     }
+
+                //      // popularTrips: this.state.popularTrips, 
+                //      // setUser: this.setUser, 
+                //       //setPopular :this.setPopular 
+                // }
+
+                // screenProps= {
+                //   {screenProps}
+                //   // isLoggedIn: this.state.isLoggedIn,
+                //   // currUser : 'DANIA', 
+                //   // popularTrips: this.state.popularTrips, 
+                //   // setUser: this.setUser, 
+                //   // setPopular :this.setPopular 
+                // }
+
+
+
     return (
       <Block flex style={styles.profile}>
         <Block flex>
@@ -66,7 +145,6 @@ class Profile extends React.Component {
                         color="#525F7F"
                         style={{ marginBottom: 4 }}
                       >
-                        2K
                       </Text>
                       <Text size={12} color={argonTheme.COLORS.TEXT}>Orders</Text>
                     </Block>
@@ -76,8 +154,7 @@ class Profile extends React.Component {
                         color="#525F7F"
                         size={18}
                         style={{ marginBottom: 4 }}
-                      >
-                        10
+                      > 
                       </Text>
                       <Text size={12} color={argonTheme.COLORS.TEXT}>Photos</Text>
                     </Block>
@@ -88,7 +165,7 @@ class Profile extends React.Component {
                         size={18}
                         style={{ marginBottom: 4 }}
                       >
-                        89
+                       
                       </Text>
                       <Text size={12} color={argonTheme.COLORS.TEXT}>Comments</Text>
                     </Block>
@@ -97,7 +174,7 @@ class Profile extends React.Component {
                 <Block flex>
                   <Block middle style={styles.nameInfo}>
                     <Text bold size={28} color="#32325D">
-                      Jessica Jones, 27
+                   Hi 
                     </Text>
                     <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
                       San Francisco, USA
