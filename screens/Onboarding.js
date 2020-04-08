@@ -35,7 +35,7 @@ class Onboarding extends React.Component {
             <Block flex space="around" style={{ zIndex: 2 }}>
               <Block style={styles.title}>
                 <Block>
-                  <Text color="white" size={60}>
+                  <Text  center color="white" size={60}>
                     FLYTE
                   </Text>
                 </Block>
@@ -43,14 +43,10 @@ class Onboarding extends React.Component {
                   <Text bold color="white" size={60}>
                   </Text>
                 </Block>
-                <Block style={styles.subTitle}>
-                  <Text bold color="white" size={16}>
-                    Come take a FLYTE with us...
-                  </Text>
-                </Block>
+              
               </Block>
               <Block center>
-                <Button
+                <Button medium 
                   style={styles.button}
                   color={argonTheme.COLORS.SECONDARY}
                   onPress={() => navigation.navigate("App")}
@@ -98,3 +94,13 @@ const styles = StyleSheet.create({
 });
 
 export default Onboarding;
+
+
+/*
+  <Block style={styles.subTitle}>
+                  <Text bold color="white" size={16}>
+                    Come take a FLYTE with us...
+                  </Text>
+                </Block>
+
+*/
