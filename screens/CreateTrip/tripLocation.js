@@ -84,7 +84,7 @@ class tripLocation extends React.Component {
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
                         onPress={() => navigation.navigate("tripDescription")}>
-                          NEXT
+                          Continue
                         </Text>
                       </Button>
                     </Block>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     marginRight: 12
   },
   createButton: {
-    width: width * 0.20,
+    width: width * 0.30,
     marginTop: 25
   }
 });

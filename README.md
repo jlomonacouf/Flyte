@@ -1,12 +1,27 @@
 
 #DANIA ETIENNE 
 #npm install react-native-loading-spinner-overlay
+#npm install --save react-native-vector-icons
 
 
 
+#npm i react-native-sortable-list --save
+    Errors fix: npx react-codemod rename-unsafe-lifecycles
+    Reference: https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 
 
+#updating likes:https://codesandbox.io/s/84x585yowj?file=/Likes.js
 
+#Icons References: 
+https://oblador.github.io/react-native-vector-icons/
+https://github.com/oblador/react-native-vector-icons#iconbutton-component
+
+
+#React Native Snippets: 
+https://www.bootdey.com/react-native-snippets/page:9
+
+#RESIZING IMAGES 
+https://reactnative.dev/docs/image
 
 ## [Argon React Native](https://creativetimofficial.github.io/argon-react-native/docs/#) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/home?status=Argon%20React%20Native,%20a%20cool%20Argon%20React%20Native%20App%20Template%20%E2%9D%A4%EF%B8%8F%20https%3A//bit.ly/2KAj86H%20%23reactnative%20%23argon%20%23designsystem%20%23developers%20via%20%40CreativeTim)
 

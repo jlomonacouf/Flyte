@@ -19,20 +19,15 @@ const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
 const categories = [
   {
-    title: "Music Album",
-    description:
-      "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
-    image:
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?fit=crop&w=840&q=80",
-    price: "05/05/2020"
+    title: "Day One",
+    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsantorinisuites.files.wordpress.com%2F2014%2F02%2Fastarte-suites-hotel-boutique-hotel-in-santorini-greece.jpg&f=1&nofb=1",
+    date: "05/05/2020"
   },
   {
-    title: "Events",
-    description:
-      "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
+    title: "Day Two",
     image:
-      "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=840&q=80",
-    price: "05/06/2020"
+      "https://2.bp.blogspot.com/-VqFCYgtKyjM/Uk-34ap3tWI/AAAAAAAAcIo/1QJCtj-7-YQ/s1600/Mykonos-passion4luxury.32.png",
+    date: "05/06/2020"
   }
 ];
 
@@ -48,29 +43,22 @@ class Trip extends React.Component {
       >
         <Block center style={styles.productItem}>
           <Image
-            resizeMode="cover"
+            resizeMode="stretch"
             style={styles.productImage}
             source={{ uri: item.image }}
           />
           <Block center style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text
-              center
-              size={16}
-              color={theme.COLORS.MUTED}
-              style={styles.productPrice}
-            >
-              {item.price}
-            </Text>
-            <Text center size={34}>
+           
+            <Text center size={18}   style={{marginTop: 6, marginBottom:2}}>
               {item.title}
             </Text>
             <Text
               center
               size={16}
               color={theme.COLORS.MUTED}
-              style={styles.productDescription}
+              style={styles.productDate}
             >
-              {item.description}
+              {item.date}
             </Text>
           </Block>
         </Block>
@@ -87,10 +75,10 @@ class Trip extends React.Component {
 
             <Block flex shadow style={styles.category}>
               <ImageBackground
-                source={{ uri: Images.Products["View article"] }} 
+                source={{ uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flonglivelearning.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fmaps-greekmyth.jpg&f=1&nofb=1" }} 
                 style={[
                   styles.imageBlock,
-                  { width: width - theme.SIZES.BASE *2, height: 252 }
+                  { width: width - theme.SIZES.BASE *2, height: 240 }
                 ]}
                 imageStyle={{
                   width: width - theme.SIZES.BASE *2,
@@ -99,18 +87,19 @@ class Trip extends React.Component {
               >
                 <Block style={styles.categoryTitle}>
                   <Text size={18} bold color={theme.COLORS.WHITE}>
-                    City, Country 
+                    City, Greece
                   </Text>
                 </Block>
               </ImageBackground>
             </Block>
         <Block>
-        <Text bold size={20} style={styles.title}>
-          Title Here 
+        <Text bold size={24} style={styles.title}>
+          Adventures in Greece
         </Text>
+        <Text center size={12}>@JaneDoe</Text>
         <Block>
-        <Text bold size={15} style={styles.title}>
-          Feed me information please 
+        <Text size={15} style={styles.subTitle}>
+          Spent a couple of days in Greece. Taking a ferry from island to island was as easy as can be. Be sure to get ferry tickets in advance! 
         </Text>
         </Block>
 
@@ -139,6 +128,13 @@ class Trip extends React.Component {
                 )}
             </ScrollView>
           </Block>
+
+
+          <Block flex  style={{margin:20}}>
+                <Text center size={18}  color={argonTheme.COLORS.HEADER}>
+                  #Relaxation #Adventure #Romance
+                </Text>
+            </Block>
         </Block>
       </Block>
     );
@@ -163,10 +159,19 @@ const styles = StyleSheet.create({
   title: {
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
-    marginTop: 22,
-    color: argonTheme.COLORS.HEADER,
+    marginTop: 20,
+   // color: argonTheme.COLORS.HEADER,
+   color: 'black',
     alignSelf: "center"
   },
+  subTitle: {
+    paddingBottom: theme.SIZES.BASE,
+    paddingHorizontal: theme.SIZES.BASE * 2,
+    marginTop: 20,
+    color: 'black',
+    alignSelf: "center"
+  },
+
   group: {
     paddingTop: theme.SIZES.BASE
   },
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
     borderWidth: 0
   },
   categoryTitle: {
-    height: "100%",
+    height: "50%",
     paddingHorizontal: theme.SIZES.BASE,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
@@ -202,12 +207,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   productImage: {
-    width: cardWidth - theme.SIZES.BASE,
-    height: cardWidth - theme.SIZES.BASE*2,
+    width: cardWidth - theme.SIZES.BASE*2,
+    height: cardWidth - theme.SIZES.BASE*6,
     borderRadius: 3
   },
-  productPrice: {
-    paddingTop: theme.SIZES.BASE,
+  productDate: {
+    //paddingTop: theme.SIZES.BASE,
     paddingBottom: theme.SIZES.BASE / 2
   },
   productDescription: {

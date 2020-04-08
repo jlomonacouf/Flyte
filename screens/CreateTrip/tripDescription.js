@@ -31,7 +31,7 @@ class tripDescription extends React.Component {
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#00" size={20}>
-                    Enter Trip Details
+                    Enter Trip Description
                   </Text>
                 </Block>
                 <Block flex center>
