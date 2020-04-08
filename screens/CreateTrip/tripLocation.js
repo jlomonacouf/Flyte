@@ -83,7 +83,7 @@ class tripLocation extends React.Component {
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("tripDescription")}>
+                        onPress={() => navigation.navigate("tripDates")}>
                           Continue
                         </Text>
                       </Button>

@@ -76,7 +76,7 @@ class CreateItinerary_Location extends React.Component {
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("CreateItinerary_Text")}>
+                        onPress={() => navigation.navigate("CreateItinerary_Dates")}>
                           NEXT
                         </Text>
                       </Button>

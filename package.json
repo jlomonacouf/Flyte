@@ -30,6 +30,7 @@
     "react": "16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
     "react-native-bcrypt": "^2.4.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-google-places-autocomplete": "^1.4.1",
     "react-native-image-button-text": "^1.0.7",

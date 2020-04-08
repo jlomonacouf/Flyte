@@ -5,7 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   ImageBackground,
-  Dimensions
+  Dimensions, 
+  TouchableOpacity
 } from "react-native";
 //galio
 import { Block, Text, theme } from "galio-framework";
@@ -30,6 +31,8 @@ const categories = [
     date: "05/06/2020"
   }
 ];
+
+const currUser = "Gremlin"; 
 
 class Trip extends React.Component {
   renderProduct = (item, index) => {
@@ -67,6 +70,8 @@ class Trip extends React.Component {
   };
 
   renderCards = () => {
+    const { navigation } = this.props;
+
     return (
       <Block flex style={styles.group}>
         <Block flex>
@@ -78,11 +83,15 @@ class Trip extends React.Component {
                 source={{ uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flonglivelearning.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fmaps-greekmyth.jpg&f=1&nofb=1" }} 
                 style={[
                   styles.imageBlock,
-                  { width: width - theme.SIZES.BASE *2, height: 240 }
+                  {
+                     //width: width - theme.SIZES.BASE *2,
+                     width:width,
+                      height: 240 }
                 ]}
                 imageStyle={{
-                  width: width - theme.SIZES.BASE *2,
-                  height: 252
+                  //width: width - theme.SIZES.BASE *2,
+                  width: width, 
+                  height: 255
                 }}
               >
                 <Block style={styles.categoryTitle}>
@@ -96,7 +105,9 @@ class Trip extends React.Component {
         <Text bold size={24} style={styles.title}>
           Adventures in Greece
         </Text>
-        <Text center size={12}>@JaneDoe</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
+        <Text center color="green" size={12}>@JaneDoe</Text>
+        </TouchableOpacity>
         <Block>
         <Text size={15} style={styles.subTitle}>
           Spent a couple of days in Greece. Taking a ferry from island to island was as easy as can be. Be sure to get ferry tickets in advance! 
