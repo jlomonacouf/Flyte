@@ -5,7 +5,6 @@ import {StyleSheet, Dimensions, ScrollView,View, Text, TouchableOpacity} from 'r
 import { Block, theme } from 'galio-framework';
 
 import { Card } from '../components';
-import { ProfileCard } from '../components';
 
 import articles from '../constants/articles';
 const { width } = Dimensions.get('screen');
@@ -34,18 +33,17 @@ class Home extends React.Component {
 
       </TouchableOpacity>
         <Block>
-          <ProfileCard>
-            
-          </ProfileCard>
+        
         </Block>
         <Block flex>
-          <Card item={articles[0]} horizontal  />
+      
+          <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
           <Block flex row>
-            <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Card item={articles[2]} />
+            <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} nextScreen={'Trip'} />
+            <Card item={articles[2]} nextScreen={'Trip'} />
           </Block>
-          <Card item={articles[3]} horizontal />
-          <Card item={articles[4]} full />
+          <Card item={articles[3]} horizontal nextScreen={'Trip'} />
+          <Card item={articles[4]} full nextScreen={'Trip'} />
         </Block>
       </ScrollView>
     )

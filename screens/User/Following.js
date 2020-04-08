@@ -7,188 +7,140 @@ import {
   ImageBackground,
   Dimensions
 } from "react-native";
-//galio
 import { Block, Text, theme } from "galio-framework";
-//argon
-import { articles, Images, argonTheme } from "../../constants/";
-import { Card } from "../../components/";
-import ProfileCard  from "../../components/";
+import { articles, Images, argonTheme } from "../../constants";
+import { Card } from "../../components";
 
 const { width } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
-const categories = [
+
+const followingList= [
   {
-    title: "Music Album",
-    description:
-      "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
-    image:
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?fit=crop&w=840&q=80",
-    price: "$125"
+    username: "Test1",
+    first_name: "Jane",
+    last_name: "Doe",
+    profileImg: "https://scontent.fmia1-1.fna.fbcdn.net/v/t1.0-9/61351553_2380152448713233_7964548565852749824_o.jpg?_nc_cat=108&_nc_sid=730e14&_nc_ohc=SIqjyuMBvVMAX-ImMmp&_nc_ht=scontent.fmia1-1.fna&oh=37efc679078f730c6b48942c0e632576&oe=5EB3426D",
+
   },
   {
-    title: "Events",
-    description:
-      "Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom.",
-    image:
-      "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=840&q=80",
-    price: "$35"
-  }
+    username: "Test2", 
+    first_name: "John",
+    last_name: "Doe",
+    profileImg: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.7IUiI5CFkbPpekqRGfk0gAHaE8%26pid%3DApi&f=1",
+  }, 
+  {
+    username: "taylorswift", 
+    first_name: "Taylor",
+    last_name: "Swift",
+    profileImg: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpixel.nymag.com%2Fimgs%2Fdaily%2Fvulture%2F2019%2F05%2F08%2F08-taylor-swift.w700.h700.jpg&f=1&nofb=1",
+  }, 
+  {
+     username: "Detienne20", 
+     first_name: "Dania",
+     last_name: "Etienne",
+     profileImg:"https://scontent.fmia1-1.fna.fbcdn.net/v/t1.0-9/23755586_1656003381128147_5131151436850508940_n.jpg?_nc_cat=108&_nc_sid=174925&_nc_ohc=DahEnYZ-QrkAX9gN9DR&_nc_ht=scontent.fmia1-1.fna&oh=c85e4a06a771d42cfdd33ff54c10fa37&oe=5EB4D03A"
+  },
+  {
+    username: "Gremlin", 
+    first_name: "Nickan",
+    last_name: "Hussani",
+    profileImg: "https://images.hollywoodpicture.net/wp-content/uploads/2017/12/dwayne-johnson-aka-the-rock-muscle-body.jpg",
+
+  },
+  {
+    username: "Ophillia", 
+    first_name: "Angely",
+    last_name: "Guzman",
+    profileImg: "https://scontent.fmia1-1.fna.fbcdn.net/v/t1.0-9/19702294_469678050053497_7339594951533367476_n.jpg?_nc_cat=101&_nc_sid=7aed08&_nc_ohc=MbvNxQcOH2EAX8qR5xy&_nc_ht=scontent.fmia1-1.fna&oh=0e8f2d23f9d177358aa1871e96a5fdee&oe=5EB1A433",
+
+
+  },
+  {
+    username: "JLo",
+    first_name: "Justin",
+    last_name: "LoMonaco",
+    profileImg: "https://www.dogbreedplus.com/dog_breeds/images/collie-dog.jpg",
+
+  },
+  {
+    username: "SamG",
+    first_name: "Samantha",
+    last_name: "Garcia",
+    profileImg: "https://scontent.fmia1-1.fna.fbcdn.net/v/t1.0-9/20106807_1944291105826026_3553755161152055271_n.jpg?_nc_cat=107&_nc_sid=7aed08&_nc_ohc=okaNoN0mut8AX-h3Y4n&_nc_ht=scontent.fmia1-1.fna&oh=81ca1323e201094608218f2260669be7&oe=5EB54F0F",
+
+  }, 
+ 
 ];
 
 class Following extends React.Component {
-  renderProduct = (item, index) => {
-    const { navigation } = this.props;
+  
+  renderFollowing = (follower, index) => {
+
+    const { navigation, horizontal, full, style, ctaColor, imageStyle } = this.props;
+    
+    const imageStyles = [
+      full ?   styles.horizontalImage : styles.fullImage,
+      imageStyle
+    ];
+    const cardContainer = [styles.card, styles.shadow, style];
+    const imgContainer = [styles.imageContainer,
+      horizontal ?  styles.verticalStyles : styles.horizontalStyles ,
+      styles.shadow
+    ];
+
 
     return (
-      <TouchableWithoutFeedback
-        style={{ zIndex: 3 }}
-        key={`product-${item.title}`}
-        onPress={() => navigation.navigate("Trip", { product: item })}
-      >
-        <Block center style={styles.productItem}>
-          <Image
-            resizeMode="cover"
-            style={styles.productImage}
-            source={{ uri: item.image }}
-          />
-          <Block center style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text
-              center
-              size={16}
-              color={theme.COLORS.MUTED}
-              style={styles.productPrice}
-            >
-              {item.price}
-            </Text>
-            <Text center size={34}>
-              {item.title}
-            </Text>
-            <Text
-              center
-              size={16}
-              color={theme.COLORS.MUTED}
-              style={styles.productDescription}
-            >
-              {item.description}
-            </Text>
-          </Block>
+
+      <Block row={horizontal} card flex style={cardContainer}>
+      <TouchableWithoutFeedback style={{zIndex:3}} key={`user-${follower.username}`} onPress={() => navigation.navigate("Profile", {user: follower})}  >
+        <Block flex style={imgContainer}>
+          <Image source={{uri: follower.profileImg}} style={imageStyles} />
+        </Block>
+        </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback  style={{zIndex:3}} key={`user-${follower.username}`} onPress={() => navigation.navigate("Profile", {user: follower})}>
+        <Block flex space="between" style={styles.cardDescription}>
+          <Text center size={14} style={styles.cardTitle}>{follower.first_name} {follower.last_name}</Text>
+          <Text center size={14} muted={!ctaColor} color={ctaColor || argonTheme.COLORS.ACTIVE} bold>{follower.username}</Text>
         </Block>
       </TouchableWithoutFeedback>
-    );
+    </Block>
+
+
+    ); 
+
   };
 
   renderCards = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>
-          Cards
+        <Text  center bold size={20} style={styles.title}>
+          Following 
         </Text>
-        <Block flex>
-          <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <ProfileCard item={articles[0]} horizontal />
-            <Block flex row>
-              <ProfileCard
-                item={articles[1]}
-                style={{ marginRight: theme.SIZES.BASE }}
-              />
-              <ProfileCard item={articles[2]} />
-            </Block>
-            <ProfileCard item={articles[4]} full />
-            <Block flex card shadow style={styles.category}>
-              <ImageBackground
-                source={{ uri: Images.Products["View article"] }}
-                style={[
-                  styles.imageBlock,
-                  { width: width - theme.SIZES.BASE * 2, height: 252 }
-                ]}
-                imageStyle={{
-                  width: width - theme.SIZES.BASE * 2,
-                  height: 252
-                }}
-              >
-                <Block style={styles.categoryTitle}>
-                  <Text size={18} bold color={theme.COLORS.WHITE}>
-                    View article
-                  </Text>
-                </Block>
-              </ImageBackground>
-            </Block>
-          </Block>
-          <Block flex style={{ marginTop: theme.SIZES.BASE / 2 }}>
-            <ScrollView
-              horizontal={true}
-              pagingEnabled={true}
-              decelerationRate={0}
-              scrollEventThrottle={16}
-              snapToAlignment="center"
-              showsHorizontalScrollIndicator={false}
-              snapToInterval={cardWidth + theme.SIZES.BASE * 0.375}
-              contentContainerStyle={{
-                paddingHorizontal: theme.SIZES.BASE / 2
-              }}
-            >
-              {categories &&
-                categories.map((item, index) =>
-                  this.renderProduct(item, index)
-                )}
-            </ScrollView>
-          </Block>
+        <Block flex >
+        <Block style={{ width: width - theme.SIZES.BASE * 2, paddingHorizontal: theme.SIZES.BASE}}>
+          <ScrollView>
+            { followingList && followingList.map((follower,index) =>
+                this.renderFollowing(follower, index))}
+          </ScrollView>
         </Block>
+        </Block>
+        <Block flex style={{ marginTop: theme.SIZES.BASE / 2 }}></Block>
+       
       </Block>
     );
   };
 
-  renderAlbum = () => {
-    const { navigation } = this.props;
-
-    return (
-      <Block
-        flex
-        style={[styles.group, { paddingBottom: theme.SIZES.BASE * 5 }]}
-      >
-        <Text bold size={16} style={styles.title}>
-          Album
-        </Text>
-        <Block style={{ marginHorizontal: theme.SIZES.BASE * 2 }}>
-          <Block flex right>
-            <Text
-              size={12}
-              color={theme.COLORS.PRIMARY}
-              onPress={() => navigation.navigate("Home")}
-            >
-              View All
-            </Text>
-          </Block>
-          <Block
-            row
-            space="between"
-            style={{ marginTop: theme.SIZES.BASE, flexWrap: "wrap" }}
-          >
-            {Images.Viewed.map((img, index) => (
-              <Block key={`viewed-${img}`} style={styles.shadow}>
-                <Image
-                  resizeMode="cover"
-                  source={{ uri: img }}
-                  style={styles.albumThumb}
-                />
-              </Block>
-            ))}
-          </Block>
-        </Block>
-      </Block>
-    );
-  };
 
   render() {
     return (
       <Block flex center>
         <ScrollView
           showsVerticalScrollIndicator={false}
-        >
+          >
           {this.renderCards()}
-          {this.renderAlbum()}
+
         </ScrollView>
       </Block>
     );
@@ -205,50 +157,57 @@ const styles = StyleSheet.create({
   group: {
     paddingTop: theme.SIZES.BASE
   },
-  albumThumb: {
-    borderRadius: 4,
-    marginVertical: 4,
-    alignSelf: "center",
-    width: thumbMeasure,
-    height: thumbMeasure
-  },
-  category: {
+  card: {
     backgroundColor: theme.COLORS.WHITE,
-    marginVertical: theme.SIZES.BASE / 2,
-    borderWidth: 0
+    marginVertical: theme.SIZES.BASE,
+    borderWidth: 0,
+    minHeight: 114,
+    marginBottom: 16
   },
-  categoryTitle: {
-    height: "100%",
-    paddingHorizontal: theme.SIZES.BASE,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center"
+  cardTitle: {
+    flex: 1,
+    flexWrap: 'wrap',
+    paddingBottom: 6
   },
-  imageBlock: {
-    overflow: "hidden",
-    borderRadius: 4
+  cardDescription: {
+    padding: theme.SIZES.BASE / 2
   },
-  productItem: {
-    width: cardWidth - theme.SIZES.BASE * 2,
-    marginHorizontal: theme.SIZES.BASE,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 7 },
-    shadowRadius: 10,
-    shadowOpacity: 0.2
+  imageContainer: {
+    borderRadius: 3,
+    elevation: 1,
+    overflow: 'hidden',
   },
-  productImage: {
-    width: cardWidth - theme.SIZES.BASE,
-    height: cardWidth - theme.SIZES.BASE,
-    borderRadius: 3
+  image: {
+    // borderRadius: 3,
   },
-  productPrice: {
-    paddingTop: theme.SIZES.BASE,
-    paddingBottom: theme.SIZES.BASE / 2
+  horizontalImage: {
+    height: 122,
+    width: 'auto',
   },
-  productDescription: {
-    paddingTop: theme.SIZES.BASE
-    // paddingBottom: theme.SIZES.BASE * 2,
-  }
+  horizontalStyles: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  verticalStyles: {
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0
+  },
+  fullImage: {
+    height: 215
+  },
+  shadow: {
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
+
+
+
+
+
 });
 
 export default Following;
+
