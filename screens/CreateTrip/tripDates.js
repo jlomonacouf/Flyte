@@ -12,7 +12,9 @@ import { Block, Text } from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 
+
 import DatePicker from 'react-native-datepicker';
+//import DatePicker from '@react-native-community/datetimepicker'; 
 
 const { width, height } = Dimensions.get("screen");
 
