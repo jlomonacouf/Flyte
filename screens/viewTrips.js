@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   home: {
     width: width,  
     height: height , 
-    backgroundColor: "black",
+    backgroundColor: "white",
   },
   articles: {
     width: width - theme.SIZES.BASE * 2,

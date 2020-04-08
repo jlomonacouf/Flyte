@@ -13,6 +13,7 @@ import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 
 import DatePicker from 'react-native-datepicker';
+//import DatePicker from '@react-native-community/datetimepicker'; 
 
 const { width, height } = Dimensions.get("screen");
 
@@ -21,7 +22,7 @@ export default class Dates extends Component {
     constructor(props) {
         super(props);
         //set value in state for initial date
-        this.state = {
+        state = {
             start_date: '05-06-2020',
             end_date: '05-27-2020'
         };
@@ -29,6 +30,8 @@ export default class Dates extends Component {
 
     render() {
         const { navigation } = this.props;
+        let { start_date } = this.state.start_date;
+        let { end_date } = this.state.end_date;
         return (
             <Block flex middle>
                 <StatusBar hidden />
@@ -68,6 +71,7 @@ export default class Dates extends Component {
                                             },
                                         }}
                                         onDateChange={date => {
+                                            {console.log(start_Date)}
                                             this.setState({ start_date: date });
                                         }}
                                     />
@@ -77,7 +81,7 @@ export default class Dates extends Component {
                                         style={{ width: 200 }}
                                         endDate={this.state.end_date} //initial date from state
                                         mode="date" //The enum of date, datetime and time
-                                        placeholder="End date"
+                                        placeholder="Enddate"
                                         format="DD-MM-YYYY"
                                         minDate="01-01-1950"
                                         maxDate="01-01-2050"
@@ -95,6 +99,7 @@ export default class Dates extends Component {
                                             },
                                         }}
                                         onDateChange={endDate => {
+                                            {console.log(endDate)}
                                             this.setState({ end_date: endDate });
                                         }}
                                     />
