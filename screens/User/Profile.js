@@ -202,6 +202,7 @@ class Profile extends React.Component {
                       small
                       color="transparent"
                       textStyle={{ color: "#5E72E4", fontSize: 12 }}
+                      onPress={() => navigation.navigate('Articles', { item: currUser.username })}
                     >
                       View all
                     </Button>

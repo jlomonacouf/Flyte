@@ -26,12 +26,12 @@ class Home extends React.Component {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
       
-       <TouchableOpacity
+       {/* <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('Profile', { item: character })}>
         <Text style={styles.buttonText}>Who is {character.name}?</Text>
 
-      </TouchableOpacity>
+      </TouchableOpacity> */}
         <Block>
         
         </Block>
