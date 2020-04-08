@@ -71,21 +71,14 @@ function ElementsStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
-            <Stack.Screen
+           <Stack.Screen
         name="Loading"
         component={Loading}
         options={{
           header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
+            <Header title="Loading" navigation={navigation} scene={scene} />
           ),
-          headerTransparent: true
+          cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
     </Stack.Navigator>
@@ -106,8 +99,19 @@ function ArticlesStack(props) {
         }}
       />
 
+<Stack.Screen
+        name="Loading"
+        component={Loading}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Loading" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" }
+        }}
+      />
+
       
-            <Stack.Screen
+            {/* <Stack.Screen
         name="Loading"
         component={Loading}
         options={{
@@ -121,7 +125,7 @@ function ArticlesStack(props) {
             />
           ),
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }
@@ -143,7 +147,27 @@ export default function OnboardingStack(props) {
 
 
 function HomeStack(props) {
+  const homeMenu= [
+    {id: 'Home', title: 'Popular',}, 
+    {id: 'viewTrips', title: 'Your Trips',},
+    {id: 'Login', title: 'Login',},
+    {id: 'Register', title: 'Register',},
+    {id: 'Account', title: 'Settings',}
+]; 
+const userTripMenu= [
+  {id: 'viewTrips', title: 'Your Trips',},
+  {id: 'Home', title: 'Popular',}, 
+  {id: 'Login', title: 'Login',},
+  {id: 'Register', title: 'Register',},
+  {id: 'Account', title: 'Settings',}
+]; 
+
+
+
+
+
   return (
+   
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
         name="Home"
@@ -152,8 +176,8 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Home"
+              tabs={homeMenu}
               search
-              options
               navigation={navigation}
               scene={scene}
             />
@@ -167,9 +191,9 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-             title="Home"
+            title="Home"
+            tabs={userTripMenu} 
             search
-            options
             navigation={navigation}
             scene={scene}
             />
@@ -555,19 +579,23 @@ function singleItineraryStack(props) {
       <Stack.Screen name="App" component={AppStack} />
     </Stack.Navigator>
   );
-}
+      }
 
 function followersAlone(props) {
   return (
+
     <Stack.Navigator mode="card" headerMode="none">
-      <Stack.Screen
-        name="Followers"
-        component={Followers}
-        option={{
-          headerTransparent: true
-        }}
-      />
-      <Stack.Screen name="App" component={AppStack} />
+    <Stack.Screen
+    name="Followers"
+    component={Followers}
+    options={{
+      header: ({ navigation, scene }) => (
+        <Header title="Loading" navigation={navigation} scene={scene} />
+      ),
+      cardStyle: { backgroundColor: "#F8F9FE" }
+    }}
+  />
+
     </Stack.Navigator>
   );
 }
