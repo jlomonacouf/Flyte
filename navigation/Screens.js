@@ -40,6 +40,7 @@ import CreateItinerary_Location from "../screens/CreateItinerary/Location";
 import CreateItinerary_Text from "../screens/CreateItinerary/Text"
 import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
 import CreateItinerary_Image from "../screens/CreateItinerary/Image.js";
+import CreateItinerary_Dates from "../screens/CreateItinerary/Dates.js";
 
 
 //Creating Itinerary 
@@ -48,6 +49,7 @@ import tripLocation from "../screens/CreateTrip/tripLocation";
 import tripDescription from "../screens/CreateTrip/tripDescription"
 import tripTags from "../screens/CreateTrip/tripTags";
 import tripImages from "../screens/CreateTrip/tripImages";
+import tripDates from  "../screens/CreateTrip/tripDates";
 
 
 
@@ -352,6 +354,23 @@ function TripStack(props) {
           headerTransparent: true
         }}
       />
+       <Stack.Screen
+        name="tripDates"
+        component={tripDates}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="tripDates"
+              white
+              back 
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
       <Stack.Screen
         name="tripDescription"
         component={tripDescription}
@@ -453,6 +472,23 @@ function ItineraryStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="CreateItinerary_Location"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+       <Stack.Screen
+        name="CreateItinerary_Dates"
+        component={CreateItinerary_Dates}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="CreateItinerary_Dates"
               back
               white
               transparent
