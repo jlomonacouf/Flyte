@@ -7,8 +7,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  Platform,
-  TouchableOpacity
+  Platform
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
@@ -31,23 +30,6 @@ class Profile extends React.Component {
   //  const { route } = this.props;
   //   const { item } = route.params;
   //   const { name, home, species } = item; 
-
-    const currUser = {
-      id : '1',
-      username : 'Gremlin',
-      first_name :  'Nickan',
-      last_name :  'Hussaini',
-      email :  'n.hussaini@ufl.edu',
-      email_verified: 0,
-      phone_number: '786-999-4125',
-      followers: 0,
-      following : 2,
-      created_at : '2020-04-06', 
-      profileImg: "https://images.hollywoodpicture.net/wp-content/uploads/2017/12/dwayne-johnson-aka-the-rock-muscle-body.jpg",
-    }; 
-
-    const numComments= 0; 
-
 
                     // this.state ={
                   //       isLoggedIn: false, 
@@ -131,7 +113,7 @@ class Profile extends React.Component {
               <Block flex style={styles.profileCard}>
                 <Block middle style={styles.avatarContainer}>
                   <Image
-                    source={{ uri: currUser.profileImg }}
+                    source={{ uri: Images.ProfilePicture }}
                     style={styles.avatar}
                   />
                 </Block>
@@ -142,61 +124,91 @@ class Profile extends React.Component {
                     space="evenly"
                     style={{ marginTop: 20, paddingBottom: 24 }}
                   >
-                    <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }} >
+                    <Button
+                      small
+                      style={{ backgroundColor: argonTheme.COLORS.INFO }}
+                    >
                       Follow
                     </Button>
                   </Block>
                   <Block row space="between">
-
-                  <TouchableOpacity onPress={() => navigation.navigate('Followers', { item: currUser.username })}>
                     <Block middle>
-                      <Text bold size={18}  color="#525F7F" style={{ marginBottom: 4 }}> {currUser.following} </Text>
-                      <Text size={12} color={argonTheme.COLORS.TEXT}>Following</Text>
-                    </Block>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('Followers', { item: currUser.username })}>
-                    <Block middle>
-                     <Text bold color="#525F7F" size={18} style={{ marginBottom: 4 }}
-                      >  {currUser.followers}
+                      <Text
+                        bold
+                        size={18}
+                        color="#525F7F"
+                        style={{ marginBottom: 4 }}
+                      >
                       </Text>
-                      <Text size={12} color={argonTheme.COLORS.TEXT}>Followers</Text>
+                      <Text size={12} color={argonTheme.COLORS.TEXT}>Orders</Text>
                     </Block>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('Comments', { item: currUser.username })}>
                     <Block middle>
-                      <Text bold color="#525F7F" size={18} style={{ marginBottom: 4 }} > {numComments}</Text>
+                      <Text
+                        bold
+                        color="#525F7F"
+                        size={18}
+                        style={{ marginBottom: 4 }}
+                      > 
+                      </Text>
+                      <Text size={12} color={argonTheme.COLORS.TEXT}>Photos</Text>
+                    </Block>
+                    <Block middle>
+                      <Text
+                        bold
+                        color="#525F7F"
+                        size={18}
+                        style={{ marginBottom: 4 }}
+                      >
+                       
+                      </Text>
                       <Text size={12} color={argonTheme.COLORS.TEXT}>Comments</Text>
                     </Block>
-                     </TouchableOpacity>
                   </Block>
                 </Block>
                 <Block flex>
                   <Block middle style={styles.nameInfo}>
                     <Text bold size={26} color="#32325D">
-                    {currUser.username}
+                    user.username
+                      
                     </Text>
                     <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
-                    {currUser.first_name} {currUser.last_name}
+                    user.first_name user.lastname
                     </Text>
                   </Block>
                   <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
                     <Block style={styles.divider} />
                   </Block>
                   <Block middle>
+                    <Text
+                      size={16}
+                      color="#525F7F"
+                      style={{ textAlign: "center" }}
+                    >
+                      An artist of considerable range, Jessica name taken by
+                      Melbourne …
+                    </Text>
+                    <Button
+                      color="transparent"
+                      textStyle={{
+                        color: "#233DD2",
+                        fontWeight: "500",
+                        fontSize: 16
+                      }}
+                    >
+                      Show more
+                    </Button>
                   </Block>
                   <Block
                     row
-                    style={{ marginTop:5, marginLeft: 15, paddingVertical: 14, alignItems: "baseline" }}
+                    style={{ paddingVertical: 14, alignItems: "baseline" }}
                   >
-                    <Text bold size={18} color="#525F7F">
-                      Trips
+                    <Text bold size={16} color="#525F7F">
+                      Album
                     </Text>
                   </Block>
                   <Block
                     row
-                    style={{ marginRight: 5, paddingBottom: 20, justifyContent: "flex-end" }}
+                    style={{ paddingBottom: 20, justifyContent: "flex-end" }}
                   >
                     <Button
                       small
@@ -206,7 +218,6 @@ class Profile extends React.Component {
                       View all
                     </Button>
                   </Block>
-
                   <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
                     <Block row space="between" style={{ flexWrap: "wrap" }}>
                       {Images.Viewed.map((img, imgIndex) => (
@@ -218,15 +229,128 @@ class Profile extends React.Component {
                         />
                       ))}
                     </Block>
-
-
-
                   </Block>
                 </Block>
               </Block>
             </ScrollView>
           </ImageBackground>
         </Block>
+        {/* <ScrollView showsVerticalScrollIndicator={false} 
+                    contentContainerStyle={{ flex: 1, width, height, zIndex: 9000, backgroundColor: 'red' }}>
+        <Block flex style={styles.profileCard}>
+          <Block middle style={styles.avatarContainer}>
+            <Image
+              source={{ uri: Images.ProfilePicture }}
+              style={styles.avatar}
+            />
+          </Block>
+          <Block style={styles.info}>
+            <Block
+              middle
+              row
+              space="evenly"
+              style={{ marginTop: 20, paddingBottom: 24 }}
+            >
+              <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }}>
+                CONNECT
+              </Button>
+              <Button
+                small
+                style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+              >
+                MESSAGE
+              </Button>
+            </Block>
+
+            <Block row space="between">
+              <Block middle>
+                <Text
+                  bold
+                  size={12}
+                  color="#525F7F"
+                  style={{ marginBottom: 4 }}
+                >
+                  2K
+                </Text>
+                <Text size={12}>Orders</Text>
+              </Block>
+              <Block middle>
+                <Text bold size={12} style={{ marginBottom: 4 }}>
+                  10
+                </Text>
+                <Text size={12}>Photos</Text>
+              </Block>
+              <Block middle>
+                <Text bold size={12} style={{ marginBottom: 4 }}>
+                  89
+                </Text>
+                <Text size={12}>Comments</Text>
+              </Block>
+            </Block>
+          </Block>
+          <Block flex>
+              <Block middle style={styles.nameInfo}>
+                <Text bold size={28} color="#32325D">
+                  Jessica Jones, 27
+                </Text>
+                <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
+                  San Francisco, USA
+                </Text>
+              </Block>
+              <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
+                <Block style={styles.divider} />
+              </Block>
+              <Block middle>
+                <Text size={16} color="#525F7F" style={{ textAlign: "center" }}>
+                  An artist of considerable range, Jessica name taken by
+                  Melbourne …
+                </Text>
+                <Button
+                  color="transparent"
+                  textStyle={{
+                    color: "#233DD2",
+                    fontWeight: "500",
+                    fontSize: 16
+                  }}
+                >
+                  Show more
+                </Button>
+              </Block>
+              <Block
+                row
+                style={{ paddingVertical: 14, alignItems: "baseline" }}
+              >
+                <Text bold size={16} color="#525F7F">
+                  Album
+                </Text>
+              </Block>
+              <Block
+                row
+                style={{ paddingBottom: 20, justifyContent: "flex-end" }}
+              >
+                <Button
+                  small
+                  color="transparent"
+                  textStyle={{ color: "#5E72E4", fontSize: 12 }}
+                >
+                  View all
+                </Button>
+              </Block>
+              <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
+                <Block row space="between" style={{ flexWrap: "wrap" }}>
+                  {Images.Viewed.map((img, imgIndex) => (
+                    <Image
+                      source={{ uri: img }}
+                      key={`viewed-${img}`}
+                      resizeMode="cover"
+                      style={styles.thumb}
+                    />
+                  ))}
+                </Block>
+              </Block>
+          </Block>
+        </Block>
+                  </ScrollView>*/}
       </Block>
     );
   }

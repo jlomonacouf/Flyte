@@ -6,10 +6,12 @@ import {
   StatusBar,
   KeyboardAvoidingView
 } from "react-native";
-import { Block, Text} from "galio-framework";
+import { Block, Text, theme} from "galio-framework";
 
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
+
+
 
 const { width, height } = Dimensions.get("screen");
 
@@ -41,9 +43,10 @@ class tripLocation extends React.Component {
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} height={height*0.55}>
+                    <Block width={width * 0.8} height={height*0.55} iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}>
                     <GooglePlacesAutocomplete
-                      placeholder='Enter Location'
+                      placeholder='Where to?'
+                      placeholderTextColor={'#8898AA'}
                       minLength={2}
                       autoFocus={false}
                       returnKeyType={'default'}
@@ -54,6 +57,10 @@ class tripLocation extends React.Component {
                         language: 'en', // language of the results
                       }}
                       styles={{
+                          marginHorizontal: 16,
+                          borderWidth: 1,
+                          borderRadius: 3,
+                          borderColor: argonTheme.COLORS.BORDER,
                         textInputContainer: {
                           backgroundColor: 'rgba(0,0,0,0)',
                           borderTopWidth: 0,
@@ -63,7 +70,7 @@ class tripLocation extends React.Component {
                           marginLeft: 0,
                           marginRight: 0,
                           height: 38,
-                          color: '#5d5d5d',
+                          color: '#8898AA',
                           fontSize: 16,
                         },
                         predefinedPlacesDescription: {

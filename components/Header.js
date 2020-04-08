@@ -5,6 +5,8 @@ import { Button, Block, NavBar, Text, theme } from 'galio-framework';
 
 import Icon from './Icon';
 import Input from './Input';
+
+
 import Tabs from './Tabs';
 import argonTheme from '../constants/Theme';
 
@@ -114,7 +116,7 @@ class Header extends React.Component {
         style={styles.search}
         placeholder="Where to?"
         placeholderTextColor={'#8898AA'}
-        onFocus={() => navigation.navigate('Profile')}
+        onFocus={() => navigation.navigate('Home')}
         iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}
       />
     );
