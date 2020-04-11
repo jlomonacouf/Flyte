@@ -5,8 +5,8 @@ export const REGISTER_URL = 'users/signup';
 export const PROFILE_IMG_URL ='users/upload-profile-photo'; //REVIEW ROUTE PARAMETRS 
 
 export const GET_USER_URL =  'users/get/'; 
-export const DELETE_USER_URL ='user/deleteUser'; //NOT SURE HOW THIS WORKS
-export const UPDATE_USER_URL ='user/updateUser';
+export const DELETE_USER_URL ='users/deleteUser'; //NOT SURE HOW THIS WORKS
+export const UPDATE_USER_URL ='users/updateUser';
 /*
 Parameters
 first_name - string (optional)
@@ -14,9 +14,10 @@ last_name - string (optional)
 phone_number - string (optional)
 public - 1 or 0 (optional)
 */
-export const USER_FOLLOWING_URL ='user/get-following/:username'; 
-export const USER_FOLLOWERS_URL ='user/get-followers/:username'; 
-export const VERIFY_EMAIL_URL = 'user/verify-email'; 
+export const USER_FOLLOWING_URL ='users/get-following/:username'; 
+export const USER_FOLLOWERS_URL ='users/get-followers/:username'; 
+export const VERIFY_EMAIL_URL = 'users/verify-email'; 
+export const ISFOLLOWING_URL = 'users/isFollowingUser'; 
 export const FOLLOW_URL ='users/follow'; 
 /*
 Parameters

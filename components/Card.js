@@ -11,7 +11,7 @@ class Card extends React.Component {
   render() {
 
     const { navigation, item, horizontal, nextScreen, full, style, ctaColor, imageStyle, } = this.props;
-    console.log(nextScreen); 
+    //console.log(nextScreen); 
     const imageStyles = [
       full ? styles.fullImage : styles.horizontalImage,
       imageStyle

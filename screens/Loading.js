@@ -4,11 +4,11 @@ import { Block, Button, Text, theme } from 'galio-framework';
 
 //import { Platform, StyleSheet, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import { HeaderHeight } from "../constants/utils";
 
 const { height, width } = Dimensions.get('screen');
 import { Images, argonTheme } from '../constants';
-import { HeaderHeight } from "../constants/utils";
+
 
 
 //Reference: https://github.com/joinspontaneous/react-native-loading-spinner-overlay/blob/master/example/App.js
