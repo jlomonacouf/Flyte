@@ -31,7 +31,6 @@ class Register extends React.Component {
 
     }; 
 
- 
   handleChange = (name, val) => {
     this.setState({ [name]: val });
   };
@@ -45,11 +44,12 @@ class Register extends React.Component {
     }
 
     const { first_name,last_name, phone_number, email, username,password } = this.state
-    console.log(backendEndpoint + REGISTER_URL)
+    const { navigation} = this.props;
 
     //var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, 10);
-    console.log(hash)
+    //console.log(hash)
+
     fetch(backendEndpoint + REGISTER_URL, {
       method: 'POST',
       headers: {
@@ -66,32 +66,18 @@ class Register extends React.Component {
       })
     }).then((response) => response.json())
       .then((json) => {
-        console.log(json);
-        this.onSuccess(username); 
+       
+        const character ={
+          my_id: username,
+          view_id: username
+        }
+        navigation.navigate('Profile', {item: character}); 
       }).catch((err) => {
         console.log('error getting user data', err);
       });
   }; 
 
-  onSuccess = async (username) =>{
-    const { navigation } = this.props;
-    console.log(username); 
 
-    fetch(backendEndpoint + GET_USER_URL + username, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Success:', data);
-      navigation.navigate('Profile', {item: data}); 
-    }).catch((err) => {
-      console.log('error getting user data', err);
-    });
-  }
 
 
   renderRegistration() {

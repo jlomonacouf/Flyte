@@ -142,14 +142,12 @@ function HomeStack(props) {
     {id: 'Home', title: 'Popular',}, 
     {id: 'viewTrips', title: 'Your Trips',},
     {id: 'Login', title: 'Login',},
-   // {id: 'Register', title: 'Register',},
     {id: 'Account', title: 'Settings',}
 ]; 
 const userTripMenu= [
   {id: 'viewTrips', title: 'Your Trips',},
   {id: 'Home', title: 'Popular',}, 
   {id: 'Login', title: 'Login',},
- // {id: 'Register', title: 'Register',},
   {id: 'Account', title: 'Settings',}
 ]; 
 
@@ -304,6 +302,9 @@ function ProfileStack(props) {
        {
       
       header: ({ navigation, scene }) => (
+        ({ route }) => ({
+          title: route.params.item.name
+        }), 
         <Header
           title="Followers"
           back
@@ -351,7 +352,11 @@ function TripStack(props) {
       <Stack.Screen
         name="tripName"
         component={tripName}
-        options={{
+        options={
+          ({ route }) => ({
+            title: route.params.item.name
+          }), 
+          {
           header: ({ navigation, scene }) => (
             <Header
               title="Create Trip"
@@ -453,7 +458,11 @@ function TripStack(props) {
       <Stack.Screen
         name="Trip"
         component={Trip}
-        options={{
+        options={
+          ({ route }) => ({
+            title: route.params.item.name
+          }), 
+          {
           header: ({ navigation, scene }) => (
             <Header
               title="3 Days, 2 Nights, 1 Trip "
@@ -479,7 +488,11 @@ function ItineraryStack(props) {
       <Stack.Screen
         name="CreateItinerary_Name"
         component={CreateItinerary_Name}
-        options={{
+        options={
+          ({ route }) => ({
+            title: route.params.item.name
+          }), 
+          {
           header: ({ navigation, scene }) => (
             <Header
               title="CreateItinerary_Name"
@@ -573,7 +586,10 @@ function ItineraryStack(props) {
        <Stack.Screen
         name="Itinerary"
         component={Itinerary}
-        options={{
+        options={
+          ({ route }) => ({
+            title: route.params.item.name
+          }), {
           header: ({ navigation, scene }) => (
             <Header title="Itinerary" navigation={navigation} scene={scene} />
           ),

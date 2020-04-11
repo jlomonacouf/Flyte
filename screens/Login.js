@@ -22,20 +22,6 @@ class Login extends React.Component {
   state = {
     username: "",
     password: "",
-    // userData : {
-    //   id :  '', 
-    //   username: '', 
-    //   first_name: '', 
-    //   last_name: '',
-    //   email: '' ,
-    //   email_verified: '',
-    //   phone_number: '',
-    //   public: '', 
-    //   followers: '', 
-    //   following: '', 
-    //   avatar_path: '' 
-    // } 
-   // userData: {}
   }; 
 
   handleChange = (name, val) => {
@@ -62,9 +48,10 @@ class Login extends React.Component {
     .then((response) => response.json())
     .then((data) => {
       const character ={
-        name: username
+        my_id: username,
+        view_id: username
       }
-      console.log(character.name); 
+      //console.log(character.name); 
       navigation.navigate('Profile', {item: character}); 
     }).catch((err) => {
       console.log('error logging in: ', err);
