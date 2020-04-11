@@ -7,15 +7,53 @@ import { Block, theme } from 'galio-framework';
 import { Card } from '../components';
 
 import articles from '../constants/articles';
+import { backendEndpoint, ALL_IT_URL } from '../src/api_methods/shared_base'; 
+import Spinner from 'react-native-loading-spinner-overlay';
 const { width } = Dimensions.get('screen');
-
-
 
 class Home extends React.Component {
 
- 
+  state = {
+    articles: []
+  }; 
+
+  componentDidMount(){
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch(backendEndpoint + ALL_IT_URL, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          result.results.map((value, index) => {
+            var article = {
+              title: value.name,
+              image: 'https://www.jetsetter.com/uploads/sites/7/2019/04/GettyImages-924894324-1380x690.jpg',
+              cta: 'View Trip'
+            }
+            
+            if(index % 3 === 0)
+              article.horizontal = true;
+            
+            var a = this.state.articles.concat(article);
+            this.setState({ articles: a });
+          })
+        })
+        .catch(error => {console.log('error', error);});
+  }
+
   renderArticles = () => {
     const { navigation} = this.props;
+
+    /*this.getArticles().then((val) => {
+      console.log(this.state.articles)
+      return (
+        <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
+      );
+    });*/
+    console.log('rendering articles')
+    var formatCounter = 0;
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -25,26 +63,60 @@ class Home extends React.Component {
         
         </Block>
         <Block flex>
-      
-          <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
+          {this.state.articles.map((value, index) => {
+            if(formatCounter === 1 && index < this.state.articles.length-1) {
+              formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
+              return (
+                <Block flex row>
+                  <Card item={value} style={{ marginRight: theme.SIZES.BASE }} nextScreen={'Trip'} />
+                  <Card item={this.state.articles[index+1]} nextScreen={'Trip'} />
+                </Block>
+              );
+            }
+            else if(formatCounter === 2) { 
+              formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
+            }
+            else if(formatCounter === 3) {
+              formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
+              return (<Card item={value} full nextScreen={'Trip'}/>);
+            }
+            else {
+              formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
+              return (<Card item={value} horizontal nextScreen={'Trip'}/>);
+            }
+          })}
+        </Block>
+      </ScrollView>
+    )
+    /*
+    <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
           <Block flex row>
             <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} nextScreen={'Trip'} />
             <Card item={articles[2]} nextScreen={'Trip'} />
           </Block>
           <Card item={articles[3]} horizontal nextScreen={'Trip'} />
           <Card item={articles[4]} full nextScreen={'Trip'} />
-        </Block>
-      </ScrollView>
-    )
+    */
   }
 
   render() {
-    
-    return (
-      <Block flex center style={styles.home}>
-        {this.renderArticles()}
-      </Block>
-    );
+    if (this.state.articles === []) {
+      return (
+        <Block flex style={styles.container}>
+        <Spinner
+          visible={true}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </Block> ); 
+    }
+    else {
+      return (
+        <Block flex center style={styles.home}>
+          {this.renderArticles()}
+        </Block>
+      );
+    }
   }
 }
 
