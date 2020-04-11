@@ -13,16 +13,29 @@ import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
-import { backendEndpoint, LOGIN_URL } from "../src/api_methods/shared_base";
+import { backendEndpoint, LOGIN_URL, GET_USER_URL } from "../src/api_methods/shared_base";
 
 const { width, height } = Dimensions.get("screen");
 
 class Login extends React.Component {
 
-
   state = {
     username: "",
     password: "",
+    // userData : {
+    //   id :  '', 
+    //   username: '', 
+    //   first_name: '', 
+    //   last_name: '',
+    //   email: '' ,
+    //   email_verified: '',
+    //   phone_number: '',
+    //   public: '', 
+    //   followers: '', 
+    //   following: '', 
+    //   avatar_path: '' 
+    // } 
+   // userData: {}
   }; 
 
   handleChange = (name, val) => {
@@ -33,6 +46,7 @@ class Login extends React.Component {
 
   onLoginPress = async () => {
     const { username, password } = this.state
+    const { navigation} = this.props;
 
     fetch(backendEndpoint + LOGIN_URL, {
       method: 'POST',
@@ -47,11 +61,16 @@ class Login extends React.Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log('Success:', data);
+      const character ={
+        name: username
+      }
+      console.log(character.name); 
+      navigation.navigate('Profile', {item: character}); 
     }).catch((err) => {
       console.log('error logging in: ', err);
     });
   }
+
 
   renderLoginPg() {
 

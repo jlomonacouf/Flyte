@@ -9,11 +9,6 @@ import { Card } from '../components';
 import articles from '../constants/articles';
 const { width } = Dimensions.get('screen');
 
-const character = {
-  name: 'Detienne20',
-  home: 'Tatooine',
-  species: 'human'
-}; 
 
 
 class Home extends React.Component {
@@ -25,13 +20,7 @@ class Home extends React.Component {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
-      
-       {/* <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Profile', { item: character })}>
-        <Text style={styles.buttonText}>Who is {character.name}?</Text>
 
-      </TouchableOpacity> */}
         <Block>
         
         </Block>
@@ -91,3 +80,20 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
+
+
+/* DELETED STUFF 
+
+// const character = {
+//   name: 'Detienne20',
+//   home: 'Tatooine',
+//   species: 'human'
+// }; 
+
+   {/* <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => navigation.navigate('Profile', { item: character })}>
+        <Text style={styles.buttonText}>Who is {character.name}?</Text>
+
+      </TouchableOpacity> */
+
