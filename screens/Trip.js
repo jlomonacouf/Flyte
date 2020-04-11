@@ -14,9 +14,9 @@ import { Block, Text, theme } from "galio-framework";
 import MapView, {Marker} from 'react-native-maps';
 import { articles, Images, argonTheme } from "../constants/";
 import { Card } from "../components/";
-
+import Spinner from 'react-native-loading-spinner-overlay';
 const { width, height } = Dimensions.get("screen");
-
+import { backendEndpoint, SINGLE_IT_URL } from '../src/api_methods/shared_base'; 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
 const categories = [
@@ -27,6 +27,12 @@ const categories = [
   },
   {
     title: "Day Two",
+    image:
+      "https://2.bp.blogspot.com/-VqFCYgtKyjM/Uk-34ap3tWI/AAAAAAAAcIo/1QJCtj-7-YQ/s1600/Mykonos-passion4luxury.32.png",
+    date: "05/06/2020"
+  },
+  {
+    title: "Day Three",
     image:
       "https://2.bp.blogspot.com/-VqFCYgtKyjM/Uk-34ap3tWI/AAAAAAAAcIo/1QJCtj-7-YQ/s1600/Mykonos-passion4luxury.32.png",
     date: "05/06/2020"
@@ -45,10 +51,23 @@ const initialRegion={
 
 
 class Trip extends React.Component {
+  componentDidMount = () => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch(backendEndpoint + SINGLE_IT_URL + this.state.id, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          this.setState({title: result.results[0].name, text: result.results[0].text, loaded: true});
+        })
+        .catch(error => {console.log('error', error);});
+  }
 
   state = {
     region: {
-      latitude: 37.78825,
+      latitude: 57.78825,
       longitude: -122.4324,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
@@ -56,13 +75,17 @@ class Trip extends React.Component {
     markers: [
       {
         latlng:{
-          latitude: 37.78825, 
+          latitude: 57.78825, 
           longitude: -122.4324
         }, 
         title: "Stop 1",
         description: "This is the first stop on the itinerary"
       } 
-    ] 
+    ],
+    loaded: false,
+    id: 1,
+    title: "",
+    text: "",
 };
 
   renderProduct = (item, index) => {
@@ -152,14 +175,14 @@ class Trip extends React.Component {
             </Block>
         <Block>
         <Text bold size={24} style={styles.title}>
-          Adventures in Greece
+          {this.state.title}
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
         <Text center color="green" size={12}>@JaneDoe</Text>
         </TouchableOpacity>
         <Block>
         <Text size={15} style={styles.subTitle}>
-          Spent a couple of days in Greece. Taking a ferry from island to island was as easy as can be. Be sure to get ferry tickets in advance! 
+          {this.state.text}
         </Text>
         </Block>
 
@@ -203,15 +226,27 @@ class Trip extends React.Component {
 
 
   render() {
-    return (
-      <Block flex center>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-        >
-          {this.renderCards()} 
-        </ScrollView>
-      </Block>
-    );
+    if(this.state.loaded === false) {
+      return (
+        <Block flex style={styles.container}>
+        <Spinner
+          visible={true}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </Block> ); 
+    }
+    else {
+      return (
+        <Block flex center>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+          >
+            {this.renderCards()} 
+          </ScrollView>
+        </Block>
+      );
+    }
   }
 }
 
