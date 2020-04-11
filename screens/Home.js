@@ -17,7 +17,7 @@ class Home extends React.Component {
     articles: []
   }; 
 
-  componentDidMount(){
+  componentDidMount = () => {
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'

@@ -40,7 +40,7 @@ export const CREATE_ITINERARY_URL = 'itineraries/create-trip';
 export const DELETE_ITINERARY_URL = 'itineraries/delete-trip';
 export const USER_IT__URL ='itineraries/get/:username'; 
 export const ALL_IT_URL ='itineraries/get-all-itineraries'; 
-export const SINGLE_IT_URL ='itineraries/get-by-id/:id'; 
+export const SINGLE_IT_URL ='itineraries/get-by-id/'; 
 
 
 export const LIKE_IT_URL ='itineraries/like-itinerary'; 
