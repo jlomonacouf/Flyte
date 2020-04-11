@@ -142,14 +142,14 @@ function HomeStack(props) {
     {id: 'Home', title: 'Popular',}, 
     {id: 'viewTrips', title: 'Your Trips',},
     {id: 'Login', title: 'Login',},
-    {id: 'Register', title: 'Register',},
+   // {id: 'Register', title: 'Register',},
     {id: 'Account', title: 'Settings',}
 ]; 
 const userTripMenu= [
   {id: 'viewTrips', title: 'Your Trips',},
   {id: 'Home', title: 'Popular',}, 
   {id: 'Login', title: 'Login',},
-  {id: 'Register', title: 'Register',},
+ // {id: 'Register', title: 'Register',},
   {id: 'Account', title: 'Settings',}
 ]; 
 
@@ -223,6 +223,29 @@ const userTripMenu= [
         headerTransparent: true
       }}
     />
+     <Stack.Screen
+    name="Profile"
+    component={Profile}
+    options={
+     {
+      
+      header: ({ navigation, scene }) => (
+        ({ route }) => ({
+          title: route.params.item.name
+        }), 
+        <Header
+          title=""
+          back
+          white
+          transparent
+          navigation={navigation}
+          scene={scene}
+        />
+      ),
+      headerTransparent: true
+    }}
+  />
+
       
     <Stack.Screen
     name="Register"
@@ -257,6 +280,9 @@ function ProfileStack(props) {
      {
       
       header: ({ navigation, scene }) => (
+        ({ route }) => ({
+          title: route.params.item.name
+        }), 
         <Header
           title=""
           back

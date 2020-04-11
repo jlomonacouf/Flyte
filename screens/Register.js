@@ -13,14 +13,12 @@ import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
-import { backendEndpoint, REGISTER_URL} from "../src/api_methods/shared_base";
+import { backendEndpoint, REGISTER_URL, GET_USER_URL} from "../src/api_methods/shared_base";
 import bcrypt from 'react-native-bcrypt';
 
 const { width, height } = Dimensions.get("screen");
 
 class Register extends React.Component {
-
-    
 
     state = {
       first_name :"", 
@@ -29,92 +27,72 @@ class Register extends React.Component {
       email: "",
       username: "",
       password: "",
-
       approvesPolicy: false, 
-      signedin:false, 
 
     }; 
-
-
-  componentDidUpdate() {
-      if(this.state.signedIn) {
-        this.props.navigation.replace({
-        component: Profile,
-        title: 'Profile',
-      })
-    }
-  }
-
-  componentDidMount() {
-      if(this.state.signedIn) {
-        this.props.navigation.replace({
-        component: Profile,
-        title: 'Profile',
-      })
-    }
-  }
-
-  changeView() {
-    this.setState({
-     signedIn: true
-   });
-  }
 
  
   handleChange = (name, val) => {
     this.setState({ [name]: val });
   };
 
-
   onSignUpPress = async () => {
 
-    //TEMPERORAY FUNCTION DELETE WHEN BACKEND IS DONE 
     if (!this.state.approvesPolicy === false) {
       console.log("NOT CHECKED");
       alert("Please agree to the privacy policy");
       return;
     }
-    this.changeView(); 
 
-   
-      
+    const { first_name,last_name, phone_number, email, username,password } = this.state
+    console.log(backendEndpoint + REGISTER_URL)
+
+    //var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(password, 10);
+    console.log(hash)
+    fetch(backendEndpoint + REGISTER_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name : first_name, 
+        last_name : last_name, 
+        phone_number: phone_number, 
+        email: email,
+        username: username,
+        password: hash,
+      })
+    }).then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        this.onSuccess(username); 
+      }).catch((err) => {
+        console.log('error getting user data', err);
+      });
   }; 
 
-  // onSignUpPress = async () => {
+  onSuccess = async (username) =>{
+    const { navigation } = this.props;
+    console.log(username); 
 
-  //   if (!this.state.approvesPolicy === false) {
-  //     console.log("NOT CHECKED");
-  //     alert("Please agree to the privacy policy");
-  //     return;
-  //   }
+    fetch(backendEndpoint + GET_USER_URL + username, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      navigation.navigate('Profile', {item: data}); 
+    }).catch((err) => {
+      console.log('error getting user data', err);
+    });
+  }
 
-  //   const { first_name,last_name, phone_number, email, username,password } = this.state
-  //   console.log(backendEndpoint + REGISTER_URL)
-
-  //   //var salt = bcrypt.genSaltSync(10);
-  //   var hash = bcrypt.hashSync(password, 10);
-  //   console.log(hash)
-  //   fetch(backendEndpoint + REGISTER_URL, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       first_name : first_name, 
-  //       last_name : last_name, 
-  //       phone_number: phone_number, 
-  //       email: email,
-  //       username: username,
-  //       password: hash,
-  //     })
-  //   }).then((response) => response.json())
-  //     .then((json) => {
-  //       //SET COOKIE/PROP HERE 
-  //       //https://stackoverflow.com/questions/47850405/how-to-set-cookie-in-react-native-with-expo
-  //       console.log(json);
-  //     })
-  // }; 
 
   renderRegistration() {
     const { navigation } = this.props;
@@ -405,5 +383,44 @@ export default Register;
                       >
                         Privacy Policy
                       </Button>
+
+                      
+  // componentDidUpdate() {
+  //     if(this.state.signedIn) {
+  //       this.props.navigation.replace({
+  //       component: Profile,
+  //       title: 'Profile',
+  //     })
+  //   }
+  // }
+
+  // componentDidMount() {
+  //     if(this.state.signedIn) {
+  //       this.props.navigation.replace({
+  //       component: Profile,
+  //       title: 'Profile',
+  //     })
+  //   }
+  // }
+
+  // changeView() {
+  //   this.setState({
+  //    signedIn: true
+  //  });
+  // }
+
+   // onSignUpPress = async () => {
+
+  //   //TEMPERORAY FUNCTION DELETE WHEN BACKEND IS DONE 
+  //   if (!this.state.approvesPolicy === false) {
+  //     console.log("NOT CHECKED");
+  //     alert("Please agree to the privacy policy");
+  //     return;
+  //   }
+  //   //this.changeView(); 
+
+   
+      
+  // }; 
   */
 
