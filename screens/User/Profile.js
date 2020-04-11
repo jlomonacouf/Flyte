@@ -99,6 +99,7 @@ class Profile extends React.Component {
               fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
                 .then(response => response.json())
                 .then(result => {
+                  console.log( JSON.stringify(result.body));
                   console.log(result); 
                   //CHANGE BUTTON TEXT 
                   
@@ -122,11 +123,13 @@ class Profile extends React.Component {
               body: urlencoded,
               redirect: 'follow'
             };
-            
+       
+
             fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
               .then(response => response.json())
               .then(result => {
-                console.log(result); 
+               console.log( JSON.stringify(result.body));
+                console.log(result.results); 
                 //CHANGE BUTTON TEXT 
                 
               }).catch(error => console.log('error', error));
@@ -179,7 +182,7 @@ class Profile extends React.Component {
             fetch( backendEndpoint + FOLLOW__URL, requestOptions)
               .then(response => response.json())
               .then(result => {
-                console.log(result); 
+                console.log(result.results); 
                 //RENDER UPDATED TEXT FOR FOLLOW BUTTON
               
               })
@@ -206,7 +209,8 @@ class Profile extends React.Component {
             fetch( backendEndpoint + UNFOLLOW__URL, requestOptions)
               .then(response => response.json())
               .then(result => {
-                console.log(result);
+               // JSON.stringify(result.body);
+                console.log(result.results); 
                 //RENDER UPDATED TEXT FOR FOLLOW BUTTON
               
               })
