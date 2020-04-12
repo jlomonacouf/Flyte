@@ -44,7 +44,7 @@ class tripName extends React.Component {
                     <Block width={width * 0.8} height={height*0.55}>
                       <Input
                         borderless
-                        placeholder="Europe"
+                        placeholder="10 Days in Europe"
                         iconContent={
                           <Icon
                             size={16}
