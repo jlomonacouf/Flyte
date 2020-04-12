@@ -1,6 +1,7 @@
 import React from "react";
 import {
   StyleSheet,
+  TextInput,
   ImageBackground,
   Dimensions,
   StatusBar,
@@ -12,34 +13,51 @@ import { Block, Text} from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 import {ImageButton} from 'react-native-image-button-text';
-import Tags from "react-native-tags";
+
 const { width, height } = Dimensions.get("screen");
 
 class tripTags extends React.Component {
+    state = {
+      tagText: "",
+      tags: []
+    }
+
     render() {
-        const MyTagInput = () => (
-            <Tags
-                textInputProps={{
-                placeholder: "Or add your own!"
-                }}
-                maxNumberOfTags={3}
-                onChangeTags={tags => console.log(tags)}
-                onTagPress={(index, tagLabel, event, deleted) =>
-                console.log(index, tagLabel, event, deleted ? "deleted" : "not deleted")
-                }
-                containerStyle={{ justifyContent: "center", backgroundColor: "#cccccc" }}
-                tagContainerStyle={{ padding: 5}}
-                inputStyle={{ backgroundColor: "white", fontSize: 16}}
-                renderTag={({ tag, index, onPress, deleteTagOnPress, readonly }) => (
-                <TouchableOpacity key={`${tag}-${index}`} onPress={onPress}>
-                    <Text>{tag}</Text>
-                </TouchableOpacity>
-                )} 
-            />
-        );
-
-
         const { navigation } = this.props;
+
+        const handleTextChange = (text) => {
+          this.setState({tagText: text});
+          if(text.charAt(text.length-1) === ' ') {
+            if(this.state.tags.length < 3 && this.state.tags.includes(text.substring(0, text.length-1).toLowerCase()) === false) {
+              var tagList = this.state.tags;
+              tagList.push(text.substring(0, text.length-1).toLowerCase());
+              this.setState({tagText: "", tags: tagList});
+            }
+            else {
+              this.setState({tagText: ""});
+            }
+          }
+        }
+
+        const removeTag = (tag) => {
+          var tagList = this.state.tags.filter(item => item !== tag)
+          this.setState({tags: tagList});
+        }
+        
+        const getTagLabels = () => {
+          //console.log('here')
+          if(this.state.tags !== []) {
+            return (
+              <Block style={{flexDirection: 'row'}}>
+                {this.state.tags.map((value, index) => {
+                  return (
+                    <Text color="#00" size={15} style={styles.tagText} onPress={() => removeTag(value)}>#{value}</Text>
+                  )
+                })}
+              </Block>
+            )
+          }
+        }
 
         return (
         <Block flex middle>
@@ -59,7 +77,14 @@ class tripTags extends React.Component {
                     <Block flex center>
                     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
                         <Block width={width * 0.8} height={height*0.55}>
-                            <MyTagInput />
+                              <Input
+                              borderless
+                              placeholder="Or enter your own"
+                              iconContent={null}
+                              onChangeText={text => handleTextChange(text)}
+                              value = {this.state.tagText}
+                              />
+                              {getTagLabels()}
                             <Block style={{flexDirection: 'row'}}>
                                 <ImageButton style={{marginTop: 20}} 
                                 width={width/4} 
@@ -67,21 +92,24 @@ class tripTags extends React.Component {
                                 text="Outdoors"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("outdoors ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Exercise"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("exercise ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Relaxation"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("relaxation ")}/>
                             </Block>
                             <Block style={{flexDirection: 'row'}}>
                                 <ImageButton style={{marginTop: 20}} 
@@ -90,21 +118,24 @@ class tripTags extends React.Component {
                                 text={" Sight" + "\n" + "Seeing"}
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("sightseeing ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Adventure"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("adventure ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Family"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("family ")}/>
                             </Block>
                         </Block>
                         <Block flex bottom>
@@ -141,6 +172,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 1,
     overflow: "hidden"
+  },
+  tagText: {
+    marginLeft: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    backgroundColor: '#cccccc',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputIcons: {
     marginRight: 12
