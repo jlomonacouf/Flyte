@@ -52,15 +52,17 @@ const initialRegion={
 
 class Trip extends React.Component {
   componentDidMount = () => {
+    const { route } = this.props;
+
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch(backendEndpoint + SINGLE_IT_URL + this.state.id, requestOptions)
+    fetch(backendEndpoint + SINGLE_IT_URL + route.params.id, requestOptions)
         .then(response => response.json())
         .then(result => {
-          this.setState({title: result.results[0].name, text: result.results[0].text, loaded: true});
+          this.setState({id: route.params.id, author: result.results[0].username, title: result.results[0].name, text: result.results[0].text, tags: result.results[0].hashtags, loaded: true});
         })
         .catch(error => {console.log('error', error);});
   }
@@ -83,9 +85,11 @@ class Trip extends React.Component {
       } 
     ],
     loaded: false,
-    id: 1,
+    id: 0,
+    author: "",
     title: "",
     text: "",
+    tags: "",
 };
 
   renderProduct = (item, index) => {
@@ -125,6 +129,22 @@ class Trip extends React.Component {
   onRegionChange(region) {
     this.setState({ region });
   }; 
+
+  formatTags = () => {
+    if(this.state.tags === null)
+      return "";
+
+    var tags = this.state.tags.split(',');
+    var tagList = "";
+
+    tags.forEach((tag) => {
+      tag = tag.charAt(0).toUpperCase() + tag.substring(1);
+      tag = (tag.charAt(0) !== '#') ? '#' + tag : tag;
+      tagList += tag + "  ";
+    })
+
+    return tagList;
+  }
 
   renderCards = () => {
     const { navigation } = this.props;
@@ -178,7 +198,7 @@ class Trip extends React.Component {
           {this.state.title}
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
-        <Text center color="green" size={12}>@JaneDoe</Text>
+        <Text center color="green" size={12}>@{this.state.author}</Text>
         </TouchableOpacity>
         <Block>
         <Text size={15} style={styles.subTitle}>
@@ -215,7 +235,7 @@ class Trip extends React.Component {
 
           <Block flex  style={{margin:20}}>
                 <Text center size={18}  color={argonTheme.COLORS.HEADER}>
-                  #Relaxation #Adventure #Romance
+                  {this.formatTags()}
                 </Text>
             </Block>
         </Block>
