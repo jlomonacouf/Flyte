@@ -17,7 +17,7 @@ class Home extends React.Component {
     articles: []
   }; 
 
-  componentDidMount = () => {
+  componentDidMount(){
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
@@ -28,6 +28,7 @@ class Home extends React.Component {
         .then(result => {
           result.results.map((value, index) => {
             var article = {
+              id: value.id,
               title: value.name,
               image: 'https://www.jetsetter.com/uploads/sites/7/2019/04/GettyImages-924894324-1380x690.jpg',
               cta: 'View Trip'
@@ -52,7 +53,6 @@ class Home extends React.Component {
         <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
       );
     });*/
-    console.log('rendering articles')
     var formatCounter = 0;
     return (
       <ScrollView
@@ -68,8 +68,8 @@ class Home extends React.Component {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
               return (
                 <Block flex row>
-                  <Card item={value} style={{ marginRight: theme.SIZES.BASE }} nextScreen={'Trip'} />
-                  <Card item={this.state.articles[index+1]} nextScreen={'Trip'} />
+                  <Card item={value} style={{ marginRight: theme.SIZES.BASE }} id={value.id} nextScreen={'Trip'} />
+                  <Card item={this.state.articles[index+1]} id={value.id+1} nextScreen={'Trip'} />
                 </Block>
               );
             }
@@ -78,11 +78,11 @@ class Home extends React.Component {
             }
             else if(formatCounter === 3) {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
-              return (<Card item={value} full nextScreen={'Trip'}/>);
+              return (<Card item={value} full id={value.id} nextScreen={'Trip'}/>);
             }
             else {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
-              return (<Card item={value} horizontal nextScreen={'Trip'}/>);
+              return (<Card item={value} horizontal id={value.id} nextScreen={'Trip'}/>);
             }
           })}
         </Block>
