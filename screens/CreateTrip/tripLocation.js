@@ -4,7 +4,8 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import { Block, Text, theme} from "galio-framework";
 
@@ -19,8 +20,111 @@ import {GOOGLE_PLACES_KEY} from '../../src/api_methods/api_keys'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 class tripLocation extends React.Component {
+  state = {
+    locations: [{address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}]
+  }
+
   render() {
     const { navigation } = this.props;
+  
+    const googleAutoComplete = (defaultText, ID) => {
+      return (
+        <GooglePlacesAutocomplete
+          placeholder={"Location " + ID}
+          placeholderTextColor={'#8898AA'}
+          minLength={2}
+          autoFocus={false}
+          returnKeyType={'default'}
+          fetchDetails={true}
+          getDefaultValue={() => defaultText}
+          keyboardShouldPersistTaps="handled"
+          listViewDisplayed='false'
+          autoCompleteID={ID}
+          query={{
+            key: GOOGLE_PLACES_KEY,
+            language: 'en', // language of the results
+          }}
+          onPress={(data, details = null, autoCompleteID) => {
+            var locationList = this.state.locations;
+            var location = {address: data.description, latitude: details.geometry.location.lat, longitude: details.geometry.location.lng};
+            if(autoCompleteID < this.state.locations.length)
+              locationList[autoCompleteID] = location;
+            else
+              locationList.push(location);
+            
+            this.setState({locations: locationList})
+            console.log(this.state.locations)
+          }}
+          styles={{
+              marginHorizontal: 16,
+              borderWidth: 1,
+              borderRadius: 3,
+              borderColor: argonTheme.COLORS.BLACK,
+            textInputContainer: {
+              backgroundColor: 'rgba(0,0,0,0)',
+              borderTopWidth: 1,
+              borderBottomWidth:1,
+              borderRightWidth: 1,
+              borderWidth: 1,
+              borderRadius: 3,
+              borderColor: argonTheme.COLORS.BLACK,
+            },
+            textInput: {
+              marginLeft: 0,
+              marginRight: 0,
+              marginTop: 1,
+              height: 38,
+              color: '#8898AA',
+              fontSize: 16,
+            },
+            predefinedPlacesDescription: {
+              color: '#1faadb',
+            },
+          }}
+          currentLocation={false}
+        />
+      )
+    }
+
+    const renderAutoCompletes = () => { //This is really ugly but i spent hours trying to do something cool but it wouldnt work with the google autocomplete library and i gave up at 3 am
+      var index = 1;
+      return(
+        <Block flex>
+          <Block flex>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+            <Block style={{flexDirection: 'column', marginTop: 25}}>
+              {googleAutoComplete("", index++)}
+            </Block>
+          </Block>
+        </Block>
+      )
+    }
 
     return (
       <Block flex middle>
@@ -34,7 +138,7 @@ class tripLocation extends React.Component {
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#00" size={20}>
-                    Enter Your Location
+                    Enter Trip Locations
                   </Text>
                 </Block>
                 <Block flex center>
@@ -44,41 +148,9 @@ class tripLocation extends React.Component {
                     enabled
                   >
                     <Block width={width * 0.8} height={height*0.55} iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}>
-                    <GooglePlacesAutocomplete
-                      placeholder='Where to?'
-                      placeholderTextColor={'#8898AA'}
-                      minLength={2}
-                      autoFocus={false}
-                      returnKeyType={'default'}
-                      fetchDetails={true}
-                      keyboardShouldPersistTaps="handled"
-                      query={{
-                        key: GOOGLE_PLACES_KEY,
-                        language: 'en', // language of the results
-                      }}
-                      styles={{
-                          marginHorizontal: 16,
-                          borderWidth: 1,
-                          borderRadius: 3,
-                          borderColor: argonTheme.COLORS.BORDER,
-                        textInputContainer: {
-                          backgroundColor: 'rgba(0,0,0,0)',
-                          borderTopWidth: 0,
-                          borderBottomWidth:0,
-                        },
-                        textInput: {
-                          marginLeft: 0,
-                          marginRight: 0,
-                          height: 38,
-                          color: '#8898AA',
-                          fontSize: 16,
-                        },
-                        predefinedPlacesDescription: {
-                          color: '#1faadb',
-                        },
-                      }}
-                      currentLocation={false}
-                    />
+                      <ScrollView contentContainerStyle={styles.articles} keyboardShouldPersistTaps='always' listViewDisplayed={false} >
+                          {renderAutoCompletes()}
+                      </ScrollView>
                     </Block>
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
