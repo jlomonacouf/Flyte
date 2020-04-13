@@ -141,19 +141,36 @@ function HomeStack(props) {
   const homeMenu= [
     {id: 'Home', title: 'Popular',}, 
     {id: 'viewTrips', title: 'Your Trips',},
-    {id: 'Login', title: 'Login',},
     {id: 'Account', title: 'Settings',}
 ]; 
 const userTripMenu= [
   {id: 'viewTrips', title: 'Your Trips',},
   {id: 'Home', title: 'Popular',}, 
-  {id: 'Login', title: 'Login',},
   {id: 'Account', title: 'Settings',}
 ]; 
 
   return (
    
     <Stack.Navigator mode="card" headerMode="screen">
+
+    <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            header: ({ navigation, scene }) => (
+              <Header
+                title=""
+                back
+                white
+                transparent
+                navigation={navigation}
+                scene={scene}
+              />
+            ),
+            headerTransparent: true
+          }}
+        />
+
       <Stack.Screen
         name="Home"
         component={Home}
@@ -204,23 +221,7 @@ const userTripMenu= [
             />
           ),
         }}/>
-    <Stack.Screen
-      name="Login"
-      component={Login}
-      options={{
-        header: ({ navigation, scene }) => (
-          <Header
-            title=""
-            back
-            white
-            transparent
-            navigation={navigation}
-            scene={scene}
-          />
-        ),
-        headerTransparent: true
-      }}
-    />
+    
      <Stack.Screen
     name="Profile"
     component={Profile}
@@ -635,10 +636,10 @@ function AppStack(props) {
           fontWeight: "normal"
         }
       }}
-      initialRouteName="Home"
+      initialRouteName="Login"
     >
 
-      <Drawer.Screen name="Home" component={HomeStack} />
+      <Drawer.Screen name="Login" component={HomeStack} />
       <Drawer.Screen name="Profile" component={ProfileStack} />
       <Drawer.Screen name="Account" component={Register} />
       <Drawer.Screen name="Loading" component={Loading} />
@@ -653,11 +654,6 @@ function AppStack(props) {
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
       <Drawer.Screen name="Basic" component={Basic} />
-
- 
-
-  
-
 
     </Drawer.Navigator>
   );
