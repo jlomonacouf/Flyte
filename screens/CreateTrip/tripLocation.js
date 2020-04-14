@@ -20,8 +20,12 @@ import {GOOGLE_PLACES_KEY} from '../../src/api_methods/api_keys'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 class tripLocation extends React.Component {
-  state = {
-    locations: [{address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}]
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      locations: [{address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}],
+    }
   }
 
   render() {
@@ -44,16 +48,21 @@ class tripLocation extends React.Component {
             key: GOOGLE_PLACES_KEY,
             language: 'en', // language of the results
           }}
-          onPress={(data, details = null, autoCompleteID) => {
+          onPress={(data, details = null) => {
             var locationList = this.state.locations;
             var location = {address: data.description, latitude: details.geometry.location.lat, longitude: details.geometry.location.lng};
-            if(autoCompleteID < this.state.locations.length)
-              locationList[autoCompleteID] = location;
-            else
-              locationList.push(location);
+            
+            details.address_components.forEach(element => {
+              if(element.types.includes("country"))
+                location.country = element.long_name;
+              else if(element.types.includes("locality"))
+                location.city = element.long_name;
+            });
+
+            if(ID-1 < this.state.locations.length)
+              locationList[ID-1] = location;
             
             this.setState({locations: locationList})
-            console.log(this.state.locations)
           }}
           styles={{
               marginHorizontal: 16,
@@ -155,7 +164,7 @@ class tripLocation extends React.Component {
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("tripDates")}>
+                        onPress={() => navigation.navigate("tripDates", {locations: this.state.locations})}>
                           Continue
                         </Text>
                       </Button>
