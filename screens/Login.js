@@ -52,9 +52,15 @@ class Login extends React.Component {
         view_id: username
       }
       //console.log(character.name); 
-      navigation.navigate('Profile', {item: character}); 
+      if(data.success===false){
+        this.setState({errorMessage: 'Incorrect username or password'}); 
+
+      }else{
+      navigation.navigate('Home', {item: character}); 
+      } 
     }).catch((err) => {
       console.log('error logging in: ', err);
+      this.setState({errorMessage: 'Error logging in, please try again in a second'}); 
     });
   }
 
@@ -81,7 +87,8 @@ class Login extends React.Component {
                 </Block>
               </Block>
               <Block flex>
-                <Block flex={0.17} middle></Block>
+                <Block flex={0.17} middle>
+                </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
                     style={{ flex: 1 }}
@@ -127,6 +134,9 @@ class Login extends React.Component {
                      
                 
                     </Block>
+                    <Block flex={0.17} middle>
+                  {this.state.errorMessage && <Text style={{fontSize: 14, color: 'red', padding: 5}}>{this.state.errorMessage}</Text>}
+                </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={this.onLoginPress}>
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>LOG IN</Text>
