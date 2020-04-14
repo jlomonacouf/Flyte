@@ -6,21 +6,25 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  Image,
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
 import { Block, Text} from "galio-framework";
 
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { backendEndpoint, PROFILE_IMG_URL } from '../../src/api_methods/shared_base'
 import * as ImagePicker from 'expo-image-picker';
-
 const { width, height } = Dimensions.get("screen");
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class tripImages extends React.Component {
 
   state = {
     image: null,
+    uploading: false,
+    error: false,
   };
 
   componentDidMount() {
@@ -45,72 +49,131 @@ class tripImages extends React.Component {
       exif: false
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       this.setState({ image: result.uri });
     }
   };
+
+  uploadImages = () => {
+    //() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
+    this.setState({uploading: true})
+    fetch(backendEndpoint + PROFILE_IMG_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      fetch(this.state.image).then(response => {
+        response.blob().then(res => {
+          var requestOptions = {
+            method: 'PUT',
+            body: res,
+            headers: {'Content-Type': 'multipart/form-data'},
+            redirect: 'follow'
+          };
+          fetch(data.data.signedRequest, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => {
+              console.log('error', error)
+              this.setState({uploading: false, error: true});
+            });
+
+          this.setState({uploading: false, error: false});
+          this.props.navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
+        })
+      });
+    }).catch((err) => {
+      this.setState({uploading: false, error: true});
+      console.log('error uploading to s3: ', err);
+    });
+    
+  }
 
   render() {
     let { image } = this.state;
     
     const { navigation } = this.props;
 
-    return (
-      <Block flex middle>
-        <StatusBar hidden />
-        <ImageBackground
-          source={Images.RegisterBackground}
-          style={{ width, height, zIndex: 1 }}
-        >
-          <Block flex middle>
-            <Block style={styles.registerContainer}>
-              <Block flex>
-                <Block flex={0.17} middle>
-                  <Text color="#00" size={20}>
-                    Upload Photos
-                  </Text>
-                </Block>
-                <Block flex center>
-                  <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior="padding"
-                    enabled
-                  >
-                    <Block width={width * 0.8} height={height*0.55}>
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={this._pickImage}>
-                          Choose an image
-                        </Text>
-                      </Button>
-                    </Block>
-                    <Block flex row bottom>
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})}>
-                          NEXT
-                        </Text>
-                      </Button>
-                      <Block>
-                        
+    const renderImageContainer = () => {
+      if(this.state.image === null) {
+        return (
+          <Text bold size={20} style={styles.pickImageText}>Choose Photo</Text>
+        )
+      }
+      else {
+        return (
+          <Image source={{uri: this.state.image}} style={{ width: width * 0.70, height: height * 0.3 }}/>
+        )
+      }
+    }
+
+    const renderErrorMessage = () => {
+      if(this.state.error === true) {
+        return (
+          <Text bold size={15} style={{textAlign: 'center', color: '#FF0000'}}>An error occurred while uploading your file</Text>
+        )
+      }
+    }
+    
+    if(this.state.uploading === true) {
+      return (
+        <Block flex style={styles.container}>
+        <Spinner
+          visible={true}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </Block> ); 
+    }
+    else {
+      return (
+        <Block flex middle>
+          <StatusBar hidden />
+          <ImageBackground
+            source={Images.RegisterBackground}
+            style={{ width, height, zIndex: 1 }}
+          >
+            <Block flex middle>
+              <Block style={styles.registerContainer}>
+                <Block flex>
+                  <Block flex={0.17} middle>
+                    <Text color="#00" size={20}>
+                      Choose a Trip Photo
+                    </Text>
+                  </Block>
+                  <Block flex center>
+                    <KeyboardAvoidingView
+                      style={{ flex: 1 }}
+                      behavior="padding"
+                      enabled
+                    >
+                      <Block width={width * 0.8} height={height*0.55}>
+                        <TouchableOpacity style={styles.pickImageButton} onPress={this._pickImage}>
+                          {renderImageContainer()}
+                        </TouchableOpacity>
+                        {renderErrorMessage()}
                       </Block>
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("Trip")}>
-                          FINISH
-                        </Text>
-                      </Button>
-                    </Block>
-                  </KeyboardAvoidingView>
+                      <Block flex row style={{justifyContent: 'flex-end'}} >
+                        <Button color="primary" style={styles.createButton}>
+                          <Text bold size={16} color={argonTheme.COLORS.WHITE} 
+                          onPress={() => this.uploadImages()}>
+                            NEXT
+                          </Text>
+                        </Button>
+                      </Block>
+                    </KeyboardAvoidingView>
+                  </Block>
                 </Block>
               </Block>
             </Block>
-          </Block>
-        </ImageBackground>
-      </Block>
-    );
+          </ImageBackground>
+        </Block>
+      );
+    }
   }
 }
 
@@ -135,8 +198,18 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width * 0.20,
-    marginTop: 25
-  }
+    marginTop: 25,
+  },
+  pickImageButton: {
+    borderWidth: 1,
+    borderColor: argonTheme.COLORS.BLACK,
+    marginLeft: width * 0.05,
+    width: width * 0.70,
+    height: height * 0.3,
+    backgroundColor: argonTheme.COLORS.BORDER_COLOR,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });
 
 export default tripImages;
