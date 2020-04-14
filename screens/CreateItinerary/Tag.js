@@ -12,32 +12,10 @@ import { Block, Text} from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 import {ImageButton} from 'react-native-image-button-text';
-import Tags from "react-native-tags";
 const { width, height } = Dimensions.get("screen");
 
 class CreateItinerary_Tag extends React.Component {
     render() {
-        const MyTagInput = () => (
-            <Tags
-                textInputProps={{
-                placeholder: "Or add your own!"
-                }}
-                maxNumberOfTags={3}
-                onChangeTags={tags => console.log(tags)}
-                onTagPress={(index, tagLabel, event, deleted) =>
-                console.log(index, tagLabel, event, deleted ? "deleted" : "not deleted")
-                }
-                containerStyle={{ justifyContent: "center", backgroundColor: "#cccccc" }}
-                tagContainerStyle={{ padding: 5}}
-                inputStyle={{ backgroundColor: "white", fontSize: 16}}
-                renderTag={({ tag, index, onPress, deleteTagOnPress, readonly }) => (
-                <TouchableOpacity key={`${tag}-${index}`} onPress={onPress}>
-                    <Text>{tag}</Text>
-                </TouchableOpacity>
-                )} 
-            />
-        );
-
 
         const { navigation } = this.props;
 
@@ -59,7 +37,6 @@ class CreateItinerary_Tag extends React.Component {
                     <Block flex center>
                     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
                         <Block width={width * 0.8} height={height*0.55}>
-                            <MyTagInput />
                             <Block style={{flexDirection: 'row'}}>
                                 <ImageButton style={{marginTop: 20}} 
                                 width={width/4} 

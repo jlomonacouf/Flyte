@@ -5,9 +5,10 @@ import {
     ImageBackground,
     Dimensions,
     StatusBar,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ScrollView
 } from "react-native";
-import { Block, Text } from "galio-framework";
+import { Block, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
@@ -23,131 +24,169 @@ const { width, height } = Dimensions.get("screen");
 export default class tripDates extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props.route.params.locations)
+        var trimmedLocations = []
+        this.props.route.params.locations.forEach(element => {
+            if(element.address !== "")
+                trimmedLocations.push(element)
+        });
         //set value in state for initial date
+        var dateList = [];
+
+        for(var i = 0; i < trimmedLocations.length; i++)
+            dateList.push({});
+
         this.state = {
-            start_date: '05-06-2020',
-            end_date: '05-27-2020'
+            locations: trimmedLocations,
+            dates: dateList
         };
     }
 
+    
+
     render() {
         const { navigation } = this.props;
+        const MIN_DATE_DEFAULT = "04-01-2020";
+        const MAX_DATE_DEFAULT = "01-01-2030";
+        const renderDate = (index) => {
+            return (
+                <Block flex row style={{marginTop: 10}}>
+                    <DatePicker
+                    style={{ width: width*0.4 }}
+                    date={this.state.dates[index].startDate} //initial date from state
+                    mode="date" //The enum of date, datetime and time
+                    placeholder="Start date"
+                    format="MM-DD-YYYY"
+                    minDate={MIN_DATE_DEFAULT}
+                    maxDate={MAX_DATE_DEFAULT}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0,
+                        },
+                        dateInput: {
+                            marginLeft: 36,
+                        },
+                    }}
+                    onDateChange={date => {
+                        var dateList = this.state.dates;
+                        dateList[index].startDate = date;
+                        this.setState({ dates: dateList });
+                    }}
+                    />
+                    <Block style={{flex: 1, justifyContent: 'center',alignItems: 'center'}}>
+                    <Text size={20} style={{marginLeft: 2, marginRight: 2, textAlign:"center"}}>to</Text>
+                    </Block>
+                    <DatePicker
+                    style={{ width: width*0.34 }}
+                    date={this.state.dates[index].endDate} //initial date from state
+                    mode="date" //The enum of date, datetime and time
+                    placeholder="End date"
+                    format="MM-DD-YYYY"
+                    minDate={MIN_DATE_DEFAULT}
+                    maxDate={MAX_DATE_DEFAULT}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    showIcon={false}
+                    onDateChange={date => {
+                        var dateList = this.state.dates;
+                        dateList[index].endDate = date;
+                        this.setState({ dates: dateList });
+                    }}
+                    />
+                </Block>
+            )
+        }
+
+        const renderLocationDates = () => {
+            return (
+                <Block>
+                    {this.state.locations.map((value, index) => {
+                        return(
+                            <Block>
+                                <Block flex row style={{marginTop: (index === 0) ? 0 : 30}}>
+                                    <Text size={17} style={{marginLeft: 5}}>Set dates for: </Text>
+                                    <Text bold size={17}>{value.address}</Text>
+                                </Block>
+                                <Block flex row>
+                                    {renderDate(index)}
+                                </Block>
+                            </Block>
+                        )}
+                    )}
+                </Block>
+            )
+        }
+
         return (
             <Block flex middle>
                 <StatusBar hidden />
                 <ImageBackground
-                    source={Images.RegisterBackground}
-                    style={{ width, height, zIndex: 1 }}
+                source={Images.RegisterBackground}
+                style={{ width, height, zIndex: 1 }}
                 >
-
-                    <Block flex middle>
-                        <Block style={styles.registerContainer}>
-                            <Block flex style={{ marginTop: 200, marginBottom: 20 }}>
-                                <Block flex={0.17} middle>
-                                    <Text color="#00" size={25}>
-                                        Dates
-                  </Text>
-                                </Block>
-                                <Block middle style={{ marginTop: 80, marginBottom: 30 }}>
-                                    <DatePicker
-                                        style={{ width: 200 }}
-                                        date={this.state.start_date} //initial date from state
-                                        mode="date" //The enum of date, datetime and time
-                                        placeholder="Startdate"
-                                        format="DD-MM-YYYY"
-                                        minDate="01-01-1900"
-                                        maxDate="01-01-2030"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        customStyles={{
-                                            dateIcon: {
-                                                position: 'absolute',
-                                                left: 0,
-                                                top: 4,
-                                                marginLeft: 0,
-                                            },
-                                            dateInput: {
-                                                marginLeft: 36,
-                                            },
-                                        }}
-                                        onDateChange={date => {
-                                            this.setState({ start_date: date });
-                                        }}
-                                    />
-                                </Block>
-                                <Block middle>
-                                    <DatePicker
-                                        style={{ width: 200 }}
-                                        endDate={this.state.end_date} //initial date from state
-                                        mode="date" //The enum of date, datetime and time
-                                        placeholder="End date"
-                                        format="DD-MM-YYYY"
-                                        minDate="01-01-1950"
-                                        maxDate="01-01-2050"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        customStyles={{
-                                            dateIcon: {
-                                                position: 'absolute',
-                                                left: 0,
-                                                top: 4,
-                                                marginLeft: 0,
-                                            },
-                                            dateInput: {
-                                                marginLeft: 36,
-                                            },
-                                        }}
-                                        onDateChange={endDate => {
-                                            this.setState({ end_date: endDate });
-                                        }}
-                                    />
-                                </Block>
-                            </Block>
-
-                            <Block flex bottom>
-                                <Block middle>
-                                    <Button color="primary" style={styles.createButton}>
-                                        <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                                            onPress={() => navigation.navigate("tripDescription")}>
-                                            Continue
+                <Block flex middle>
+                    <Block style={styles.registerContainer}>
+                    <Block flex>
+                        <Block flex={0.17} middle>
+                        <Text color="#00" size={20}>
+                            Choose Travel Dates
                         </Text>
-                                    </Button>
-                                </Block>
-                            </Block>
                         </Block>
-
+                        <Block flex center>
+                        <KeyboardAvoidingView
+                            style={{ flex: 1 }}
+                            behavior="padding"
+                            enabled
+                        >
+                            <Block width={width * 0.8} height={height*0.55} iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}>
+                            <ScrollView contentContainerStyle={styles.articles} keyboardShouldPersistTaps='always' listViewDisplayed={false} >
+                           {renderLocationDates()}
+                            </ScrollView>
+                            </Block>
+                            <Block flex bottom>
+                            <Button color="primary" style={styles.createButton}>
+                                <Text bold size={16} color={argonTheme.COLORS.WHITE}
+                                onPress={() => navigation.navigate("tripTags")}>
+                                Continue
+                                </Text>
+                            </Button>
+                            </Block>
+                        </KeyboardAvoidingView>
+                        </Block>
                     </Block>
-
+                    </Block>
+                </Block>
                 </ImageBackground>
             </Block>
         );
     }
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 50,
-        padding: 16,
-    },
     registerContainer: {
-        width: width * 0.9,
-        height: height * 0.78,
-        backgroundColor: "#FFFFFF",
-        borderRadius: 4,
-        shadowColor: argonTheme.COLORS.BLACK,
-        shadowOffset: {
-            width: 0,
-            height: 4
-        },
-        shadowRadius: 8,
-        shadowOpacity: 0.1,
-        elevation: 1,
-        overflow: "hidden"
+      width: width * 0.9,
+      height: height * 0.78,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 4,
+      shadowColor: argonTheme.COLORS.BLACK,
+      shadowOffset: {
+        width: 0,
+        height: 4
+      },
+      shadowRadius: 8,
+      shadowOpacity: 0.1,
+      elevation: 1,
+      overflow: "hidden"
+    },
+    inputIcons: {
+      marginRight: 12
     },
     createButton: {
-        width: width * 0.40,
-        marginTop: 25
+      width: width * 0.30,
+      marginTop: 25
     }
-});
+  });
