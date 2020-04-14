@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import {
   Image,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
+  ScrollView, 
   TouchableOpacity
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
@@ -17,6 +18,21 @@ import { backendEndpoint, REGISTER_URL, GET_USER_URL} from "../src/api_methods/s
 import bcrypt from 'react-native-bcrypt';
 
 const { width, height } = Dimensions.get("screen");
+
+//Regex 
+const emailPattern =/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+const usa =/ ^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/; 
+const international =/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/; 
+const usernamePattern = /^[0-9a-zA-Z]+$/;
+
+//Check entries
+var first= false; 
+var last= false; 
+var num =false; 
+var mail = false; 
+var userN = false; 
+var pass =false ; 
+
 
 class Register extends React.Component {
 
@@ -30,9 +46,75 @@ class Register extends React.Component {
       approvesPolicy: false, 
 
     }; 
-
+  
   handleChange = (name, val) => {
     this.setState({ [name]: val });
+    switch (name){
+      case 'first_name':
+          if(val.length>20){
+            this.setState({warningMessage: 'First name should be less than 20 characters'}); 
+            first= false; 
+          }else{
+            first=true; 
+          }
+        break; 
+      case 'last_name': 
+          if(val.length>30){
+            this.setState({warningMessage: 'Last name should be less than 30 characters'}); 
+            last=false; 
+          } 
+          else {
+            last=true; 
+          }
+        break; 
+      case 'phone_number':
+
+        if (val.length>4 && val.match(international)){
+          this.setState({warningMessage: 'International number detected'}); 
+          num=false; 
+        }else if (!val.match(usa)  && !val.match(international)){
+          this.setState({warningMessage: 'Please enter a valid phone number'}); 
+          num=false; 
+        }else {
+          num=true; 
+        }
+        break; 
+      case 'email': 
+        if (!val.match(emailPattern)){
+          this.setState({warningMessage: 'Please enter a valid email address'}); 
+          mail=false; 
+        }
+        else {
+          mail=true; 
+        }
+        break; 
+      case 'username':
+          if((!val.match(usernamePattern)) && (val.length >30)){
+            this.setState({warningMessage: 'Username must be a combination of less than 30 letters and numbers'}); 
+            userN=false; 
+          }
+          else if(!val.match(usernamePattern)){
+            this.setState({warningMessage: 'Username can only contain letters and numbers'}); 
+            userN=false; 
+          }else if(val.length>30){
+            this.setState({warningMessage: 'Username must be less than 30 characters'}); 
+            userN=false; 
+          }else{
+            userN=true; 
+          }
+        break; 
+      case 'password': 
+          if(val.length<5){
+            this.setState({warningMessage: 'Password must be at least 5 characters'}); 
+            pass=false; 
+          }else{
+            pass=true; 
+          }
+        break; 
+      case 'confirm_password': 
+        this.setState({warningMessage: 'Passwords do not match'}); 
+        break; 
+    }
   };
 
   onSignUpPress = async () => {
@@ -66,14 +148,21 @@ class Register extends React.Component {
       })
     }).then((response) => response.json())
       .then((json) => {
-       
-        const character ={
-          my_id: username,
-          view_id: username
-        }
-        navigation.navigate('Profile', {item: character}); 
+
+        if(json.success===false){
+          this.setState({errorMessage: 'Error creating an account, please try again'}); 
+  
+        }else{
+
+            const character ={
+              my_id: username,
+              view_id: username
+            }
+           navigation.navigate('Profile', {item: character}); 
+        } 
       }).catch((err) => {
         console.log('error getting user data', err);
+        this.setState({errorMessage: 'Error creating an account, please try again'}); 
       });
   }; 
 
@@ -82,6 +171,8 @@ class Register extends React.Component {
 
   renderRegistration() {
     const { navigation } = this.props;
+    const isEnabled = first && last && num && mail && userN && pass; 
+
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -129,6 +220,11 @@ class Register extends React.Component {
                     behavior="padding"
                     enabled
                   >
+                < ScrollView>
+                    <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                    </Block>
+
                    <Block row width={width*0.8 } style={{ marginBottom:5}}>
                      <Block width={width * 0.37}  style={{ marginRight: 22}}>
                       <Input
@@ -258,7 +354,7 @@ class Register extends React.Component {
                             </TouchableOpacity>
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={this.onSignUpPress}>
+                      <Button disabled={isEnabled} color="primary" style={styles.createButton} onPress={this.onSignUpPress}>
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           CREATE ACCOUNT
                         </Text>
@@ -269,6 +365,11 @@ class Register extends React.Component {
                             <Text size={12} color="blue" >Already have an account? Login </Text>
                             </TouchableOpacity>
                       </Block>
+                      <Block flex={0.17} middle>
+                       {this.state.errorMessage && <Text style={{fontSize: 15, color: 'red', padding: 15}}>{this.state.errorMessage}</Text>}
+                    </Block>
+
+                      </ScrollView>
                   </KeyboardAvoidingView>
                 </Block>
               </Block>

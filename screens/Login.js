@@ -60,7 +60,7 @@ class Login extends React.Component {
       } 
     }).catch((err) => {
       console.log('error logging in: ', err);
-      this.setState({errorMessage: 'Error logging in, please try again in a second'}); 
+      this.setState({errorMessage: 'Error logging in, please try again in a moment'}); 
     });
   }
 

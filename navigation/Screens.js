@@ -268,7 +268,6 @@ const userTripMenu= [
  );
 }
 
-
 function ProfileStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="none">
@@ -481,7 +480,6 @@ function TripStack(props) {
     </Stack.Navigator>
   );
 }
-
 
 function ItineraryStack(props) {
   return (
