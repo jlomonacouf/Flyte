@@ -303,7 +303,7 @@ function ProfileStack(props) {
       
       header: ({ navigation, scene }) => (
         ({ route }) => ({
-          title: route.params.item.name
+          title: route.params.currentUser
         }), 
         <Header
           title="Followers"
@@ -323,7 +323,7 @@ function ProfileStack(props) {
     component={Following}
     options={
       ({ route }) => ({
-        title: route.params.item.name
+        title: route.params.currentUser
       })
       , {
       

@@ -56,8 +56,9 @@ class Login extends React.Component {
         this.setState({errorMessage: 'Incorrect username or password'}); 
 
       }else{
-        navigation.reset({index: 0, routes: [{ name: 'Home' }],})
+      //  navigation.reset({index: 0, routes: [{ name: 'Home' }],})
         //navigation.navigate('Home', {item: character}); 
+        navigation.navigate('Profile', {item: character});
       } 
     }).catch((err) => {
       console.log('error logging in: ', err);
