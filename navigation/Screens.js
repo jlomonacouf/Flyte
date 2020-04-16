@@ -23,7 +23,7 @@ import Loading from "../screens/Loading";
 import Login from "../screens/Login";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
-import Trip from "../screens/Trip"; 
+import Trip from "../screens/Plan"; 
 import Itinerary from "../screens/Itinerary"; 
 
 //User Pages 

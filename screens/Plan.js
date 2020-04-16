@@ -12,32 +12,13 @@ import {
 import { Block, Text, theme } from "galio-framework";
 //argon
 import MapView, {Marker} from 'react-native-maps';
-import { articles, Images, argonTheme } from "../constants/";
-import { Card } from "../components/";
+import { articles, Images, argonTheme } from "../constants";
+import { Card } from "../components";
 import Spinner from 'react-native-loading-spinner-overlay';
 const { width, height } = Dimensions.get("screen");
 import { backendEndpoint, SINGLE_IT_URL } from '../src/api_methods/shared_base'; 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
-const categories = [
-  {
-    title: "Day One",
-    image: "https://www.fodors.com/wp-content/uploads/2018/10/HERO_UltimateRome_Hero_shutterstock789412159.jpg",
-    date: "05/05/2020"
-  },
-  {
-    title: "Day Two",
-    image:
-      "https://2.bp.blogspot.com/-VqFCYgtKyjM/Uk-34ap3tWI/AAAAAAAAcIo/1QJCtj-7-YQ/s1600/Mykonos-passion4luxury.32.png",
-    date: "05/06/2020"
-  },
-  {
-    title: "Day Three",
-    image:
-      "https://2.bp.blogspot.com/-VqFCYgtKyjM/Uk-34ap3tWI/AAAAAAAAcIo/1QJCtj-7-YQ/s1600/Mykonos-passion4luxury.32.png",
-    date: "05/06/2020"
-  }
-];
 
 const currUser = "Gremlin"; 
 
@@ -62,10 +43,21 @@ class Trip extends React.Component {
     fetch(backendEndpoint + SINGLE_IT_URL + route.params.id, requestOptions)
         .then(response => response.json())
         .then(result => {
-          this.setState({id: route.params.id, author: result.results[0].username, title: result.results[0].name, text: result.results[0].text, 
-            tags: result.results[0].hashtags, region: {latitude: result.results[0].latitude, longitude: result.results[0].longitude, latitudeDelta: 0, longitudeDelta: 0}, loaded: true});
+          this.setState({id: route.params.id, author: result.itinerary.username, title: result.itinerary.name, text: result.itinerary.text, 
+            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0, longitudeDelta: 0}, loaded: true});
+
+          var photos = [];
+          result.itinerary.images.forEach(image => {
+            console.log(image)
+            photos.push({title: image.title, caption: image.caption, image: image.image_path})
+          })
+          this.setState({photos: photos})
         })
-        .catch(error => {console.log('error', error);});
+        .catch(error => {
+          console.log('error', error);
+          alert("Error: Unable to load plan")
+          this.props.navigation.reset({index: 0, routes: [{ name: 'Home' }],})
+        });
   }
 
   state = {
@@ -91,6 +83,7 @@ class Trip extends React.Component {
     title: "",
     text: "",
     tags: "",
+    photos: []
 };
 
   renderProduct = (item, index) => {
@@ -119,7 +112,7 @@ class Trip extends React.Component {
               color={theme.COLORS.MUTED}
               style={styles.productDate}
             >
-              {item.date}
+              {item.caption}
             </Text>
           </Block>
         </Block>
@@ -154,8 +147,6 @@ class Trip extends React.Component {
       <Block flex style={styles.group}>
         <Block flex>
           <Block>
-         
-
             <Block flex shadow style={styles.category}>
             {/* <Block style={styles.categoryTitle}>
                   <Text size={18} bold color={theme.COLORS.WHITE}>
@@ -165,8 +156,7 @@ class Trip extends React.Component {
             <Block style={styles.mapContainer} >
               <MapView style={styles.mapStyle} 
               region={this.state.region}
-              onRegionChange={this.onRegionChange}
-                >
+              onRegionChange={this.onRegionChange}>
                   {this.state.markers.map(marker => (
                     <Marker
                       coordinate={marker.latlng}
@@ -191,28 +181,21 @@ class Trip extends React.Component {
                 }}
               > */}
               </Block>
-               
-              {/* </ImageBackground> */}
             </Block>
-        <Block>
-        <Text bold size={24} style={styles.title}>
-          {this.state.title}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
-        <Text center color="green" size={12}>@{this.state.author}</Text>
-        </TouchableOpacity>
-        <Block>
-        <Text size={15} style={styles.subTitle}>
-          {this.state.text}
-        </Text>
+            <Block>
+              <Text bold size={24} style={styles.title}>
+                {this.state.title}
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
+                <Text center color="green" size={12}>@{this.state.author}</Text>
+              </TouchableOpacity>
+              <Block>
+                <Text size={15} style={styles.subTitle}>
+                {this.state.text}
+              </Text>
+            </Block>
         </Block>
-
         </Block>
-           
-
-                
-
-          </Block>
           <Block flex style={{ marginTop: theme.SIZES.BASE / 2 }}>
             <ScrollView
               horizontal={true}
@@ -226,8 +209,8 @@ class Trip extends React.Component {
                 paddingHorizontal: theme.SIZES.BASE / 2
               }}
             >
-              {categories &&
-                categories.map((item, index) =>
+              {this.state.photos &&
+                this.state.photos.map((item, index) =>
                   this.renderProduct(item, index)
                 )}
             </ScrollView>
@@ -287,7 +270,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
    // color: argonTheme.COLORS.HEADER,
    color: 'black',
-    alignSelf: "center"
+    alignSelf: "center",
+    textAlign: "center"
   },
   subTitle: {
     paddingBottom: theme.SIZES.BASE,
