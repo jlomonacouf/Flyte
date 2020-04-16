@@ -44,7 +44,7 @@ class Trip extends React.Component {
         .then(response => response.json())
         .then(result => {
           this.setState({id: route.params.id, author: result.itinerary.username, title: result.itinerary.name, text: result.itinerary.text, 
-            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0, longitudeDelta: 0}, loaded: true});
+            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3}, loaded: true});
 
           var photos = [];
           result.itinerary.images.forEach(image => {
@@ -68,14 +68,54 @@ class Trip extends React.Component {
       longitudeDelta: 0.0421,
     }, 
     markers: [
-      {
+      // { id:1, 
+      //   latlng:{
+      //     latitude: 57.78825, 
+      //     longitude: -122.4324
+      //   }, 
+      //   title: "Stop 1",
+      //   description: "This is the first stop on the itinerary"
+      // },
+      { id:2, 
         latlng:{
-          latitude: 57.78825, 
-          longitude: -122.4324
+          latitude:41.9009, 
+          longitude: 12.4833
         }, 
-        title: "Stop 1",
-        description: "This is the first stop on the itinerary"
-      } 
+        title: "Trevi Fountain",
+        description: "Completely worth it"
+      },
+      { id:0, 
+        latlng:{
+          latitude:41.8992, 
+          longitude: 12.4731
+        }, 
+        title: "Piazza Navona",
+        description: "Yes there was pizza"
+      },
+      { id:3, 
+        latlng:{
+          latitude:41.9060, 
+          longitude: 12.4828
+        }, 
+        title: "Spanish Steps",
+        description: "Photo Op"
+      },
+      { id:4, 
+        latlng:{
+          latitude:41.9031, 
+          longitude: -12.4663
+        }, 
+        title: "castel sant'angelo",
+        description: "Breathtaking"
+      },
+      { id:5, 
+        latlng:{
+          latitude:41.8902, 
+          longitude: 12.4922
+        }, 
+        title: "Colosseum",
+        description: "Spent extra time here!"
+      }
     ],
     loaded: false,
     id: 0,
@@ -83,7 +123,18 @@ class Trip extends React.Component {
     title: "",
     text: "",
     tags: "",
-    photos: []
+    photos: [
+      // {
+      //  image: 
+      //  title:
+      //  caption:
+      // }, 
+      // {
+      //   image: 
+      //   title:
+      //   caption:
+      //  }
+    ]
 };
 
   renderProduct = (item, index) => {
@@ -154,17 +205,30 @@ class Trip extends React.Component {
                   </Text>
                 </Block> */}
             <Block style={styles.mapContainer} >
-              <MapView style={styles.mapStyle} 
-              region={this.state.region}
-              onRegionChange={this.onRegionChange}>
+              <MapView 
+              ref={MapView => (this.MapView = MapView)} //NEW 
+              style={styles.mapStyle} 
+              loadingEnabled ={true}
+              loadingIndicatorColor="#666666"
+              loadingBackgroundColor="#eeeeee"
+              moveOnMarkerPress = {false}
+              showsCompass={true}
+             //region={this.state.region}
+            // onRegionChange={this.onRegionChange}
+             provider="google">
                   {this.state.markers.map(marker => (
-                    <Marker
+                    <Marker draggable
+                      key={marker.id}
                       coordinate={marker.latlng}
                       title={marker.title}
                       description={marker.description}
+                      onDragEnd={(e) => this.setState({ coordinate: e.nativeEvent.coordinate })}
                     />
-                  ))}
+                  ),
+                  //console.log(this.state.markers)
+                  )}
                 </MapView>
+                {/* <CenterButton centerLocation={this.centerLocation} /> */}
               {/* <ImageBackground
                 source={{ uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flonglivelearning.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fmaps-greekmyth.jpg&f=1&nofb=1" }} 
                 style={[
@@ -187,7 +251,7 @@ class Trip extends React.Component {
                 {this.state.title}
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
-                <Text center color="green" size={12}>@{this.state.author}</Text>
+                <Text center color="green" size={12}>@JLo{/*this.state.author*/}</Text>
               </TouchableOpacity>
               <Block>
                 <Text size={15} style={styles.subTitle}>
