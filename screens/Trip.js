@@ -22,7 +22,7 @@ const cardWidth = width - theme.SIZES.BASE * 2;
 const categories = [
   {
     title: "Day One",
-    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsantorinisuites.files.wordpress.com%2F2014%2F02%2Fastarte-suites-hotel-boutique-hotel-in-santorini-greece.jpg&f=1&nofb=1",
+    image: "https://www.fodors.com/wp-content/uploads/2018/10/HERO_UltimateRome_Hero_shutterstock789412159.jpg",
     date: "05/05/2020"
   },
   {
@@ -62,7 +62,8 @@ class Trip extends React.Component {
     fetch(backendEndpoint + SINGLE_IT_URL + route.params.id, requestOptions)
         .then(response => response.json())
         .then(result => {
-          this.setState({id: route.params.id, author: result.results[0].username, title: result.results[0].name, text: result.results[0].text, tags: result.results[0].hashtags, loaded: true});
+          this.setState({id: route.params.id, author: result.results[0].username, title: result.results[0].name, text: result.results[0].text, 
+            tags: result.results[0].hashtags, region: {latitude: result.results[0].latitude, longitude: result.results[0].longitude, latitudeDelta: 0, longitudeDelta: 0}, loaded: true});
         })
         .catch(error => {console.log('error', error);});
   }
@@ -126,7 +127,7 @@ class Trip extends React.Component {
     );
   };
 
-  onRegionChange(region) {
+  onRegionChange = (region) => {
     this.setState({ region });
   }; 
 
@@ -152,7 +153,7 @@ class Trip extends React.Component {
     return (
       <Block flex style={styles.group}>
         <Block flex>
-          <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+          <Block>
          
 
             <Block flex shadow style={styles.category}>
@@ -293,7 +294,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.SIZES.BASE * 2,
     marginTop: 20,
     color: 'black',
-    alignSelf: "center"
+    alignSelf: "center",
+    textAlign: 'justify',
+    lineHeight: 30
   },
 
   group: {

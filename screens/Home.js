@@ -30,8 +30,8 @@ class Home extends React.Component {
             var article = {
               id: value.id,
               title: value.name,
-              image: 'https://www.jetsetter.com/uploads/sites/7/2019/04/GettyImages-924894324-1380x690.jpg',
-              cta: 'View Trip'
+              image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+              cta: 'View Plan'
             }
             
             if(index % 3 === 0)

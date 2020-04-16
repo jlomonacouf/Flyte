@@ -210,7 +210,7 @@ const userTripMenu= [
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Single Trip "
+              title="Home"
               white 
               back
              // bgColor={argonTheme.COLORS.ACTIVE} 
