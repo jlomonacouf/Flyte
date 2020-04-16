@@ -1,4 +1,4 @@
-export const backendEndpoint = 'https://ad046327.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
+export const backendEndpoint = 'https://0a2952b4.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
 
 export const LOGIN_URL = 'users/login';
 export const REGISTER_URL = 'users/signup';

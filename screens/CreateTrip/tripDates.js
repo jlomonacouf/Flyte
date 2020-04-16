@@ -24,7 +24,7 @@ const { width, height } = Dimensions.get("screen");
 export default class tripDates extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.route.params.locations)
+
         var trimmedLocations = []
         this.props.route.params.locations.forEach(element => {
             if(element.address !== "")
@@ -32,13 +32,18 @@ export default class tripDates extends Component {
         });
         //set value in state for initial date
         var dateList = [];
+        var errorList = [];
 
         for(var i = 0; i < trimmedLocations.length; i++)
+        {
             dateList.push({});
+            errorList.push("");
+        }
 
         this.state = {
             locations: trimmedLocations,
-            dates: dateList
+            dates: dateList,
+            errorList: errorList
         };
     }
 
@@ -101,25 +106,76 @@ export default class tripDates extends Component {
                 </Block>
             )
         }
-
+        const renderError = (index) => {
+            if(this.state.errorList[index] != "") {
+                return (
+                    <Text size={16} style={{color: "#FF0000"}}>{this.state.errorList[index]}</Text>
+                )
+            }
+        }
         const renderLocationDates = () => {
             return (
                 <Block>
-                    {this.state.locations.map((value, index) => {
-                        return(
-                            <Block>
-                                <Block flex row style={{marginTop: (index === 0) ? 0 : 30}}>
-                                    <Text size={17} style={{marginLeft: 5}}>Set dates for: </Text>
-                                    <Text bold size={17}>{value.address}</Text>
+                        {this.state.locations.map((value, index) => {
+                            return(
+                                <Block>
+                                    <Block flex row style={{marginTop: (index === 0) ? 0 : 30}}>
+                                        <Text size={17} style={{marginLeft: 5}}>Set dates for: </Text>
+                                        <Text bold size={17}>{value.address}</Text>
+                                    </Block>
+                                    <Block flex row>
+                                        {renderDate(index)}
+                                    </Block>
+                                    {renderError(index)}
                                 </Block>
-                                <Block flex row>
-                                    {renderDate(index)}
-                                </Block>
-                            </Block>
+                            )}
                         )}
-                    )}
                 </Block>
             )
+        }
+
+        const formatDate = (date) => {
+            var dateParts = date.split('-');
+            return dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1]
+        }
+
+        const checkValidDates = () => {
+            var datesValid = true;
+            var errorList = this.state.errorList;
+
+            for(var i = 0; i < this.state.dates.length; i++) {
+                errorList[i] = "";
+
+                if(this.state.dates[i].startDate === undefined || this.state.dates[i].endDate === undefined)
+                {
+                    datesValid = false;
+                    errorList[i] = "Please specify dates";
+                    continue;
+                }
+
+                var startDate = new Date(formatDate(this.state.dates[i].startDate));
+                var endDate = new Date(formatDate(this.state.dates[i].endDate));
+                if(i !== 0 && startDate < new Date(formatDate(this.state.dates[i-1].endDate)))
+                {
+                    datesValid = false;
+                    errorList[i] = "Start date cannot be before previous location's end date";
+                }
+                if(startDate > endDate)
+                {
+                    datesValid = false;
+                    errorList[i] = "End date cannot be before start date"
+                }
+            }
+            
+            if(datesValid === true)
+            {
+                this.setState({errorList: errorList})
+                navigation.navigate("tripTags", {name:  this.props.route.params.name, locations: this.state.locations, dates: this.state.dates})
+            }
+            else
+            {
+                this.setState({errorList: errorList})
+            }
         }
 
         return (
@@ -149,9 +205,9 @@ export default class tripDates extends Component {
                             </ScrollView>
                             </Block>
                             <Block flex bottom>
-                            <Button color="primary" style={styles.createButton}>
+                            <Button color="primary" style={styles.createButton} onPress={() => checkValidDates()}>
                                 <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                                onPress={() => navigation.navigate("tripTags")}>
+                                onPress={() => checkValidDates()}>
                                 Continue
                                 </Text>
                             </Button>

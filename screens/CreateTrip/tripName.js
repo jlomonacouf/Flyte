@@ -17,8 +17,23 @@ const { width, height } = Dimensions.get("screen");
 
 
 class tripName extends React.Component {
+  state = {
+    name: "",
+    error: false
+  }
   render() {
     const { navigation } = this.props;
+
+    const checkValidName = () => {
+      console.log("NAME:", this.state.name)
+      if(this.state.name.length > 0 && this.state.name.length < 65) {
+        this.setState({error: false});
+        navigation.navigate("tripLocation", {name: this.state.name});
+      }
+      else {
+        this.setState({error: true});
+      }
+    }
 
     return (
       <Block flex middle>
@@ -54,12 +69,14 @@ class tripName extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        onChangeText = {(value) => this.setState({name: value})}
                       />
+                      <Text size={16} style={{color: "#FF0000"}}>{(this.state.error === false) ? "" : "Trip name must be between 0 and 65 valid letters"}</Text>
                     </Block>
                     <Block flex bottom>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton}  onPress={() => checkValidName()}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={() => navigation.navigate("tripLocation")}>
+                         onPress={() => checkValidName()}>
                           Add Locations 
                         </Text>
                       </Button>

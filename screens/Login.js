@@ -58,7 +58,7 @@ class Login extends React.Component {
       }else{
       //  navigation.reset({index: 0, routes: [{ name: 'Home' }],})
         //navigation.navigate('Home', {item: character}); 
-        navigation.navigate('Profile', {item: character});
+        navigation.navigate('Home', {item: character});
       } 
     }).catch((err) => {
       console.log('error logging in: ', err);

@@ -25,6 +25,7 @@ class tripLocation extends React.Component {
 
     this.state = {
       locations: [{address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}, {address: ""}],
+      error: false
     }
   }
 
@@ -134,7 +135,24 @@ class tripLocation extends React.Component {
         </Block>
       )
     }
+    
+    const checkValidLocations = () => {
+      var valid = false;
+      this.state.locations.forEach(element => {
+        if(element.address !== "") {
+          valid = true;
+        }
+      })
 
+      if(valid === true) {
+        this.setState({error: false})
+
+        navigation.navigate("tripDates", {name: this.props.route.params.name, locations: this.state.locations})
+      }
+      else {
+        this.setState({error: true})
+      }
+    }
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -158,13 +176,14 @@ class tripLocation extends React.Component {
                   >
                     <Block width={width * 0.8} height={height*0.55} iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}>
                       <ScrollView contentContainerStyle={styles.articles} keyboardShouldPersistTaps='always' listViewDisplayed={false} >
+                          <Text size={16} style={{color: "#FF0000"}}>{(this.state.error === false) ? "" : "Please enter at least one location"}</Text>
                           {renderAutoCompletes()}
                       </ScrollView>
                     </Block>
                     <Block flex bottom>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton} onPress={() => checkValidLocations()}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                        onPress={() => navigation.navigate("tripDates", {locations: this.state.locations})}>
+                        onPress={() => checkValidLocations()}>
                           Continue
                         </Text>
                       </Button>

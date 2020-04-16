@@ -17,9 +17,14 @@ import {ImageButton} from 'react-native-image-button-text';
 const { width, height } = Dimensions.get("screen");
 
 class tripTags extends React.Component {
-    state = {
-      tagText: "",
-      tags: []
+    constructor(props) {
+      super(props);
+      console.log(this.props.route.params);
+
+      this.state = {
+        tagText: "",
+        tags: []
+      }
     }
 
     render() {

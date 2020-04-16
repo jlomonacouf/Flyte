@@ -16,11 +16,11 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Home", 
     "Profile",
     "Account",
+    "Create a Plan",
+    "Create a Trip",
     //"Trip", 
    // "Followers", 
     //"Following", 
-    "Itinerary", 
-    "Itinerary_Ex", 
    "Elements",
    "Articles", 
    "Basic"

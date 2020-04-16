@@ -19,7 +19,7 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Elements":
+      case "Create a Trip":
         return (
           <Icon
             name="map-big"
@@ -37,7 +37,7 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-        case "Create Itinerary":
+        case "Create a Plan":
           return (
             <Icon
               name="spaceship"
@@ -89,12 +89,19 @@ class DrawerItem extends React.Component {
     return (
       <TouchableOpacity
         style={{ height: 60 }}
-        onPress={() =>
-          title == "Getting Started"
-            ? Linking.openURL(
-                "https://demos.creative-tim.com/argon-pro-react-native/docs/"
-              ).catch(err => console.error("An error occurred", err))
-            : navigation.navigate(title)
+        onPress={() => {
+            switch(title) {
+              case "Create a Plan":
+                navigation.navigate("Create Itinerary");
+                break;
+              case "Create a Trip":
+                navigation.navigate("Create Trip");
+                break;
+              default:
+                navigation.navigate(title);
+                break;
+            }
+          }
         }
       >
         <Block flex row style={containerStyles}>
