@@ -17,8 +17,23 @@ const { width, height } = Dimensions.get("screen");
 
 
 class CreateItinerary_Name extends React.Component {
+  state = {
+    name: "",
+    error: false
+  }
   render() {
     const { navigation } = this.props;
+
+    const checkValidName = () => {
+      console.log("NAME:", this.state.name)
+      if(this.state.name.length > 0 && this.state.name.length < 65) {
+        this.setState({error: false});
+        navigation.navigate("CreateItinerary_Location", {name: this.state.name});
+      }
+      else {
+        this.setState({error: true});
+      }
+    }
 
     return (
       <Block flex middle>
@@ -32,7 +47,7 @@ class CreateItinerary_Name extends React.Component {
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#00" size={20}>
-                    Name Your Trip
+                    Name Your Plan
                   </Text>
                 </Block>
                 <Block flex center>
@@ -44,7 +59,7 @@ class CreateItinerary_Name extends React.Component {
                     <Block width={width * 0.8} height={height*0.55}>
                       <Input
                         borderless
-                        placeholder="The Perfect Night in Paris"
+                        placeholder="Things to do in Lisbon, Portugal"
                         iconContent={
                           <Icon
                             size={16}
@@ -54,13 +69,15 @@ class CreateItinerary_Name extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        onChangeText = {(value) => this.setState({name: value})}
                       />
+                      <Text size={16} style={{color: "#FF0000"}}>{(this.state.error === false) ? "" : "Trip name must be between 0 and 65 valid letters"}</Text>
                     </Block>
                     <Block flex bottom>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton}  onPress={() => checkValidName()}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={() => navigation.navigate("CreateItinerary_Location")}>
-                          NEXT
+                         onPress={() => checkValidName()}>
+                          Choose Location
                         </Text>
                       </Button>
                     </Block>
@@ -95,7 +112,7 @@ const styles = StyleSheet.create({
     marginRight: 12
   },
   createButton: {
-    width: width * 0.20,
+    width: width * 0.40,
     marginTop: 25
   }
 });

@@ -16,9 +16,25 @@ import { TextInput } from "react-native-gesture-handler";
 const { width, height } = Dimensions.get("screen");
 
 class CreateItinerary_Text extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: "",
+    }
+  }
+
   render() {
     const { navigation } = this.props;
-
+    
+    const validateText = () => {
+      if(this.state.text.trim().length !== 0) {
+        navigation.navigate("CreateItinerary_Tag", {name: this.props.route.params.name, location: this.props.route.params.location, text: this.state.text})
+      }
+      else {
+        alert("Please enter text")
+      }
+    }
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -31,7 +47,7 @@ class CreateItinerary_Text extends React.Component {
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#00" size={20}>
-                    Enter Trip Details
+                    Write about your Plan
                   </Text>
                 </Block>
                 <Block flex center>
@@ -43,19 +59,20 @@ class CreateItinerary_Text extends React.Component {
                     <Block width={width * 0.8} height={height * 0.55} style={{borderColor: '#cccccc', borderWidth: 1}}>
                         <ScrollView>
                         <TextInput
-                            style={{paddingLeft: 2, paddingRight: 2, textAlignVertical: 'top', fontSize:16}}
+                            style={{paddingLeft: 2, paddingRight: 2, textAlignVertical: 'top', fontSize:16, textAlign: 'justify', lineHeight: 60}}
                             height={height * 0.55}
                             iconContent none
                             placeholder="Tell us about what you did, where, for how long, ..."
                             multiline
+                            onChangeText={(text) => this.setState({text: text})}
                         />
                         </ScrollView>
                     </Block>
                     <Block flex bottom>
                       <Button color="primary" style={styles.createButton}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                         onPress={() => navigation.navigate("CreateItinerary_Tag")}>
-                          NEXT
+                         onPress={() => validateText()}>
+                          Add Tags
                         </Text>
                       </Button>
                     </Block>

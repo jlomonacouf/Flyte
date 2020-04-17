@@ -41,7 +41,6 @@ import CreateItinerary_Location from "../screens/CreateItinerary/Location";
 import CreateItinerary_Text from "../screens/CreateItinerary/Text"
 import CreateItinerary_Tag from "../screens/CreateItinerary/Tag";
 import CreateItinerary_Image from "../screens/CreateItinerary/Image.js";
-import CreateItinerary_Dates from "../screens/CreateItinerary/Dates.js";
 
 
 //Creating Itinerary 
@@ -523,23 +522,6 @@ function ItineraryStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="CreateItinerary_Location"
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
-       <Stack.Screen
-        name="CreateItinerary_Dates"
-        component={CreateItinerary_Dates}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="CreateItinerary_Dates"
               back
               white
               transparent

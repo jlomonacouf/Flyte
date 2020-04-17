@@ -63,6 +63,17 @@ class tripTags extends React.Component {
           }
         }
 
+        const submitText = () => {
+          if(this.state.tags.length < 3 && this.state.tags.includes(this.state.tagText.toLowerCase()) === false) {
+            var tagList = this.state.tags;
+            tagList.push(this.state.tagText.toLowerCase());
+            this.setState({tagText: "", tags: tagList});
+          }
+          else {
+            this.setState({tagText: ""});
+          }
+        }
+
         const validateTags = () => {
           var trip = this.props.route.params;
           trip.tags = this.state.tags;
@@ -81,7 +92,7 @@ class tripTags extends React.Component {
                 <Block flex>
                     <Block flex={0.17} middle>
                     <Text color="#00" size={20}>
-                        Choose Up to 3 Tags ...
+                        Choose Up to 3 Tags
                     </Text>
                     </Block>
                     <Block flex center>
@@ -89,9 +100,10 @@ class tripTags extends React.Component {
                         <Block width={width * 0.8} height={height*0.55}>
                               <Input
                               borderless
-                              placeholder="Or enter your own"
+                              placeholder="Or enter your own..."
                               iconContent={null}
                               onChangeText={text => handleTextChange(text)}
+                              onSubmitEditing={() => submitText()}
                               value = {this.state.tagText}
                               />
                               {getTagLabels()}
