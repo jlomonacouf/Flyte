@@ -19,7 +19,6 @@ const { width, height } = Dimensions.get("screen");
 class tripTags extends React.Component {
     constructor(props) {
       super(props);
-      console.log(this.props.route.params);
 
       this.state = {
         tagText: "",
@@ -62,6 +61,12 @@ class tripTags extends React.Component {
               </Block>
             )
           }
+        }
+
+        const validateTags = () => {
+          var trip = this.props.route.params;
+          trip.tags = this.state.tags;
+          navigation.navigate("tripImages", trip)
         }
 
         return (
@@ -142,12 +147,13 @@ class tripTags extends React.Component {
                                 source={require('../../assets/imgs/bg.png')}
                                 onPress={() => handleTextChange("family ")}/>
                             </Block>
+                            <Text color="#00" size={15} style={{ marginTop: 20, textAlign: "center"}}>We use these to choose the best plans for your trip</Text>
                         </Block>
                         <Block flex bottom>
-                        <Button color="primary" style={styles.createButton}>
+                        <Button color="primary" style={styles.createButton} onPress={() => validateTags()}>
                             <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                            onPress={() => navigation.navigate("tripImages")}>
-                            NEXT
+                            onPress={() => validateTags()}>
+                            {(this.state.tags.length === 0) ? "Skip" : "Next"}
                             </Text>
                         </Button>
                         </Block>

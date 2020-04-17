@@ -14,18 +14,21 @@ import { Block, Text} from "galio-framework";
 
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
-import { backendEndpoint, PROFILE_IMG_URL } from '../../src/api_methods/shared_base'
+import { backendEndpoint, PROFILE_IMG_URL, CREATE_TRIP_URL } from '../../src/api_methods/shared_base'
 import * as ImagePicker from 'expo-image-picker';
 const { width, height } = Dimensions.get("screen");
 import Spinner from 'react-native-loading-spinner-overlay';
 
 class tripImages extends React.Component {
+  constructor(props) {
+    super(props);
 
-  state = {
-    image: null,
-    uploading: false,
-    error: false,
-  };
+    this.state = {
+      image: null,
+      uploading: false,
+      error: false,
+    };
+  }
 
   componentDidMount() {
     this.getPermissionAsync();
@@ -54,6 +57,25 @@ class tripImages extends React.Component {
     }
   };
 
+  createTrip = (url) => {
+    var trip = this.props.route.params;
+    trip.image_path = url;
+
+    fetch(backendEndpoint + CREATE_TRIP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.props.route.params)
+    })
+    .then((response) => response.text())
+    .then((data) => {
+      this.setState({uploading: false, error: false});
+  
+      this.props.navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
+    })
+  }
+
   uploadImages = () => {
     //() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
     this.setState({uploading: true})
@@ -66,6 +88,7 @@ class tripImages extends React.Component {
     })
     .then((response) => response.json())
     .then((data) => {
+      
       fetch(this.state.image).then(response => {
         response.blob().then(res => {
           var requestOptions = {
@@ -76,14 +99,14 @@ class tripImages extends React.Component {
           };
           fetch(data.data.signedRequest, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => {
+              this.createTrip(data.data.url);
+            })
             .catch(error => {
               console.log('error', error)
               this.setState({uploading: false, error: true});
             });
 
-          this.setState({uploading: false, error: false});
-          this.props.navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
         })
       });
     }).catch((err) => {

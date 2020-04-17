@@ -184,7 +184,7 @@ class tripLocation extends React.Component {
                       <Button color="primary" style={styles.createButton} onPress={() => checkValidLocations()}>
                         <Text bold size={16} color={argonTheme.COLORS.WHITE}
                         onPress={() => checkValidLocations()}>
-                          Continue
+                          Choose Dates
                         </Text>
                       </Button>
                     </Block>
