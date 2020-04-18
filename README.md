@@ -3,8 +3,6 @@
 #npm install react-native-loading-spinner-overlay
 #npm install --save react-native-vector-icons
 
-
-
 #npm i react-native-sortable-list --save
     Errors fix: npx react-codemod rename-unsafe-lifecycles
     Reference: https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
