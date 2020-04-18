@@ -142,6 +142,7 @@ export default class tripDates extends Component {
         const checkValidDates = () => {
             var datesValid = true;
             var errorList = this.state.errorList;
+            var formattedDates = this.state.dates;
 
             for(var i = 0; i < this.state.dates.length; i++) {
                 errorList[i] = "";
@@ -155,6 +156,9 @@ export default class tripDates extends Component {
 
                 var startDate = new Date(formatDate(this.state.dates[i].startDate));
                 var endDate = new Date(formatDate(this.state.dates[i].endDate));
+                formattedDates[i].startDate = formatDate(this.state.dates[i].startDate);
+                formattedDates[i].endDate = formatDate(this.state.dates[i].endDate);
+
                 if(i !== 0 && startDate < new Date(formatDate(this.state.dates[i-1].endDate)))
                 {
                     datesValid = false;
@@ -170,7 +174,8 @@ export default class tripDates extends Component {
             if(datesValid === true)
             {
                 this.setState({errorList: errorList})
-                navigation.navigate("tripTags", {name:  this.props.route.params.name, locations: this.state.locations, dates: this.state.dates})
+
+                navigation.navigate("tripTags", {name:  this.props.route.params.name, locations: this.state.locations, dates: formattedDates})
             }
             else
             {
@@ -208,7 +213,7 @@ export default class tripDates extends Component {
                             <Button color="primary" style={styles.createButton} onPress={() => checkValidDates()}>
                                 <Text bold size={16} color={argonTheme.COLORS.WHITE}
                                 onPress={() => checkValidDates()}>
-                                Continue
+                                Add Tags
                                 </Text>
                             </Button>
                             </Block>

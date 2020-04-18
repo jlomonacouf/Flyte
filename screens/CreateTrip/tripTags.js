@@ -19,7 +19,6 @@ const { width, height } = Dimensions.get("screen");
 class tripTags extends React.Component {
     constructor(props) {
       super(props);
-      console.log(this.props.route.params);
 
       this.state = {
         tagText: "",
@@ -64,6 +63,23 @@ class tripTags extends React.Component {
           }
         }
 
+        const submitText = () => {
+          if(this.state.tags.length < 3 && this.state.tags.includes(this.state.tagText.toLowerCase()) === false) {
+            var tagList = this.state.tags;
+            tagList.push(this.state.tagText.toLowerCase());
+            this.setState({tagText: "", tags: tagList});
+          }
+          else {
+            this.setState({tagText: ""});
+          }
+        }
+
+        const validateTags = () => {
+          var trip = this.props.route.params;
+          trip.tags = this.state.tags;
+          navigation.navigate("tripImages", trip)
+        }
+
         return (
         <Block flex middle>
             <StatusBar hidden />
@@ -76,7 +92,7 @@ class tripTags extends React.Component {
                 <Block flex>
                     <Block flex={0.17} middle>
                     <Text color="#00" size={20}>
-                        Choose Up to 3 Tags ...
+                        Choose Up to 3 Tags
                     </Text>
                     </Block>
                     <Block flex center>
@@ -84,9 +100,10 @@ class tripTags extends React.Component {
                         <Block width={width * 0.8} height={height*0.55}>
                               <Input
                               borderless
-                              placeholder="Or enter your own"
+                              placeholder="Or enter your own..."
                               iconContent={null}
                               onChangeText={text => handleTextChange(text)}
+                              onSubmitEditing={() => submitText()}
                               value = {this.state.tagText}
                               />
                               {getTagLabels()}
@@ -142,12 +159,13 @@ class tripTags extends React.Component {
                                 source={require('../../assets/imgs/bg.png')}
                                 onPress={() => handleTextChange("family ")}/>
                             </Block>
+                            <Text color="#00" size={15} style={{ marginTop: 20, textAlign: "center"}}>We use these to choose the best plans for your trip</Text>
                         </Block>
                         <Block flex bottom>
-                        <Button color="primary" style={styles.createButton}>
+                        <Button color="primary" style={styles.createButton} onPress={() => validateTags()}>
                             <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                            onPress={() => navigation.navigate("tripImages")}>
-                            NEXT
+                            onPress={() => validateTags()}>
+                            {(this.state.tags.length === 0) ? "Skip" : "Next"}
                             </Text>
                         </Button>
                         </Block>

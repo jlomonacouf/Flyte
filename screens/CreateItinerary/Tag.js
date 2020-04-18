@@ -1,6 +1,7 @@
 import React from "react";
 import {
   StyleSheet,
+  TextInput,
   ImageBackground,
   Dimensions,
   StatusBar,
@@ -12,12 +13,72 @@ import { Block, Text} from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 import {ImageButton} from 'react-native-image-button-text';
+
 const { width, height } = Dimensions.get("screen");
 
 class CreateItinerary_Tag extends React.Component {
-    render() {
+    constructor(props) {
+      super(props);
 
+      this.state = {
+        tagText: "",
+        tags: []
+      }
+    }
+
+    render() {
         const { navigation } = this.props;
+
+        const handleTextChange = (text) => {
+          this.setState({tagText: text});
+          if(text.charAt(text.length-1) === ' ') {
+            if(this.state.tags.length < 3 && this.state.tags.includes(text.substring(0, text.length-1).toLowerCase()) === false) {
+              var tagList = this.state.tags;
+              tagList.push(text.substring(0, text.length-1).toLowerCase());
+              this.setState({tagText: "", tags: tagList});
+            }
+            else {
+              this.setState({tagText: ""});
+            }
+          }
+        }
+
+        const submitText = () => {
+          if(this.state.tags.length < 3 && this.state.tags.includes(this.state.tagText.toLowerCase()) === false) {
+            var tagList = this.state.tags;
+            tagList.push(this.state.tagText.toLowerCase());
+            this.setState({tagText: "", tags: tagList});
+          }
+          else {
+            this.setState({tagText: ""});
+          }
+        }
+
+        const removeTag = (tag) => {
+          var tagList = this.state.tags.filter(item => item !== tag)
+          this.setState({tags: tagList});
+        }
+        
+        const getTagLabels = () => {
+          //console.log('here')
+          if(this.state.tags !== []) {
+            return (
+              <Block style={{flexDirection: 'row'}}>
+                {this.state.tags.map((value, index) => {
+                  return (
+                    <Text color="#00" size={15} style={styles.tagText} onPress={() => removeTag(value)}>#{value}</Text>
+                  )
+                })}
+              </Block>
+            )
+          }
+        }
+
+        const validateTags = () => {
+          var plan = this.props.route.params;
+          plan.tags = this.state.tags;
+          navigation.navigate("CreateItinerary_Image", plan)
+        }
 
         return (
         <Block flex middle>
@@ -31,12 +92,21 @@ class CreateItinerary_Tag extends React.Component {
                 <Block flex>
                     <Block flex={0.17} middle>
                     <Text color="#00" size={20}>
-                        Choose Up to 3 Tags ...
+                        Choose Up to 3 Tags
                     </Text>
                     </Block>
                     <Block flex center>
                     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
                         <Block width={width * 0.8} height={height*0.55}>
+                              <Input
+                              borderless
+                              placeholder="Or enter your own..."
+                              iconContent={null}
+                              onChangeText={text => handleTextChange(text)}
+                              onSubmitEditing={() => submitText()}
+                              value = {this.state.tagText}
+                              />
+                              {getTagLabels()}
                             <Block style={{flexDirection: 'row'}}>
                                 <ImageButton style={{marginTop: 20}} 
                                 width={width/4} 
@@ -44,21 +114,24 @@ class CreateItinerary_Tag extends React.Component {
                                 text="Outdoors"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("outdoors ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Exercise"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("exercise ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Relaxation"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("relaxation ")}/>
                             </Block>
                             <Block style={{flexDirection: 'row'}}>
                                 <ImageButton style={{marginTop: 20}} 
@@ -67,28 +140,32 @@ class CreateItinerary_Tag extends React.Component {
                                 text={" Sight" + "\n" + "Seeing"}
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("sightseeing ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Adventure"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("adventure ")}/>
                                 <ImageButton style={{marginTop: 20, marginLeft: 10}} 
                                 width={width/4} 
                                 height={height/7} 
                                 text="Family"
                                 textColor="#FFFFFF"
                                 fontSize={22} 
-                                source={require('../../assets/imgs/bg.png')}/>
+                                source={require('../../assets/imgs/bg.png')}
+                                onPress={() => handleTextChange("family ")}/>
                             </Block>
+                            <Text color="#00" size={15} style={{ marginTop: 20, textAlign: "center"}}>Tags help other users find your Plans!</Text>
                         </Block>
                         <Block flex bottom>
-                        <Button color="primary" style={styles.createButton}>
+                        <Button color="primary" style={styles.createButton} onPress={() => validateTags()}>
                             <Text bold size={16} color={argonTheme.COLORS.WHITE}
-                            onPress={() => navigation.navigate("CreateItinerary_Image")}>
-                            NEXT
+                            onPress={() => validateTags()}>
+                            {(this.state.tags.length === 0) ? "Skip" : "Next"}
                             </Text>
                         </Button>
                         </Block>
@@ -118,6 +195,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 1,
     overflow: "hidden"
+  },
+  tagText: {
+    marginLeft: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    backgroundColor: '#cccccc',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputIcons: {
     marginRight: 12

@@ -123,18 +123,7 @@ class Trip extends React.Component {
     title: "",
     text: "",
     tags: "",
-    photos: [
-      // {
-      //  image: 
-      //  title:
-      //  caption:
-      // }, 
-      // {
-      //   image: 
-      //   title:
-      //   caption:
-      //  }
-    ]
+    photos: []
 };
 
   renderProduct = (item, index) => {
@@ -251,7 +240,7 @@ class Trip extends React.Component {
                 {this.state.title}
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
-                <Text center color="green" size={12}>@JLo{/*this.state.author*/}</Text>
+                <Text center color="green" size={12}>@{this.state.author}</Text>
               </TouchableOpacity>
               <Block>
                 <Text size={15} style={styles.subTitle}>
