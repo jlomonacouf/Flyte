@@ -117,6 +117,10 @@ class CreateItinerary_Image extends React.Component {
     
   }
 
+  updateImages = (images) => {
+    var imageList = images;
+  }
+
   render() {
     let { image } = this.state;
     
@@ -175,8 +179,8 @@ class CreateItinerary_Image extends React.Component {
                       behavior="padding"
                       enabled
                     >
-                      <Block width={width * 0.8} height={height*0.55}>
-                        <ImagePickerScroll></ImagePickerScroll>
+                      <Block width={width * 0.8} height={height*0.65}>
+                        <ImagePickerScroll onUpdateImages={this.updateImages}/>
                       </Block>
                       <Block flex row style={{justifyContent: 'flex-end'}} >
                         <Button color="primary" style={styles.createButton}>
@@ -201,7 +205,7 @@ class CreateItinerary_Image extends React.Component {
 const styles = StyleSheet.create({
   registerContainer: {
     width: width * 0.9,
-    height: height * 0.78,
+    height: height * 0.9,
     backgroundColor: "#FFFFFF",
     borderRadius: 4,
     shadowColor: argonTheme.COLORS.BLACK,

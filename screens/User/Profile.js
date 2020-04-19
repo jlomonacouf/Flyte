@@ -131,17 +131,13 @@ class Profile extends React.Component {
          button = 
               <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }}
               onPress={() =>{
-
-                  var urlencoded = new URLSearchParams();
-                  urlencoded.append("public", "'0'");
                   
                   var requestOptions = {
                     method: 'PUT',
                     headers:  {
-                      'Content-Type': 'application/json',
-                      'Content-Type': 'application/x-www-form-urlencoded' 
+                      'Content-Type': 'application/json'
                     },
-                    body: urlencoded,
+                    body: JSON.stringify({public: '0'}),
                     redirect: 'follow'
                   };
           
@@ -170,17 +166,13 @@ class Profile extends React.Component {
            button = 
            <Button small style={{ backgroundColor: 'red' }}
               onPress={() =>{
-
-                var urlencoded = new URLSearchParams();
-                urlencoded.append("public", "'1'");
                 
                 var requestOptions = {
                   method: 'PUT',
                   headers:  {
                     'Content-Type': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded' 
                   },
-                  body: urlencoded,
+                  body: JSON.stringify({public: "1"}),
                   redirect: 'follow'
                 };
         
