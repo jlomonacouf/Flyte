@@ -17,8 +17,9 @@ import { backendEndpoint, LOGIN_URL, GET_USER_URL } from "../src/api_methods/sha
 
 const { width, height } = Dimensions.get("screen");
 
-class Login extends React.Component {
+import GLOBAL from '../src/api_methods/global.js'
 
+class Login extends React.Component {
   state = {
     username: "",
     password: "",
@@ -27,7 +28,6 @@ class Login extends React.Component {
   handleChange = (name, val) => {
     this.setState({ [name]: val });
   };
-
 
 
   onLoginPress = async () => {
@@ -47,18 +47,18 @@ class Login extends React.Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      const character ={
-        my_id: username,
-        view_id: username
-      }
-      //console.log(character.name); 
+      // const character ={
+      //   my_id: username,
+      //   view_id: username
+      // }
       if(data.success===false){
         this.setState({errorMessage: 'Incorrect username or password'}); 
 
       }else{
-      //  navigation.reset({index: 0, routes: [{ name: 'Home' }],})
-        //navigation.navigate('Home', {item: character}); 
-        navigation.navigate('Home', {item: character});
+
+        GLOBAL.USERNAME=username; 
+         // navigation.navigate('Home', {item: character});
+         navigation.reset({index: 0, routes: [{ name: 'Home' }],})
       } 
     }).catch((err) => {
       console.log('error logging in: ', err);

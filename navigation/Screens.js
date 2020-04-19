@@ -159,7 +159,6 @@ const userTripMenu= [
 {id: 'Account', title: 'Settings',}
 ]; 
 
-s
   return (
    
     <Stack.Navigator mode="card" headerMode="screen">

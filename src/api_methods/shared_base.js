@@ -1,4 +1,4 @@
-export const backendEndpoint = ' https://ba720436.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
+export const backendEndpoint = 'https://33a0c1fd.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
 
 export const LOGIN_URL = 'users/login';
 export const REGISTER_URL = 'users/signup';
@@ -6,7 +6,7 @@ export const PROFILE_IMG_URL ='users/upload-profile-photo'; //REVIEW ROUTE PARAM
 
 export const GET_USER_URL =  'users/get/'; 
 export const DELETE_USER_URL ='users/deleteUser'; //NOT SURE HOW THIS WORKS
-export const UPDATE_USER_URL ='users/updateUser';
+export const UPDATE_USER_URL ='users/updateAccount';
 /*
 Parameters
 first_name - string (optional)

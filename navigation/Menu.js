@@ -7,6 +7,8 @@ import {
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
+import GLOBAL from '../src/api_methods/global.js'
+
 import Images from "../constants/Images";
 import { DrawerItem as DrawerCustomItem } from '../components';
 

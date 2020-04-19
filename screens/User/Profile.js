@@ -20,11 +20,25 @@ import { backendEndpoint, GET_USER_URL,UPDATE_USER_URL , ISFOLLOWING_URL ,FOLLOW
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
+import GLOBAL from '../../src/api_methods/global.js'
+
+
 class Profile extends React.Component {
+
+  constructor(){
+    super();
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+  };
+
+  forceUpdateHandler(){
+    this.forceUpdate();
+  };
 
     state ={
       articles : []
     }
+
+ 
 
     setStateAsync(state) {
         return new Promise((resolve) => {
@@ -34,11 +48,10 @@ class Profile extends React.Component {
 
     async componentDidMount(){
 
-
-
-          const { route, navigation} = this.props
-          const {item} =route.params
-          const {my_id, view_id}= item
+        var fetchID=GLOBAL.USERNAME;  
+        const { navigation} = this.props; 
+    
+        if(this.props.route.params!=undefined) fetchID=this.props.route.params.view_id; 
 
           var requestOptions = {
             method: 'GET',
@@ -47,7 +60,7 @@ class Profile extends React.Component {
             },
             redirect: 'follow'
           };
-          const information = await fetch(backendEndpoint + GET_USER_URL + view_id, requestOptions)
+          const information = await fetch(backendEndpoint + GET_USER_URL + fetchID, requestOptions)
           .then( response => response.json())
           .then( result => { 
            this.setStateAsync({user : result.results[0]});
@@ -86,10 +99,6 @@ class Profile extends React.Component {
     } 
 
   render() {
-    const { route, navigation} = this.props
-    const {item} =route.params
-    const {my_id, view_id}= item
-
 
     if (!this.state.user) {
       return (
@@ -104,76 +113,100 @@ class Profile extends React.Component {
    }
   else {
 
+    const { navigation} = this.props; 
+    var view_id=undefined; 
+    if(this.props.route.params!=undefined) view_id=route.params.view_id; 
+    
 
-      const numComments = 0;
-  
-
+      const numComments = 0; 
 
       let button;
 
-      if (view_id === my_id) { //Extra functionality needed. 
-        //var privacy = (this.state.user.public) ? 'PUBLIC' : 'PRIVATE';
+    if (view_id===undefined || view_id!=undefined && view_id ===GLOBAL.USERNAME) {
+       
+      console.log("Viewing your own profile"); 
 
        if (this.state.user.public) {  
-           button = <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }}
-           onPress={() =>{
 
-              var urlencoded = new URLSearchParams();
-              urlencoded.append("public", "0");
-              
-              var requestOptions = {
-                method: 'PUT',
-                headers:  {
-                  'Content-Type': 'application/json',
-                },
-                body: urlencoded,
-                redirect: 'follow'
-              };
-              
-              fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                  console.log( JSON.stringify(result.body));
-                  console.log(result); 
-                  //CHANGE BUTTON TEXT 
+         button = 
+              <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }}
+              onPress={() =>{
+
+                  var urlencoded = new URLSearchParams();
+                  urlencoded.append("public", "'0'");
                   
-                }).catch(error => console.log('error', error));
+                  var requestOptions = {
+                    method: 'PUT',
+                    headers:  {
+                      'Content-Type': 'application/json',
+                      'Content-Type': 'application/x-www-form-urlencoded' 
+                    },
+                    body: urlencoded,
+                    redirect: 'follow'
+                  };
+          
+                  fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                      if(result.success===false){
+                        alert("Error");
+                        console.log(result); 
+                        //NEED STATES TO GIVE MORE CONTEXT 
+                      }else{   
+                          //Try adding a reset state button.
+                          this.forceUpdateHandler; //Currently updating the entire component again. 
+                      } 
+                    }).catch(error => {
+                      alert("Network error, please try again in a moment");
+                      console.log('error', error)
+                      
+                    } );
 
+              }}  > PUBLIC </Button>;
 
-           }}  > PUBLIC </Button>;
+           
         }
         else {
-           button = <Button small style={{ backgroundColor: 'red' }}
-           onPress={() =>{
-         
-            var urlencoded = new URLSearchParams();
-            urlencoded.append("public", "1");
-            
-            var requestOptions = {
-              method: 'PUT',
-              headers:  {
-                'Content-Type': 'application/json',
-              },
-              body: urlencoded,
-              redirect: 'follow'
-            };
-       
+           button = 
+           <Button small style={{ backgroundColor: 'red' }}
+              onPress={() =>{
 
-            fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
-              .then(response => response.json())
-              .then(result => {
-               console.log( JSON.stringify(result.body));
-                console.log(result.results); 
-                //CHANGE BUTTON TEXT 
+                var urlencoded = new URLSearchParams();
+                urlencoded.append("public", "'1'");
                 
-              }).catch(error => console.log('error', error));
-
-           }} > PRIVATE</Button>; 
+                var requestOptions = {
+                  method: 'PUT',
+                  headers:  {
+                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded' 
+                  },
+                  body: urlencoded,
+                  redirect: 'follow'
+                };
+        
+                fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
+                  .then(response => response.json())
+                  .then(result => {
+                    if(result.success===false){
+                      alert("Error");
+                      console.log(result); 
+                      //NEED STATES TO GIVE MORE CONTEXT 
+                    }else{   
+                        //Try adding a reset state button.
+                        this.forceUpdateHandler; //Currently updating the entire component again. 
+                    } 
+                  }).catch(error => {
+                    alert("Network error, please try again in a moment");
+                    console.log('error', error)
+                  });
+            }} > PRIVATE</Button>; 
         }
-      } else {
+     } 
+     
+     
+     else {
 
           var isFollowing= false; 
-
 
           var urlencoded = new URLSearchParams();
           urlencoded.append("followUsername", view_id);
@@ -181,7 +214,7 @@ class Profile extends React.Component {
           var requestOptions = {
             method: 'POST',
           headers:  {
-              'Content-Type': 'application/json',
+              'Content-Type':  'application/x-www-form-urlencoded',
             },
             body: urlencoded,
             redirect: 'follow'
@@ -190,8 +223,12 @@ class Profile extends React.Component {
           fetch(backendEndpoint + ISFOLLOWING_URL, requestOptions)
             .then(response => response.json())
             .then(result => {
-              console.log(result); 
-              isFollowing= result.isFollowing; 
+              if(result.success===false){
+                alert("Error");
+                console.log(result); 
+              }else{   
+                isFollowing= result.isFollowing; 
+              } 
             }).catch(error => console.log('error', error));
 
 
