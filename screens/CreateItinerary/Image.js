@@ -15,7 +15,7 @@ import { Block, Text} from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import ImagePickerScroll from "../../components/ImagePickerScroll"
 import { Images, argonTheme } from "../../constants";
-import { backendEndpoint, PROFILE_IMG_URL, CREATE_TRIP_URL } from '../../src/api_methods/shared_base'
+import { backendEndpoint, PROFILE_IMG_URL, CREATE_ITINERARY_URL } from '../../src/api_methods/shared_base'
 import * as ImagePicker from 'expo-image-picker';
 const { width, height } = Dimensions.get("screen");
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -29,115 +29,101 @@ class CreateItinerary_Image extends React.Component {
       uploading: false,
       error: false,
     };
-  }
 
-  componentDidMount() {
-    this.getPermissionAsync();
-    console.log('Permissions received');
-  }
-
-  getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    }
-  }
-
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      aspect: [4, 3],
-      quality: 1,
-      exif: false
-    });
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
-
-  createTrip = (url) => {
-    var trip = this.props.route.params;
-    trip.image_path = url;
-
-    fetch(backendEndpoint + CREATE_TRIP_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.props.route.params)
-    })
-    .then((response) => response.text())
-    .then((data) => {
-      this.setState({uploading: false, error: false});
-  
-      this.props.navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
-    })
+    this.imageList = [];
   }
 
   uploadImages = () => {
-    //() => navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
-    this.setState({uploading: true})
-    fetch(backendEndpoint + PROFILE_IMG_URL, {
+    var promises = [];
+
+    this.imageList.forEach(image => {
+      promises.push(new Promise((resolve) => {
+        fetch(backendEndpoint + PROFILE_IMG_URL, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({subdirectory: "/Plan/"})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          fetch(image.uri).then(response => {
+            response.blob().then(res => {
+              var requestOptions = {
+                method: 'PUT',
+                body: res,
+                headers: {'Content-Type': 'multipart/form-data'},
+                redirect: 'follow'
+              };
+              fetch(data.data.signedRequest, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                  resolve({title: image.title, caption: image.caption, image_path: data.data.url});
+                })
+                .catch(error => {
+                  console.log('error', error)
+                });
+            })
+          });
+        })
+      }))
+    });
+
+    return new Promise((resolve) => {
+      return Promise.all(promises).then((imageList) => {
+        resolve(imageList);
+        return;
+      })
+    })
+  }
+
+  uploadPlan = (images) => {
+    var params = this.props.route.params;
+    var plan = {name: params.name, text: params.text, address: params.location.address, city: params.location.city, country: params.location.country,
+    latitude: params.location.latitude, longitude: params.location.longitude};
+    var tags = (params.tags) ? params.tags : [];
+    var photos = (images) ? images : [];
+
+    fetch(backendEndpoint + CREATE_ITINERARY_URL, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify({itinerary: plan, tags: tags, photos: photos})
+    }).then(response => response.text())
+    .then(result => {
+      console.log(result)
+    }).catch(err => {
+      console.log(err)
+      //navigation.reset({index: 1, routes: [{ name: 'Articles' }],})
     })
-    .then((response) => response.json())
-    .then((data) => {
-      
-      fetch(this.state.image).then(response => {
-        response.blob().then(res => {
-          var requestOptions = {
-            method: 'PUT',
-            body: res,
-            headers: {'Content-Type': 'multipart/form-data'},
-            redirect: 'follow'
-          };
-          fetch(data.data.signedRequest, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-              this.createTrip(data.data.url);
-            })
-            .catch(error => {
-              console.log('error', error)
-              this.setState({uploading: false, error: true});
-            });
+  }
 
-        })
+  createPlan = () => {
+    if(this.imageList.length !== 0) {
+      this.setState({uploading: true})
+
+      this.uploadImages().then((imagePaths) => {
+        this.setState({uploading: false});
+        this.uploadPlan(imagePaths);
+      }).catch((err) => {
+        this.setState({uploading: false, error: true});
+        console.log('error uploading to s3: ', err);
       });
-    }).catch((err) => {
-      this.setState({uploading: false, error: true});
-      console.log('error uploading to s3: ', err);
-    });
-    
+    }
+    else {
+      this.uploadPlan()
+    }
   }
 
   updateImages = (images) => {
-    var imageList = images;
+    this.imageList = images;
   }
 
   render() {
-    let { image } = this.state;
-    
     const { navigation } = this.props;
-
-    const renderImageContainer = () => {
-      if(this.state.image === null) {
-        return (
-          <Text bold size={20} style={styles.pickImageText}>Choose Photo</Text>
-        )
-      }
-      else {
-        return (
-          <Image source={{uri: this.state.image}} style={{ width: width * 0.70, height: height * 0.3 }}/>
-        )
-      }
-    }
 
     const renderErrorMessage = () => {
       if(this.state.error === true) {
@@ -183,9 +169,9 @@ class CreateItinerary_Image extends React.Component {
                         <ImagePickerScroll onUpdateImages={this.updateImages}/>
                       </Block>
                       <Block flex row style={{justifyContent: 'flex-end'}} >
-                        <Button color="primary" style={styles.createButton}>
+                        <Button color="primary" style={styles.createButton} onPress={() => this.createPlan()}>
                           <Text bold size={16} color={argonTheme.COLORS.WHITE} 
-                          onPress={() => this.uploadImages()}>
+                          onPress={() => this.createPlan()}>
                             NEXT
                           </Text>
                         </Button>

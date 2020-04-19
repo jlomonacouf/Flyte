@@ -147,7 +147,7 @@ export default class ImagePickerScroll extends React.Component {
                                     <Text bold size={16} color={argonTheme.COLORS.WHITE}>Delete</Text>
                                 </Button>
                                 <Button color="info" style={{width: width * 0.20, marginTop: 25}} onPress={() => this.updateText(editTitle, editCaption)}>
-                                    <Text bold size={16} color={argonTheme.COLORS.WHITE}>Add</Text>
+                                    <Text bold size={16} color={argonTheme.COLORS.WHITE}>Save</Text>
                                 </Button>
                             </Block>
                         </Block>
