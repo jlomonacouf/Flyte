@@ -29,11 +29,10 @@ Parameters
 followUsername - string
 */
 //export const GET_POPULAR_TRIPS_URL =''; 
-
 //ITINERARIES 
 export const CREATE_ITINERARY_URL = 'itineraries/create-itinerary';
 export const DELETE_ITINERARY_URL = 'itineraries/delete-trip';
-export const USER_IT__URL ='itineraries/get/'; 
+export const USER_IT_URL ='itineraries/get/'; 
 export const ALL_IT_URL ='itineraries/get-all-itineraries'; 
 export const SINGLE_IT_URL ='itineraries/get-by-id/'; 
 
@@ -52,7 +51,7 @@ itinerary_id - int
 //TRIPS 
 export const CREATE_TRIP_URL = 'trips/create-trip';
 export const DELETE_TRIP_URL = 'trips/delete-trip';
-export const USER_TRIPS_URL ='trips/get/:username'; //REVIEW 
+export const USER_TRIPS_URL ='trips/get/'; //REVIEW 
 export const ALL_TRIPS_URL ='trips/get-all-trips';
 export const SINGLE_TRIP_URL= 'trips/get-by-id/' ; //REVIEW :id';
 
