@@ -1,4 +1,4 @@
-export const backendEndpoint = 'https://9c1eb0e3.ngrok.io/' //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
+export const backendEndpoint = 'https://3ae6213e.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
 
 export const LOGIN_URL = 'users/login';
 export const REGISTER_URL = 'users/signup';
@@ -14,8 +14,8 @@ last_name - string (optional)
 phone_number - string (optional)
 public - 1 or 0 (optional)
 */
-export const USER_FOLLOWING_URL ='users/get-following/'; 
-export const USER_FOLLOWERS_URL ='users/get-followers/'; 
+export const USER_FOLLOWING_URL ='users/get-following/:username'; 
+export const USER_FOLLOWERS_URL ='users/get-followers/:username'; 
 export const VERIFY_EMAIL_URL = 'users/verify-email'; 
 export const ISFOLLOWING_URL = 'users/isFollowingUser'; 
 export const FOLLOW_URL ='users/follow'; 
@@ -36,9 +36,9 @@ followUsername - string
 
 
 //ITINERARIES 
-export const CREATE_ITINERARY_URL = 'itineraries/create-trip';
+export const CREATE_ITINERARY_URL = 'itineraries/create-itinerary';
 export const DELETE_ITINERARY_URL = 'itineraries/delete-trip';
-export const USER_IT_URL ='itineraries/get/'; 
+export const USER_IT__URL ='itineraries/get/:username'; 
 export const ALL_IT_URL ='itineraries/get-all-itineraries'; 
 export const SINGLE_IT_URL ='itineraries/get-by-id/'; 
 
@@ -58,8 +58,8 @@ itinerary_id - int
 //TRIPS 
 export const CREATE_TRIP_URL = 'trips/create-trip';
 export const DELETE_TRIP_URL = 'trips/delete-trip';
-export const USER_TRIPS_URL ='trips/get/'; //REVIEW 
+export const USER_TRIPS_URL ='trips/get/:username'; //REVIEW 
 export const ALL_TRIPS_URL ='trips/get-all-trips';
-export const SINGLE_TRIP_URL= 'trips/get-by-id/'; //REVIEW 
+export const SINGLE_TRIP_URL= 'trips/get-by-id/:id'; //REVIEW 
 
 
