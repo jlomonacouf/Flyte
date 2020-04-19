@@ -28,6 +28,7 @@ class Profile extends React.Component {
     state ={
       articles : [], 
       user : {}, 
+      public: false, 
       privacyBtn: {
         public: 'PUBLIC', 
         btnColor: argonTheme.COLORS.INFO
@@ -62,28 +63,9 @@ class Profile extends React.Component {
           .then( result => { 
 
 
-            let createUser= {
-              "avatar_path": result.results[0].avatar_path,
-              "email": result.results[0].email, 
-              "email_verified": result.results[0].email_verified,
-              "first_name": result.results[0].first_name, 
-              "followers": result.results[0].followers, 
-              "following": result.results[0].following, 
-              "follows": result.results[0].follows, 
-              "followsMe": result.results[0].followsMe, 
-              "last_name": result.results[0].last_name,
-              "phone_number": result.results[0].phone_number, 
-              "public": result.results[0].public, 
-              "username": result.results[0].username, 
-                [Symbol.iterator]: function* () {
-                  let properties = Object.keys(this);
-                  for (let i of properties) {
-                      yield [i, this[i]];
-                  }
-              }  
-            }
-             this.setStateAsync({user : createUser });
-             this.setState({privacyBtn: (result.result[0].public) ? 
+             this.setStateAsync({user : result.results[0]});
+             this.setState({public: result.results[0].public });
+             this.setState({privacyBtn: (result.results[0].public) ? 
               { 
                 public: 'PUBLIC', 
                 btnColor: argonTheme.COLORS.INFO
@@ -165,42 +147,20 @@ class Profile extends React.Component {
                         console.log(result);//NEED STATES TO GIVE MORE CONTEXT 
                       }else{   
 
-                      
-                        console.log("GOT HERE");
-
-                      //   this.state.user.map(function(object, i) {
-                      //         console.log(object);
-                      //         console.log(i); 
-                      //  }.bind(this)) 
-
-                        // let updateUser = {...this.state.user};
-                        // let index = updateUser.findIndex(el => el.name === 'public'); //find index of component to update 
-                        // updateUser[index] = {...updateUser[index], public: !this.state.user.public };
-
-                        let temp = this.state.user; 
-
-                        for (let [k, v] of this.state.user) {
-                          console.log(`Here is key ${k} and here is value ${v}`);
-                        }
-
-                        //let updateUser = temp.keys(map(el => (
-                        //   el.name==='public'? {...el, public: !this.state.user.public}: el
-                        // )); 
-                      var updatedUser ={}; 
-                      console.log(temp); 
-                      
-                        temp.entries(updatedUser).map(function(key) {
-                          return <option value={key}>{tifs[key]}</option>
-                       });
-
-               
-                        console.log(updateUser);
-
-
-                        // this.setState({ user: updateUser });
-                        // console.log(this.state.user)
-                      
-
+                      var newUser= this.state.user; 
+                      newUser.public= !newUser.public; 
+                      this.setState({ user: newUser });
+                      this.setState({public: newUser.public});
+                      this.setState({privacyBtn: (newUser.public) ? 
+                          { 
+                            public: 'PUBLIC', 
+                            btnColor: argonTheme.COLORS.INFO
+                          } :
+                          { 
+                            public: 'PRIVATE', 
+                            btnColor: 'red'
+                          }
+                      }); 
                    } 
                     }).catch(error => {
                       alert("Network error, please try again in a moment");
@@ -244,7 +204,7 @@ class Profile extends React.Component {
                 headers:  {
                   'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({followUsername: view_username}), //  {userid:,  followId: view_id}),
+                body:JSON.stringify({followUsername: view_username}),
                 redirect: 'follow'
               };
               
@@ -368,7 +328,7 @@ class Profile extends React.Component {
                        {this.state.articles.map((article, imgIndex) => (
                         <Image
                           source={{ uri: article.image}}
-                          key={`viewed-${article}`}
+                          key={`viewed-${imgIndex}`}
                           resizeMode="cover"
                           style={styles.thumb}
                         />
@@ -422,7 +382,6 @@ const styles = StyleSheet.create({
   },
   profile: {
     marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
-    // marginBottom: -HeaderHeight * 2,
     flex: 1
   },
   profileContainer: {
@@ -436,7 +395,6 @@ const styles = StyleSheet.create({
     height: height / 2
   },
   profileCard: {
-    // position: "relative",
     padding: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE,
     marginTop: 65,
@@ -490,7 +448,7 @@ export default Profile;
     //FIND A WAY TO KNOW IF USER HAS A PROFILE PICTURE OR DO I NEED TO USE THE DEFAULT IMAGE    
   
 
-                //this.setStateAsync({view_id : result.results[0].id});
+           //this.setStateAsync({view_id : result.results[0].id});
           //  if(GLOBAL.USERNAME!=result.results[0].username){ //Fetch current users ID 
            
           //      const information = await fetch(backendEndpoint + GET_USER_URL + GLOBAL.USERNAME, requestOptions)
@@ -501,7 +459,33 @@ export default Profile;
           // }
 
           
+                    // let createUser= {
+            //   "avatar_path": result.results[0].avatar_path,
+            //   "email": result.results[0].email, 
+            //   "email_verified": result.results[0].email_verified,
+            //   "first_name": result.results[0].first_name, 
+            //   "followers": result.results[0].followers, 
+            //   "following": result.results[0].following, 
+            //   "follows": result.results[0].follows, 
+            //   "followsMe": result.results[0].followsMe, 
+            //   "last_name": result.results[0].last_name,
+            //   "phone_number": result.results[0].phone_number, 
+            //   "public": result.results[0].public, 
+            //   "username": result.results[0].username, 
+            //     [Symbol.iterator]: function* () {
+            //       let properties = Object.keys(this);
+            //       for (let i of properties) {
+            //           yield [i, this[i]];
+            //       }
+            //   }  
+            // }
+
       //this.setState({btnColor: (this.state.user.public) ? argonTheme.COLORS.INFO : 'red' }); 
+
+          
+                        // for (let [k, v] of this.state.user) {
+                        //   console.log(`Here is key ${k} and here is value ${v}`);
+                        // }
 
 
 */
