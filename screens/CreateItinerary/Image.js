@@ -97,7 +97,7 @@ class CreateItinerary_Image extends React.Component {
       console.log(result)
     }).catch(err => {
       console.log(err)
-      //navigation.reset({index: 1, routes: [{ name: 'Articles' }],})
+      //navigation.reset({index: 0, routes: [{ name: 'Home' }],})
     })
   }
 

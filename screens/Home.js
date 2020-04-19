@@ -27,6 +27,7 @@ class Home extends React.Component {
         .then(response => response.json())
         .then(result => {
           result.results.map((value, index) => {
+            console.log(value.id)
             var article = {
               id: value.id,
               title: value.name,
@@ -59,9 +60,6 @@ class Home extends React.Component {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
 
-        <Block>
-        
-        </Block>
         <Block flex>
           {this.state.articles.map((value, index) => {
             if(formatCounter === 1 && index < this.state.articles.length-1) {
@@ -88,15 +86,6 @@ class Home extends React.Component {
         </Block>
       </ScrollView>
     )
-    /*
-    <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
-          <Block flex row>
-            <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} nextScreen={'Trip'} />
-            <Card item={articles[2]} nextScreen={'Trip'} />
-          </Block>
-          <Card item={articles[3]} horizontal nextScreen={'Trip'} />
-          <Card item={articles[4]} full nextScreen={'Trip'} />
-    */
   }
 
   render() {

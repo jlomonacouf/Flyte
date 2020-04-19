@@ -39,16 +39,16 @@ class Trip extends React.Component {
       method: 'GET',
       redirect: 'follow'
     };
-
     fetch(backendEndpoint + SINGLE_IT_URL + route.params.id, requestOptions)
         .then(response => response.json())
         .then(result => {
+          console.log(route.params.id)
           this.setState({id: route.params.id, author: result.itinerary.username, title: result.itinerary.name, text: result.itinerary.text, 
             tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3}, loaded: true});
 
           var photos = [];
           result.itinerary.images.forEach(image => {
-            console.log(image)
+            console.log(result.itinerary.username)
             photos.push({title: image.title, caption: image.caption, image: image.image_path})
           })
           this.setState({photos: photos})
