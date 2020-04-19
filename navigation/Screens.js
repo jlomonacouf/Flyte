@@ -240,7 +240,7 @@ const userTripMenu= [
       
       header: ({ navigation, scene }) => (
         ({ route }) => ({
-          title: route.params.item.name
+          title: route.params.view_username
         }), 
         <Header
           title=""
@@ -289,7 +289,7 @@ function ProfileStack(props) {
       
       header: ({ navigation, scene }) => (
         ({ route }) => ({
-          title: route.params.item.name
+          title: route.params.view_username
         }), 
         <Header
           title=""
@@ -313,7 +313,7 @@ function ProfileStack(props) {
       
       header: ({ navigation, scene }) => (
         ({ route }) => ({
-          title: route.params.currentUser
+          title: route.params.username
         }), 
         <Header
           title="Followers"
@@ -333,11 +333,9 @@ function ProfileStack(props) {
     component={Following}
     options={
       ({ route }) => ({
-        title: route.params.currentUser
+        title: route.params.username
       })
-      , {
-      
-      header: ({ navigation, scene }) => (
+      , {header: ({ navigation, scene }) => (
         <Header
           title="Following"
           back
