@@ -18,14 +18,16 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Home", 
     "Profile",
     "Account",
+    "View Plans",
     "Create a Plan",
+    "View Trips",
     "Create a Trip",
     //"Trip", 
    // "Followers", 
     //"Following", 
-   "Elements",
+  // "Elements",
    "Articles", 
-   "Basic"
+   //"Basic"
   ];
   return (
     <Block

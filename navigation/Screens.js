@@ -149,14 +149,14 @@ function HomeStack(props) {
 // ]; 
 
 const homeMenu= [
-  {id: 'Home', title: 'Your Trips',},
-  {id: 'viewTrips', title: 'Popular',}, 
+  {id: 'viewTrips', title: 'Your Trips',},
+  {id: 'Home', title: 'Popular',}, 
   {id: 'Account', title: 'Settings',}
 ]; 
 const userTripMenu= [
-{id: 'viewTrips', title: 'Popular',},
-{id: 'Home', title: 'Your Trips',}, 
-{id: 'Account', title: 'Settings',}
+  {id: 'viewTrips', title: 'Your Trips',},
+  {id: 'Home', title: 'Popular',}, 
+  {id: 'Account', title: 'Settings',}
 ]; 
 
   return (

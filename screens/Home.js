@@ -73,7 +73,7 @@ class Home extends React.Component {
               return (
                 <Block flex row>
                   <Card item={value} style={{ marginRight: theme.SIZES.BASE }} id={value.id} nextScreen={'Trip'} />
-                  <Card item={this.articles[index+1]} id={value.id+1} nextScreen={'Trip'} />
+                  <Card item={this.articles[index+1]} id={this.articles[index+1].id} nextScreen={'Trip'} />
                 </Block>
               );
             }

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
 import Icon from "./Icon";
@@ -78,6 +78,21 @@ class DrawerItem extends React.Component {
     }
   };
 
+  renderBreak = () => {
+    const {title} = this.props;
+    var dividerList = ["Account", "Create a Plan", "Create a Trip"]
+    if(dividerList.includes(title)) {
+      return (
+        <View
+            style={{
+            borderBottomColor: 'lightgray',
+            marginHorizontal: 0,
+            borderBottomWidth: 1
+        }}/>
+      )
+    }
+  }
+
   render() {
     const { focused, title, navigation } = this.props;
 
@@ -118,6 +133,7 @@ class DrawerItem extends React.Component {
             </Text>
           </Block>
         </Block>
+        {this.renderBreak()}
       </TouchableOpacity>
     );
   }

@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 //galio
-import { Block, Text, Icon, theme } from "galio-framework";
+import { Button, Block, Text, Icon, theme } from "galio-framework";
 //argon
 import MapView, {Marker} from 'react-native-maps';
 import { articles, Images, argonTheme } from "../constants";
@@ -270,6 +270,9 @@ class Trip extends React.Component {
                 <Text size={15} style={styles.subTitle}>
                   {this.state.text}
                 </Text>
+                <Button color="info" style={{width: width * 0.30, marginTop: 25}} onPress={() => this.updateText(editTitle, editCaption)}>
+                  <Text bold size={16} color={argonTheme.COLORS.WHITE}>Save to Trip</Text>
+                </Button>
                 {this.renderLikes()}
             </Block>
         </Block>
