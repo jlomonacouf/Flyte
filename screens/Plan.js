@@ -9,14 +9,14 @@ import {
   TouchableOpacity
 } from "react-native";
 //galio
-import { Block, Text, theme } from "galio-framework";
+import { Block, Text, Icon, theme } from "galio-framework";
 //argon
 import MapView, {Marker} from 'react-native-maps';
 import { articles, Images, argonTheme } from "../constants";
 import { Card } from "../components";
 import Spinner from 'react-native-loading-spinner-overlay';
 const { width, height } = Dimensions.get("screen");
-import { backendEndpoint, SINGLE_IT_URL } from '../src/api_methods/shared_base'; 
+import { backendEndpoint, SINGLE_IT_URL, LIKE_IT_URL, DISLIKE_IT_URL } from '../src/api_methods/shared_base'; 
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
 
@@ -40,13 +40,12 @@ class Trip extends React.Component {
     fetch(backendEndpoint + SINGLE_IT_URL + route.params.id, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(route.params.id)
           this.setState({id: route.params.id, author: result.itinerary.username, title: result.itinerary.name, text: result.itinerary.text, 
-            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3}, loaded: true});
+            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3},
+            likes: result.itinerary.likes, isLiked: result.itinerary.is_liked, loaded: true});
 
           var photos = [];
           result.itinerary.images.forEach(image => {
-            console.log(result.itinerary.username)
             photos.push({title: image.title, caption: image.caption, image: image.image_path})
           })
           this.setState({photos: photos})
@@ -162,6 +161,49 @@ class Trip extends React.Component {
     this.setState({ region });
   }; 
 
+  renderLikes = () => {
+    if(this.state.isLiked === 0) {
+      return (
+        <TouchableOpacity onPress={() => this.toggleLike()}>
+          <Block flex row style={{alignSelf:"flex-end", paddingHorizontal: theme.SIZES.BASE * 1.7, marginBottom: 20}}>
+            <Text size={20} style={{color:"gray"}}>{this.state.likes}</Text>
+            <Icon name="thumbs-up" family="Entypo" size={22} color="gray"/>
+          </Block>
+        </TouchableOpacity>
+      )
+    }
+    else {
+      return (
+        <TouchableOpacity onPress={() => this.toggleLike()}>
+          <Block flex row style={{alignSelf:"flex-end", paddingHorizontal: theme.SIZES.BASE * 1.7, marginBottom: 20}}>
+            <Text size={20} style={{color:"blue"}}>{this.state.likes}</Text>
+            <Icon name="thumbs-up" family="Entypo" size={22} color="blue"/>
+          </Block>
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  toggleLike = () => {
+    var likes = (this.state.isLiked === 1) ? true : false;
+    var URL = (likes) ? DISLIKE_IT_URL : LIKE_IT_URL;
+
+    fetch(backendEndpoint + URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({itinerary_id: this.state.id})
+    }).then(response => response.json())
+    .then(result => {
+      if(result.success === true)
+        this.setState({isLiked: (likes) ? 0 : 1, likes: (likes) ? this.state.likes-1 : this.state.likes+1})
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
   formatTags = () => {
     if(this.state.tags === null)
       return "";
@@ -215,22 +257,6 @@ class Trip extends React.Component {
                   //console.log(this.state.markers)
                   )}
                 </MapView>
-                {/* <CenterButton centerLocation={this.centerLocation} /> */}
-              {/* <ImageBackground
-                source={{ uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flonglivelearning.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fmaps-greekmyth.jpg&f=1&nofb=1" }} 
-                style={[
-                  styles.imageBlock,
-                  {
-                     //width: width - theme.SIZES.BASE *2,
-                     width:width,
-                      height: 240 }
-                ]}
-                imageStyle={{
-                  //width: width - theme.SIZES.BASE *2,
-                  width: width, 
-                  height: 255
-                }}
-              > */}
               </Block>
             </Block>
             <Block>
@@ -242,8 +268,9 @@ class Trip extends React.Component {
               </TouchableOpacity>
               <Block>
                 <Text size={15} style={styles.subTitle}>
-                {this.state.text}
-              </Text>
+                  {this.state.text}
+                </Text>
+                {this.renderLikes()}
             </Block>
         </Block>
         </Block>
@@ -266,13 +293,11 @@ class Trip extends React.Component {
                 )}
             </ScrollView>
           </Block>
-
-
           <Block flex  style={{margin:20}}>
-                <Text center size={18}  color={argonTheme.COLORS.HEADER}>
-                  {this.formatTags()}
-                </Text>
-            </Block>
+            <Text center size={18}  color={argonTheme.COLORS.HEADER}>
+              {this.formatTags()}
+            </Text>
+          </Block>        
         </Block>
       </Block>
     );
@@ -325,13 +350,12 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   subTitle: {
-    paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
     marginTop: 20,
     color: 'black',
     alignSelf: "center",
     textAlign: 'justify',
-    lineHeight: 30
+    lineHeight: 30,
   },
 
   group: {

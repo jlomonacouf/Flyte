@@ -72,7 +72,7 @@ class tripImages extends React.Component {
     .then((data) => {
       this.setState({uploading: false, error: false});
   
-      this.props.navigation.reset({index: 0, routes: [{ name: 'Articles' }],})
+      this.props.navigation.reset({index: 0, routes: [{ name: 'Home' }],})
     })
   }
 
@@ -84,7 +84,8 @@ class tripImages extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify({subdirectory: "/Trips/"})
     })
     .then((response) => response.json())
     .then((data) => {
