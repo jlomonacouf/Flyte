@@ -20,8 +20,6 @@ import { backendEndpoint, SINGLE_IT_URL } from '../src/api_methods/shared_base';
 const thumbMeasure = (width - 48 - 32) / 3;
 const cardWidth = width - theme.SIZES.BASE * 2;
 
-const currUser = "Gremlin"; 
-
 const initialRegion={
   latitude: 37.78825,
   longitude: -122.4324,
@@ -239,7 +237,7 @@ class Trip extends React.Component {
               <Text bold size={24} style={styles.title}>
                 {this.state.title}
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile', { item: currUser.username })}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile', { view_username: this.state.author })}>
                 <Text center color="green" size={12}>@{this.state.author}</Text>
               </TouchableOpacity>
               <Block>
