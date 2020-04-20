@@ -1,6 +1,6 @@
 import React from 'react';
 //import { StyleSheet, Dimensions, ScrollView } from 'react-native';
-import {StyleSheet, Dimensions, ScrollView,View, Text, TouchableOpacity} from 'react-native'; 
+import {StyleSheet, Dimensions, ScrollView,View, Text, TouchableOpacity, RefreshControl} from 'react-native'; 
 
 import { Block, theme } from 'galio-framework';
 
@@ -13,61 +13,67 @@ const { width } = Dimensions.get('screen');
 
 class Home extends React.Component {
 
-  state = {
-    articles: []
-  }; 
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false
+    }; 
+    this.articles = [];
+  }
 
-  componentDidMount(){
+  getArticleData = () => {
+    this.articles = [];
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
     };
 
     fetch(backendEndpoint + ALL_IT_URL, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-          result.results.map((value, index) => {
-            console.log(value.id)
-            var article = {
-              id: value.id,
-              title: value.name,
-              image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-              cta: 'View Plan'
-            }
-            
-            if(index % 3 === 0)
-              article.horizontal = true;
-            
-            var a = this.state.articles.concat(article);
-            this.setState({ articles: a });
-          })
+      .then(response => response.json())
+      .then(result => {
+        var articles = [];
+        result.results.map((value, index) => {
+          var article = {
+            id: value.id,
+            title: value.name,
+            image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            cta: 'View Plan'
+          }
+          
+          if(index % 3 === 0)
+            article.horizontal = true;
+          
+          articles.push(article);
         })
-        .catch(error => {console.log('error', error);});
+        this.articles = articles;
+        this.setState({refreshing: false});
+      })
+      .catch(error => {console.log('error', error);});
+  }
+
+  componentDidMount(){
+    this.getArticleData();
   }
 
   renderArticles = () => {
     const { navigation} = this.props;
-
-    /*this.getArticles().then((val) => {
-      console.log(this.state.articles)
-      return (
-        <Card item={articles[0]} horizontal nextScreen={'Trip'}/>
-      );
-    });*/
     var formatCounter = 0;
+
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.articles}>
-
+        contentContainerStyle={styles.articles}
+        refreshControl={
+          <RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.getArticleData()} />
+        }>
         <Block flex>
-          {this.state.articles.map((value, index) => {
-            if(formatCounter === 1 && index < this.state.articles.length-1) {
+          {this.articles.map((value, index) => {
+            if(formatCounter === 1 && index < this.articles.length-1) {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
               return (
                 <Block flex row>
                   <Card item={value} style={{ marginRight: theme.SIZES.BASE }} id={value.id} nextScreen={'Trip'} />
-                  <Card item={this.state.articles[index+1]} id={value.id+1} nextScreen={'Trip'} />
+                  <Card item={this.articles[index+1]} id={value.id+1} nextScreen={'Trip'} />
                 </Block>
               );
             }
@@ -89,7 +95,7 @@ class Home extends React.Component {
   }
 
   render() {
-    if (this.state.articles === []) {
+    if (this.articles === []) {
       return (
         <Block flex style={styles.container}>
         <Spinner

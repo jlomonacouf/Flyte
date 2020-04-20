@@ -13,11 +13,8 @@ import { Block, Text, theme } from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { Images, argonTheme } from "../../constants";
 
-
 import DatePicker from 'react-native-datepicker';
-//import DatePicker from '@react-native-community/datetimepicker'; 
-//https://www.positronx.io/react-datepicker-tutorial-with-react-datepicker-examples/
-//Might HELP: https://reactnativemaster.com/react-native-ui-kitten-datepicker-example/
+
 const { width, height } = Dimensions.get("screen");
 
 
@@ -50,7 +47,6 @@ export default class tripDates extends Component {
     
 
     render() {
-        const { navigation } = this.props;
         const MIN_DATE_DEFAULT = "04-01-2020";
         const MAX_DATE_DEFAULT = "01-01-2030";
         const renderDate = (index) => {
@@ -135,14 +131,16 @@ export default class tripDates extends Component {
         }
 
         const formatDate = (date) => {
+
             var dateParts = date.split('-');
             return dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1]
         }
 
         const checkValidDates = () => {
+            const { navigation } = this.props;
             var datesValid = true;
             var errorList = this.state.errorList;
-            var formattedDates = this.state.dates;
+            var formattedDates = [];
 
             for(var i = 0; i < this.state.dates.length; i++) {
                 errorList[i] = "";
@@ -156,8 +154,7 @@ export default class tripDates extends Component {
 
                 var startDate = new Date(formatDate(this.state.dates[i].startDate));
                 var endDate = new Date(formatDate(this.state.dates[i].endDate));
-                formattedDates[i].startDate = formatDate(this.state.dates[i].startDate);
-                formattedDates[i].endDate = formatDate(this.state.dates[i].endDate);
+                formattedDates.push({startDate: formatDate(this.state.dates[i].startDate), endDate: formatDate(this.state.dates[i].endDate)});
 
                 if(i !== 0 && startDate < new Date(formatDate(this.state.dates[i-1].endDate)))
                 {
@@ -174,7 +171,6 @@ export default class tripDates extends Component {
             if(datesValid === true)
             {
                 this.setState({errorList: errorList})
-
                 navigation.navigate("tripTags", {name:  this.props.route.params.name, locations: this.state.locations, dates: formattedDates})
             }
             else
