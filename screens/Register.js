@@ -17,6 +17,8 @@ import { Images, argonTheme } from "../constants";
 import { backendEndpoint, REGISTER_URL, GET_USER_URL} from "../src/api_methods/shared_base";
 import bcrypt from 'react-native-bcrypt';
 
+import GLOBAL from '../src/api_methods/global.js'
+
 const { width, height } = Dimensions.get("screen");
 
 //Regex 
@@ -148,17 +150,11 @@ class Register extends React.Component {
       })
     }).then((response) => response.json())
       .then((json) => {
-
         if(json.success===false){
           this.setState({errorMessage: 'Error creating an account, please try again'}); 
-  
         }else{
-
-            const character ={
-              my_id: username,
-              view_id: username
-            }
-           navigation.navigate('Profile', {item: character}); 
+          GLOBAL.USERNAME=username; 
+           navigation.reset({index: 0, routes: [{ name: 'Home' }],})
         } 
       }).catch((err) => {
         console.log('error getting user data', err);

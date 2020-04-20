@@ -630,7 +630,7 @@ function AppStack(props) {
 
       <Drawer.Screen name="Login" component={HomeStack} />
       <Drawer.Screen name="Profile" component={ProfileStack} />
-      <Drawer.Screen name="Account" component={Register} />
+      <Drawer.Screen name="Account" component={Account}/>
       <Drawer.Screen name="Loading" component={Loading} />
 
       <Drawer.Screen name="Create Itinerary" component={ItineraryStack} />

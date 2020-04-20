@@ -47,17 +47,10 @@ class Login extends React.Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      // const character ={
-      //   my_id: username,
-      //   view_id: username
-      // }
       if(data.success===false){
         this.setState({errorMessage: 'Incorrect username or password'}); 
-
       }else{
-
         GLOBAL.USERNAME=username; 
-         // navigation.navigate('Home', {item: character});
          navigation.reset({index: 0, routes: [{ name: 'Home' }],})
       } 
     }).catch((err) => {
