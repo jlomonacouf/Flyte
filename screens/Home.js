@@ -72,8 +72,8 @@ class Home extends React.Component {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
               return (
                 <Block flex row>
-                  <Card item={value} style={{ marginRight: theme.SIZES.BASE }} id={value.id} nextScreen={'Trip'} />
-                  <Card item={this.articles[index+1]} id={this.articles[index+1].id} nextScreen={'Trip'} />
+                  <Card item={value} style={{ marginRight: theme.SIZES.BASE }} id={value.id} nextScreen={'Plan'} />
+                  <Card item={this.articles[index+1]} id={this.articles[index+1].id} nextScreen={'Plan'} />
                 </Block>
               );
             }
@@ -82,11 +82,11 @@ class Home extends React.Component {
             }
             else if(formatCounter === 3) {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
-              return (<Card item={value} full id={value.id} nextScreen={'Trip'}/>);
+              return (<Card item={value} full id={value.id} nextScreen={'Plan'}/>);
             }
             else {
               formatCounter = (formatCounter === 4) ? 0 : formatCounter + 1;
-              return (<Card item={value} horizontal id={value.id} nextScreen={'Trip'}/>);
+              return (<Card item={value} horizontal id={value.id} nextScreen={'Plan'}/>);
             }
           })}
         </Block>

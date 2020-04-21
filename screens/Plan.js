@@ -220,6 +220,13 @@ class Trip extends React.Component {
     return tagList;
   }
 
+  goToInitialLocation() {
+    let initialRegion = Object.assign({}, this.state.initialRegion);
+    initialRegion["latitudeDelta"] = 0.005;
+    initialRegion["longitudeDelta"] = 0.005;
+    this.mapView.animateToRegion(initialRegion, 2000);
+  }
+
   renderCards = () => {
     const { navigation } = this.props;
 
@@ -362,7 +369,7 @@ const styles = StyleSheet.create({
   },
 
   group: {
-    paddingTop: theme.SIZES.BASE
+
   },
   albumThumb: {
     borderRadius: 4,

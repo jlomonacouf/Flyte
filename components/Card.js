@@ -31,7 +31,8 @@ class Card extends React.Component {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => navigation.navigate(nextScreen, {id: this.props.id})}>
           <Block flex space="between" style={styles.cardDescription}>
-            <Text size={14} style={styles.cardTitle}>{item.title}</Text>
+            <Text size={14} bold={item.description} style={styles.cardTitle}>{item.title}</Text>
+            <Text size={14} visible={item.description} style={styles.cardTitle}>{item.description}</Text>
             <Text size={12} muted={!ctaColor} color={ctaColor || argonTheme.COLORS.ACTIVE} bold>{item.cta}</Text>
           </Block>
         </TouchableWithoutFeedback>

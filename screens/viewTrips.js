@@ -10,14 +10,61 @@ import {
 } from "react-native";
 import { Block, theme, Text } from 'galio-framework';
 import { Card, Button, Icon, Input } from '../components';
-import articles from '../constants/articles';
 import { Images, argonTheme } from "../constants";
-
+import { backendEndpoint, USER_TRIPS_URL } from '../src/api_methods/shared_base'; 
+import Spinner from 'react-native-loading-spinner-overlay';
 const { height, width } = Dimensions.get('screen');
+import GLOBAL from '../src/api_methods/global'
 
 class viewTrips extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false,
+      loaded: true
+    }; 
+    this.articles = [];
+  }
 
+  formatDate = (date) => {
+    let d = new Date(Date.parse(date)).toString().split(' ');
+    return d[0] + ', ' + d[1] + ' ' + d[2] + ', ' + d[3];
+  }
+
+  getArticleData = () => {
+    this.articles = [];
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch(backendEndpoint + USER_TRIPS_URL + GLOBAL.USERNAME, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        var articles = [];
+        result.results.map((value, index) => {
+          var article = {
+            id: value.id,
+            title: value.name,
+            description: "Start: " + this.formatDate(value.start_date) + '\n' + "End: " + this.formatDate(value.end_date),
+            image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            cta: 'View Trip'
+          }
+          
+          
+          articles.push(article);
+        })
+        this.articles = articles;
+        this.setState({refreshing: false, loading: false});
+      })
+      .catch(error => {console.log('error', error);});
+  }
+
+  componentDidMount(){
+    this.getArticleData();
+  }
+  
   renderLogin = () => {
 
     const { navigation } = this.props;
@@ -65,28 +112,59 @@ class viewTrips extends React.Component {
         contentContainerStyle={styles.articles}>
   
         <Block flex>
-          <Card item={articles[0]} horizontal  nextScreen={'Trip'} />
-          <Block flex row>
-            <Card item={articles[1]} nextScreen={'Trip'} style={{ marginRight: theme.SIZES.BASE }} />
-            <Card item={articles[2]} nextScreen={'Trip'} />
-          </Block>
-          <Card item={articles[3]} horizontal nextScreen={'Trip'} />
-          <Card item={articles[4]} full nextScreen={'Trip'}/>
+          {this.articles.map((value,index) => {
+            return (
+              <Card item={this.articles[index]} horizontal id={value.id}  nextScreen={'Trip'} />
+            )
+          })}
         </Block>
         
       </ScrollView>
     )
   }
 
-
+/*
+<Block flex>
+  <Card item={articles[0]} horizontal  nextScreen={'Trip'} />
+  <Block flex row>
+    <Card item={articles[1]} nextScreen={'Trip'} style={{ marginRight: theme.SIZES.BASE }} />
+    <Card item={articles[2]} nextScreen={'Trip'} />
+  </Block>
+  <Card item={articles[3]} horizontal nextScreen={'Trip'} />
+  <Card item={articles[4]} full nextScreen={'Trip'}/>
+</Block>
+*/
 
   render() {
-
-    return (
-      <Block flex middle style={styles.home}>
-        {this.renderUserTrips()}
-      </Block>
-    );
+    if (this.state.loading === true) {
+      return (
+        <Block flex style={styles.container}>
+          <Spinner
+            visible={true}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        </Block> 
+      ); 
+    }
+    else {
+      if(this.articles.length !== 0)
+      {
+        return (
+          <Block flex middle style={styles.home}>
+            {this.renderUserTrips()}
+          </Block>
+        );
+      }
+      else {
+        return (
+          <Block style={{marginTop: height / 6}}>
+            <Text size={20} style={{textAlign: "center",color:"gray"}}>You do not have any trips</Text>
+            <Text style={{textAlign: "center", color:"gray"}}>Click here to make one!</Text>
+          </Block>
+        )
+      }
+    }
   }
 }
 

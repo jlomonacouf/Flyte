@@ -23,7 +23,8 @@ import Loading from "../screens/Loading";
 import Login from "../screens/Login";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
-import Trip from "../screens/Plan"; 
+import Plan from "../screens/Plan";
+import Trip from "../screens/Trip";  
 import Itinerary from "../screens/Itinerary"; 
 
 //User Pages 
@@ -206,12 +207,30 @@ const userTripMenu= [
         }}/>
 
        <Stack.Screen
+        name="Plan"
+        component={Plan}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Home"
+              white 
+              back
+             // bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="black" 
+              iconColor="black"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+        }}/>
+
+      <Stack.Screen
         name="Trip"
         component={Trip}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Home"
+              title="Your Trips"
               white 
               back
              // bgColor={argonTheme.COLORS.ACTIVE} 
@@ -454,28 +473,6 @@ function TripStack(props) {
         }}
       />
 
-      <Stack.Screen
-        name="Trip"
-        component={Trip}
-        options={
-          ({ route }) => ({
-            title: route.params.item.name
-          }), 
-          {
-          header: ({ navigation, scene }) => (
-            <Header
-              title="3 Days, 2 Nights, 1 Trip "
-              white 
-              back
-              //bgColor={argonTheme.COLORS.ACTIVE} 
-              titleColor="white" 
-              iconColor="white"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-        }}/>
-
     </Stack.Navigator>
   );
 }
@@ -628,7 +625,7 @@ function AppStack(props) {
       <Drawer.Screen name="Itinerary" component={Itinerary} />
       <Drawer.Screen name="Itinerary_Ex" component={Itinerary_Ex} />
       <Drawer.Screen name="Create Trip" component={TripStack} />
-      <Drawer.Screen name="Trip" component={TripStack} />
+      <Drawer.Screen name="Trip" component={Trip} />
 
       
       <Drawer.Screen name="Elements" component={ElementsStack} />
