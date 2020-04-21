@@ -128,14 +128,14 @@ class Trip extends React.Component {
                                     }}>
                                     </MapView>
                                 </Block>
-                                <Block>
+                                <View style={{width: width}}>
                                     <Text bold size={24} style={styles.title}>
                                         {location.address}
                                     </Text>
                                     <Text size={17} style={styles.subTitle}>
                                         {this.formatDate(location.start_date) + " - " + this.formatDate(location.end_date)}
                                     </Text>
-                                </Block>
+                                </View>
                                 <Text bold size={20} style={styles.title}>
                                         Current Plans:
                                 </Text>
