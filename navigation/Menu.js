@@ -25,7 +25,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     //"Trip", 
    // "Followers", 
     //"Following", 
-  // "Elements",
+  "Elements",
    "Articles", 
    //"Basic"
   ];

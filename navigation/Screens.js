@@ -137,6 +137,8 @@ export default function OnboardingStack(props) {
 
 
 function HomeStack(props) {
+
+
   const homeMenu= [
     {id: 'Home', title: 'Popular',}, 
     {id: 'viewTrips', title: 'Your Trips',},
@@ -192,7 +194,7 @@ const userTripMenu= [
         options={{
           header: ({ navigation, scene }) => (
             <Header
-            title="Home"
+            title="My Trips"
             tabs={userTripMenu} 
             search
             navigation={navigation}

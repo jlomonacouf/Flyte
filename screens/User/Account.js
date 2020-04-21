@@ -22,25 +22,99 @@ import GLOBAL from '../../src/api_methods/global.js';
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
+
+//Regex 
+const emailPattern =/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+const usa =/ ^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/; 
+const international =/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/; 
+const usernamePattern = /^[0-9a-zA-Z]+$/;
+
+//Check entries
+var first= false; 
+var last= false; 
+var num =false; 
+var userN = false; 
+var pass =false ; 
+
+
+
 class Account extends React.Component {
 
     state = {
-       // public: false, 
         avatar_path: "",
         first_name :"", 
         last_name : "", 
         phone_number: "", 
         password: "",
         confirm_password: "", 
+        update_this : "", 
+        isEditting: true, 
       }; 
   
         
     handleChange = (name, val) => {
           this.setState({ [name]: val });
+          switch (name){
+            case 'first_name':
+                if(val.length>20){
+                  this.setState({warningMessage: 'First name should be less than 20 characters'}); 
+                  first= false; 
+                }else{
+                  first=true; 
+                }
+              break; 
+            case 'last_name': 
+                if(val.length>30){
+                  this.setState({warningMessage: 'Last name should be less than 30 characters'}); 
+                  last=false; 
+                } 
+                else {
+                  last=true; 
+                }
+              break; 
+            case 'phone_number':
+      
+              if (val.length>4 && val.match(international)){
+                this.setState({warningMessage: 'International number detected'}); 
+                num=false; 
+              }else if (!val.match(usa)  && !val.match(international)){
+                this.setState({warningMessage: 'Please enter a valid phone number'}); 
+                num=false; 
+              }else {
+                num=true; 
+              }
+              break; 
+            case 'username':
+                if((!val.match(usernamePattern)) && (val.length >30)){
+                  this.setState({warningMessage: 'Username must be a combination of less than 30 letters and numbers'}); 
+                  userN=false; 
+                }
+                else if(!val.match(usernamePattern)){
+                  this.setState({warningMessage: 'Username can only contain letters and numbers'}); 
+                  userN=false; 
+                }else if(val.length>30){
+                  this.setState({warningMessage: 'Username must be less than 30 characters'}); 
+                  userN=false; 
+                }else{
+                  userN=true; 
+                }
+              break; 
+            case 'password': 
+                if(val.length<5){
+                  this.setState({warningMessage: 'Password must be at least 5 characters'}); 
+                  pass=false; 
+                }else{
+                  pass=true; 
+                }
+              break; 
+            case 'confirm_password': 
+              this.setState({warningMessage: 'Passwords do not match'}); 
+              break; 
+          }
      }; 
 
     executeUpdate = () => {
-    
+
         var requestOptions = {
                 method: 'PUT',
                 headers:  {
@@ -85,7 +159,11 @@ class Account extends React.Component {
           .then( response => response.json())
           .then( result => { 
              this.setState({user : result.results[0]});
-          }).catch(error => {
+             this.setState({avatar_path : result.results[0].avatar_path});
+             this.setState({first_name: result.results[0].first_name});
+             this.setState({last_name: result.results[0].last_name});
+             this.setState({phone_number: result.results[0].phone_number});
+             this.setState({password: result.results[0].password});
             console.log('error', error); 
           });
     
@@ -114,59 +192,78 @@ class Account extends React.Component {
 
                     <TouchableOpacity> 
                     <Block style={styles.avatarContainer}>
-                        <Image source={{ uri: this.state.user.avatar_path }}
+                        <Image source={{ uri: this.state.avatar_path }}
                                 style={styles.avatar} />
                      </Block>
                      </TouchableOpacity> 
                 </Block>
             </Block>
+            <Block style={styles.inputBlock}>
+                      <Input
+                        borderless
+                        placeholder={this.state.update_this} 
+                        onChangeText={val => this.handleChange(this.state.update_this, val)}
+                      />
+               </Block>
+               <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                    </Block>
+
          <ScrollView showsVerticalScrollIndicator={false}>  
          <Block style={styles.inputs}>
           <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Username</Text>
-                 <  Text bold>{this.state.user.username}</Text>
+                 <  Text bold>{this.state.username}</Text>
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
           </Block>
           <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text  color={theme.COLORS.MUTED}  style={{ marginBottom: 10 }}>First Name</Text>
-                  <  Text bold>{this.state.user.first_name}</Text>
+                  <  Text bold>{this.state.first_name}</Text>
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
           </Block>
           <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Last Name</Text>
-                  <  Text bold>{this.state.user.last_name}</Text>
+                  <  Text bold>{this.state.last_name}</Text>
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Phone Number </Text>
-                  <  Text bold>{this.state.user.phone_number}</Text>
+                  <  Text bold>{this.state.phone_number}</Text>
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Password </Text>
-                  <  Text bold>{this.state.user.password}</Text>
+                  <  Text bold>{this.state.password}</Text>
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
             </Block>
         </Block>
-            <Block>
-            <FontAwesome5.Button name={'comments'} />
-              <FontAwesome5 name={'comments'} solid />
-              <FontAwesome5 name={'git'} brand />
-              <FontAwesome5 name={'comments'} />
+             </ScrollView>
+
+             <Block row > 
+            <Button style={styles.saveBtn} 
+              color="secondary"
+              textStyle={{ color: "black", fontSize: 12, fontWeight: "700" }}
+            ><Text> <FontAwesome5 name={'save'} solid/> Save </Text>
+            </Button>
+
+            <Button style={styles.cancelBtn}
+              color="secondary"
+              textStyle={{ color: "black", fontSize: 12, fontWeight: "700" }}
+            ><Text> <FontAwesome5  name={'trash'}/> Cancel </Text>
+              </Button>
+
             </Block>
 
-
-             </ScrollView>
              </Block>
      );
         }
@@ -209,8 +306,25 @@ const styles = StyleSheet.create({
         marginLeft:0, 
         marginRight:0, 
         alignItems: 'flex-end'
-
       }, 
+      saveBtn: {
+        width: width * 0.30,
+        marginTop: 30, 
+        marginLeft: 75, 
+        padding: 10, 
+        color: 'white'
+      }, 
+      cancelBtn: {
+        width: width * 0.30,
+        marginTop: 30, 
+        marginLeft: 15, 
+        padding: 10,
+        color: 'white'
+      }, 
+      inputBlock:{
+        padding: 20, 
+      }
+      
 });
 
 
