@@ -165,8 +165,13 @@ class Trip extends React.Component {
     render() {
         if(this.state.loading === true) {
             return (
-                <Text>Loading</Text>
-            )
+              <Block flex style={styles.container}>
+              <Spinner
+                visible={true}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+            </Block> ); 
         }
         else {
             return (
@@ -212,57 +217,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         textAlign: 'center',
         lineHeight: 30,
-    },
-    group: {
-        paddingTop: theme.SIZES.BASE
-    },
-    albumThumb: {
-        borderRadius: 4,
-        marginVertical: 4,
-        alignSelf: "center",
-        width: thumbMeasure,
-        height: thumbMeasure
-    },
-    category: {
-        backgroundColor: theme.COLORS.WHITE,
-        marginVertical: theme.SIZES.BASE / 2,
-        borderWidth: 0
-    },
-    categoryTitle: {
-        height: "50%",
-        paddingHorizontal: theme.SIZES.BASE,
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    imageBlock: {
-        overflow: "hidden",
-        borderRadius: 4
-    },
-    productItem: {
-        width: cardWidth - theme.SIZES.BASE * 3,
-        marginHorizontal: theme.SIZES.BASE,
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: 7 },
-        shadowRadius: 10,
-        shadowOpacity: 0.2
-    },
-    productImage: {
-        width: cardWidth - theme.SIZES.BASE*2,
-        height: cardWidth - theme.SIZES.BASE*6,
-        borderRadius: 3
-    },
-    productDate: {
-        //paddingTop: theme.SIZES.BASE,
-        paddingBottom: theme.SIZES.BASE / 2
-    },
-    productDescription: {
-        paddingTop: theme.SIZES.BASE
-        // paddingBottom: theme.SIZES.BASE * 2,
-    },
-    articles: {
-        width: width - theme.SIZES.BASE * 2,
-        paddingVertical: theme.SIZES.BASE,
     }
 });
 
