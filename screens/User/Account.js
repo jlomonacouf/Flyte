@@ -375,7 +375,8 @@ class Account extends React.Component {
 
           <Block row space="between" style={styles.inputRow}>
           <Block style={styles.inputBlock}>
-                <Input
+                <Input  
+                        password
                         borderless
                         placeholder={this.state.password} 
                         iconContent={
