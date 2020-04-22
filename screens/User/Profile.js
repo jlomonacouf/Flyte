@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import {
   StyleSheet,
   Dimensions,
@@ -15,18 +14,18 @@ import { Images, argonTheme } from "../../constants";
 import { HeaderHeight } from "../../constants/utils";
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import { backendEndpoint, GET_USER_URL,UPDATE_USER_URL , ISFOLLOWING_URL,FOLLOW_URL, UNFOLLOW_URL, USER_IT_URL} from "../../src/api_methods/shared_base";
+import { backendEndpoint, GET_USER_URL,UPDATE_USER_URL , ISFOLLOWING_URL,FOLLOW_URL, UNFOLLOW_URL, USER_TRIPS_URL, USER_IT_URL} from "../../src/api_methods/shared_base";
+import GLOBAL from '../../src/api_methods/global.js'
 
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
-
-import GLOBAL from '../../src/api_methods/global.js'
 
 
 class Profile extends React.Component {
 
     state ={
-      articles : [], 
+      plans : [], 
+      trips: [],
       user : {}, 
       public: false, 
       privacyBtn: {
@@ -114,32 +113,51 @@ class Profile extends React.Component {
           } 
 
 
-        //GET USER TRIPS 
+        //GET USER TRIPS --APPRAENTLY PLANS?>
         requestOptions = {
           method: 'GET',
           redirect: 'follow'
         };
     
+                // GET USER TRIPS
+                fetch(backendEndpoint + USER_TRIPS_URL + fetchID, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    result.results.map((value, index) => {
+                      var trip = {
+                        id: value.id,
+                        title: value.name,
+                        image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                        cta: 'View Trip'
+                      }
+                      if(index % 3 === 0)
+                       trip.horizontal = true;
+                    var a = this.state.trips.concat(trip);
+                    this.setState({ trips: a });
+                    })
+                }).catch(error => {console.log('error', error); });
+          
+
+                //GET USER PLANS
 
         fetch(backendEndpoint + USER_IT_URL + fetchID , requestOptions)
             .then(response => response.json())
             .then(result => {
               result.results.map((value, index) => {
-                var article = {
-                  id: value.id,
+                var plan = {
+                  id: value.itinerary_id,
                   title: value.name,
                   image: (value.image_path) ? value.image_path : "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
                   cta: 'View Plan'
                 }
-                
                 if(index % 3 === 0)
-                  article.horizontal = true;
-                
-                var a = this.state.articles.concat(article);
-                this.setState({ articles: a });
+                  plan.horizontal = true;
+                var a = this.state.plans.concat(plan);
+                this.setState({ plans: a });
               })
-            })
-            .catch(error => {console.log('error', error);});
+            }).catch(error => {console.log('error', error); });
+
+        
 
             if((view_username!=undefined && GLOBAL.USERNAME===view_username) ||view_username===undefined)
             { this.setState({ showNewTripBtn:true});
@@ -347,52 +365,81 @@ class Profile extends React.Component {
                   </Block>
                   <Block middle>
                   </Block>
-                  <Block
-                    row
-                    style={{ marginTop:5, marginLeft: 15, paddingVertical: 14, alignItems: "baseline" }}
-                  >
-                    <Text bold size={18} color="#525F7F">
-                      Trips
-                    </Text>
+
+                                    
+                  <Block row style={{ marginTop:5, marginLeft: 15, paddingVertical: 14, alignItems: "baseline" }} >
+                    <Text bold size={18} color="#525F7F">Trips</Text>
                   </Block>
-                  <Block
-                    row
-                    style={{ marginRight: 5, paddingBottom: 20, justifyContent: "flex-end" }}
-                  >
-                    <Button
-                      small
-                      color="transparent"
-                      textStyle={{ color: "#5E72E4", fontSize: 12 }}
-                      onPress={() => {
-                        // 
-                        navigation.navigate('Articles', { username : this.state.user.username })}}>
+
+                  <Block row style={{ marginRight: 5, paddingBottom: 20, justifyContent: "flex-end" }}>
+                    <Button small color="transparent" textStyle={{ color: "#5E72E4", fontSize: 12 }}
+                      onPress={() => { navigation.navigate('Articles', { username : this.state.user.username }) }}>
+                      View all
+                    </Button>
+                  </Block>
+
+                     <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
+                 <Block row space="between" style={{ flexWrap: "wrap" }}>
+                 <ScrollView horizontal={true} style={{marginTop: -10}} nestedScrollEnabled = {true}> 
+                    {this.state.trips.map((trip, imgIndex) => (
+                     <Image 
+                      onPress={() => { navigation.navigate('Trip', {id: trip.id})}}
+                       source={{ uri: trip.image}}
+                       key={`viewed-${imgIndex}`}
+                       resizeMode="cover"
+                       style={styles.thumb}
+                     /> ))} 
+                   </ScrollView>
+                    </Block>
+                 </Block>
+
+                 <Block style ={{marginTop: 10, marginBottom:10}}>
+                    {this.state.showNewTripBtn && 
+                    <Button medium color="transparent" textStyle={{ padding:15, fontWeight: "bold",color: "#32325D", fontSize: 20 }}
+                    onPress={() => { navigation.navigate('Create Trip', { username: this.state.user.username })}}
+                    >New Trip</Button> }
+                     </Block>
+
+
+
+                  <Block row style={{ marginTop:5, marginLeft: 15, paddingVertical: 14, alignItems: "baseline" }}>
+                    <Text bold size={18} color="#525F7F">Plans </Text> 
+                    </Block>
+
+
+                    <Block row style={{ marginRight: 5, paddingBottom: 20, justifyContent: "flex-end" }}>
+                    <Button small color="transparent" textStyle={{ color: "#5E72E4", fontSize: 12 }}
+                      onPress={() => { navigation.navigate('Articles', { username : this.state.user.username }) }}>
                       View all
                     </Button>
                   </Block>
 
                   <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
                     <Block row space="between" style={{ flexWrap: "wrap" }}>
-                       {this.state.articles.map((article, imgIndex) => (
-                        <Image
-                          source={{ uri: article.image}}
-                          key={`viewed-${imgIndex}`}
+                    <ScrollView horizontal={true} style={{marginTop: -10}} nestedScrollEnabled = {true}>  
+                       {this.state.plans.map((plan, index) => (
+                        <Image 
+                         onPress={() => {navigation.navigate('Plan', {id: plan.id})}}
+                          source={{ uri: plan.image_path}}
+                          key={`viewed-${index}`}
                           resizeMode="cover"
                           style={styles.thumb}
-                        />
-                      ))} 
+                        />))} 
+                         </ScrollView>
+                    </Block>
+                    </Block>
+
+
                     <Block style ={{marginTop: 10, marginBottom:10}}>
-         
-                      
-                    {this.state.showNewTripBtn && <Button medium  color="transparent" textStyle={{ padding:15, fontWeight: "bold",color: "#32325D", fontSize: 20 }}
-                      onPress={() => {
-
-                        navigation.navigate('Create Trip', { username: this.state.user.username })}}
-                    > New Trip 
+                      {this.state.showNewTripBtn &&
+                       <Button medium  color="transparent" textStyle={{ padding:15, fontWeight: "bold",color: "#32325D", fontSize: 20 }}
+                      onPress={() => { navigation.navigate('CreateItinerary_Name')}} 
+                      > New Plan
                     </Button>} 
+                   </Block>
 
-                    </Block>
-                    </Block>
-                  </Block>
+
+
                 </Block>
               </Block>
             </ScrollView>
@@ -485,3 +532,48 @@ export default Profile;
 
 
 
+
+/* DELETED 
+
+         
+                  
+                    
+    
+                  <Block row style={{ marginTop:5, marginLeft: 15, paddingVertical: 14, alignItems: "baseline" }}>
+                    <Text bold size={18} color="#525F7F">Plans </Text> </Block>
+
+                  <Block row style={{ marginRight: 5, paddingBottom: 20, justifyContent: "flex-end" }} >
+                    <Button small color="transparent"
+                      textStyle={{ color: "#5E72E4", fontSize: 12 }}
+                      onPress={() => { navigation.navigate('Articles', { username : this.state.user.username })}}> View all 
+                    </Button>
+                  </Block>
+
+
+                 
+                  <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
+                  
+                    <Block row space="between" style={{ flexWrap: "wrap" }}>
+                       {this.state.plans.map((plan, index) => (
+                    
+                        <Image onPress={() => {
+                          navigation.navigate('Plan', {id: plan.id})}}
+                          source={{ uri: plan.image_path}}
+                          key={`viewed-${index}`}
+                          resizeMode="cover"
+                          style={styles.thumb}
+                        />
+                      ))} 
+                    </Block>
+
+                    <ScrollView horizontal={true} style={{marginTop: -10}} nestedScrollEnabled = {true}>  
+                    </ScrollView>
+
+                    <Block style ={{marginTop: 10, marginBottom:10}}>
+                      {this.state.showNewTripBtn && <Button medium  color="transparent" textStyle={{ padding:15, fontWeight: "bold",color: "#32325D", fontSize: 20 }}
+                      onPress={() => { navigation.navigate('CreateItinerary_Name')}} > New Plan
+                    </Button>} 
+                   </Block>
+                  </Block>
+
+*/
