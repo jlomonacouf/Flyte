@@ -126,8 +126,12 @@ class Account extends React.Component {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
-                    {public: updatePrivacy}
-                    
+                    {avatar_path : this.state.avatar_path},
+                    {username: this.state.username},
+                    {first_name: this.state.first_name},
+                    {last_name:this.state.last_name}, 
+                    {phone_number:this.state.phone_number},
+                    {password: this.state.password} 
                     ),
                 redirect: 'follow'
               };
@@ -138,7 +142,8 @@ class Account extends React.Component {
                     alert("Error " + result.message);
                     console.log(result);//NEED STATES TO GIVE MORE CONTEXT 
                   }else{   
-                        console.log("SUCCESS?");
+                  console.log("SUCCESS? " + result);
+                  navigation.navigate('Profile', { username: this.state.username }); 
                } 
                 }).catch(error => {
                   alert("Network error, please try again in a moment");
@@ -377,7 +382,7 @@ class Account extends React.Component {
                           <Icon
                             size={16}
                             color={argonTheme.COLORS.ICON}
-                            name="hat-3"
+                            name="padlock-unlocked"
                             family="ArgonExtra"
                             style={styles.inputIcons}
                           />
@@ -398,12 +403,14 @@ class Account extends React.Component {
             <Button style={styles.saveBtn} 
               color="secondary"
               textStyle={{ color: "black", fontSize: 12, fontWeight: "700" }}
+              onPress={()=>this.executeUpdate()}
             ><Text> <FontAwesome5 name={'save'} solid/> Save </Text>
             </Button>
 
             <Button style={styles.cancelBtn}
               color="secondary"
               textStyle={{ color: "black", fontSize: 12, fontWeight: "700" }}
+              onPress={()=> navigation.navigate('Profile', { username: this.state.user.username })}
             ><Text> <FontAwesome5  name={'trash'}/> Cancel </Text>
               </Button>
 
@@ -426,7 +433,8 @@ const styles = StyleSheet.create({
       color :'#00d084'
     },
     doneTap: {
-        color : theme.COLORS.MUTED
+        //color : theme.COLORS.MUTED
+        color: 'blue'
     },
     header: {
         marginTop: 60,
@@ -485,87 +493,3 @@ const styles = StyleSheet.create({
 
 
 export default Account;
-
-
-/* DELETED CODE 
-
-
- <Block row space="between" style={styles.inputRow}>
-              <Block>
-                  <Text  color={theme.COLORS.MUTED}  style={{ marginBottom: 10 }}>First Name</Text>
-                  <  Text bold>{this.state.first_name}</Text>
-              </Block>
-              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
-          </Block>
-          <Block row space="between" style={styles.inputRow}>
-              <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Last Name</Text>
-                  <  Text bold>{this.state.last_name}</Text>
-              </Block>
-              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
-            </Block>
-            <Block row space="between" style={styles.inputRow}>
-              <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Phone Number </Text>
-                  <  Text bold>{this.state.phone_number}</Text>
-              </Block>
-              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
-            </Block>
-            <Block row space="between" style={styles.inputRow}>
-              <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Password </Text>
-                  <  Text bold>{this.state.password}</Text>
-              </Block>
-              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
-            </Block>
-
-
-  doneUpdating = (valueUpdated) => {
-      switch (valueUpdated){
-        case 'avatar_path':
-            this.setState({uploadImage: false});
-            break; 
-        case 'username':
-          this.setState({showUsername: false});
-          break; 
-        case 'first_name':
-          this.setState({showFirst: false});
-          break; 
-        case 'last_name': 
-          this.setState({showLast: false});
-          break; 
-        case 'phone_number':
-          this.setState({showNumber: false});
-          break; 
-        case 'username':
-          this.setState({showPassword: false});
-          break; 
-
-      }
-  }; 
-
-    showInputBox = (valueToUpdate) =>{
-        switch (valueToUpdate){
-          case 'avatar_path':
-              this.setState({uploadImage: true});
-              break; 
-          case 'username':
-            this.setState({showUsername: true});
-            break; 
-          case 'first_name':
-            this.setState({showFirst: true});
-            break; 
-          case 'last_name': 
-            this.setState({showLast: true});
-            break; 
-          case 'phone_number':
-            this.setState({showNumber: true});
-            break; 
-          case 'username':
-            this.setState({showPassword: true});
-            break; 
-
-      }
-    }; 
-
-    */
