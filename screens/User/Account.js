@@ -7,15 +7,14 @@ import {
     ScrollView, 
     TouchableOpacity 
 } from 'react-native';
-import bcrypt from 'react-native-bcrypt';
 import { Block, Checkbox, Text, theme } from "galio-framework";
 import { Button, Icon, Input } from "../../components";
 import { HeaderHeight } from "../../constants/utils";
 import { argonTheme } from "../../constants/";
 import Spinner from 'react-native-loading-spinner-overlay';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-import { backendEndpoint, GET_USER_URL,UPDATE_USER_URL} from "../../src/api_methods/shared_base";
+import * as ImagePicker from 'expo-image-picker';
+import { backendEndpoint, GET_USER_URL, UPDATE_USER_URL, PROFILE_IMG_URL} from "../../src/api_methods/shared_base";
 import GLOBAL from '../../src/api_methods/global.js';
 
 
@@ -54,8 +53,70 @@ class Account extends React.Component {
         showLast : false, 
         showNumber: false, 
         showPassword: false,
-      }; 
-      
+        avatarChanged: false,
+    }; 
+  
+    getPermissionAsync = async () => {
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    }
+  
+    _pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        aspect: [4, 3],
+        quality: 1,
+        exif: false
+      });
+  
+      if (!result.cancelled) {
+        this.setState({ avatar_path: result.uri, avatarChanged: true });
+      }
+    };
+
+    uploadImage = () => {
+      return new Promise((resolve) => {
+        fetch(backendEndpoint + PROFILE_IMG_URL, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({subdirectory: "/Profile/"})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          
+          fetch(this.state.avatar_path).then(response => {
+            response.blob().then(res => {
+              var requestOptions = {
+                method: 'PUT',
+                body: res,
+                headers: {'Content-Type': 'multipart/form-data'},
+                redirect: 'follow'
+              };
+              fetch(data.data.signedRequest, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                  resolve(data.data.url);
+                })
+                .catch(error => {
+                  console.log("error");
+                  resolve("error");
+                });
+    
+            })
+          });
+        }).catch((err) => {
+          console.log("error");
+          resolve("error");
+        });
+      })
+    }
 
     handleChange = (name, val) => {
           this.setState({ [name]: val });
@@ -118,67 +179,78 @@ class Account extends React.Component {
           }
      }; 
 
+    changeImage = () => {
+      if(this.state.avatarChanged === true) {
+        this.uploadImage().then((url) => {
+          this.setState({avatar_path: url});
+          this.executeUpdate();
+        })
+      }
+      else {
+        this.executeUpdate();
+      }
+    }
+
     executeUpdate = () => {
       const { navigation } = this.props;
-
         var requestOptions = {
-                method: 'PUT',
-                headers:  {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    {avatar_path : this.state.avatar_path,
-                    username: this.state.username,
-                    first_name: this.state.first_name,
-                    last_name:this.state.last_name, 
-                    phone_number:this.state.phone_number,
-                    password: this.state.password} 
-                    ),
-                redirect: 'follow'
-              };
-              fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                  if(result.success===false){
-                    alert("Error " + result.message);
-                    console.log(result);//NEED STATES TO GIVE MORE CONTEXT 
-                  }else{   
-                  console.log("SUCCESS? " + result);
-                  navigation.navigate('Profile', { username: this.state.username }); 
-               } 
-                }).catch(error => {
-                  alert("Network error, please try again in a moment");
-                  console.log('error', error)
-                  
-                } );
+          method: 'PUT',
+          headers:  {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+              {avatar_path : this.state.avatar_path,
+              username: this.state.username,
+              first_name: this.state.first_name,
+              last_name:this.state.last_name, 
+              phone_number:this.state.phone_number,
+              password: this.state.password} 
+              ),
+          redirect: 'follow'
+        };
+        fetch(  backendEndpoint + UPDATE_USER_URL , requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            if(result.success===false){
+              alert("Error " + result.message);
+              console.log(result);//NEED STATES TO GIVE MORE CONTEXT 
+            }else{   
+            console.log("SUCCESS? " + result);
+            navigation.navigate('Profile', { username: this.state.username }); 
+          } 
+          }).catch(error => {
+            alert("Network error, please try again in a moment");
+            console.log('error', error)
+            
+          } );
 
      }
 
 
      componentDidMount = () =>{
 
-        var fetchID=GLOBAL.USERNAME;  
-     
-        var requestOptions = {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            redirect: 'follow'
-          };
-          const information = fetch(backendEndpoint + GET_USER_URL + fetchID, requestOptions)
-          .then( response => response.json())
-          .then( result => { 
-             this.setState({user : result.results[0]});
-             this.setState({avatar_path : result.results[0].avatar_path});
-             this.setState({username: result.results[0].username});
-             this.setState({first_name: result.results[0].first_name});
-             this.setState({last_name: result.results[0].last_name});
-             this.setState({phone_number: result.results[0].phone_number});
-             this.setState({password: result.results[0].password});
-            console.log('error', error); 
-          });
-    
+      var fetchID=GLOBAL.USERNAME;  
+      this.getPermissionAsync();
+      var requestOptions = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          redirect: 'follow'
+        };
+        const information = fetch(backendEndpoint + GET_USER_URL + fetchID, requestOptions)
+        .then( response => response.json())
+        .then( result => { 
+            this.setState({user : result.results[0]});
+            this.setState({avatar_path : result.results[0].avatar_path});
+            this.setState({username: result.results[0].username});
+            this.setState({first_name: result.results[0].first_name});
+            this.setState({last_name: result.results[0].last_name});
+            this.setState({phone_number: result.results[0].phone_number});
+            this.setState({password: result.results[0].password});
+          console.log('error', error); 
+        });
+  
     } 
 
 
@@ -203,7 +275,7 @@ class Account extends React.Component {
                 <Block flex={false} row space="between" style={styles.header}>
                     <Text  size={35} style={styles.title} bold>Settings</Text>
 
-                    <TouchableOpacity> 
+                    <TouchableOpacity onPress={() => this._pickImage()}> 
                     <Block style={styles.avatarContainer}>
                         <Image source={{ uri: this.state.avatar_path }}
                                 style={styles.avatar} />
@@ -406,7 +478,7 @@ class Account extends React.Component {
             <Button style={styles.saveBtn} 
               color="secondary"
               textStyle={{ color: "black", fontSize: 12, fontWeight: "700" }}
-              onPress={()=>this.executeUpdate()}
+              onPress={()=>this.changeImage()}
             ><Text> <FontAwesome5 name={'save'} solid/> Save </Text>
             </Button>
 

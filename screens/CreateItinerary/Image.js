@@ -92,9 +92,9 @@ class CreateItinerary_Image extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({itinerary: plan, tags: tags, photos: photos})
-    }).then(response => response.text())
+    }).then(response => response.json())
     .then(result => {
-      navigation.reset({index: 0, routes: [{ name: 'Home' }],})
+      this.props.navigation.navigate('Plan', {id: result.id})
     }).catch(err => {
       console.log(err)
       //navigation.reset({index: 0, routes: [{ name: 'Home' }],})
