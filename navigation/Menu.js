@@ -6,11 +6,9 @@ import {
   Image
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-
-import GLOBAL from '../src/api_methods/global.js'
-
 import Images from "../constants/Images";
 import { DrawerItem as DrawerCustomItem } from '../components';
+import GLOBAL from '../src/api_methods/global.js'
 
 function CustomDrawerContent({ drawerPosition, navigation, profile, focused, state, ...rest }) {
   const insets = useSafeArea();
@@ -22,12 +20,8 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Create a Plan",
     "View Trips",
     "Create a Trip",
-    //"Trip", 
-   // "Followers", 
-    //"Following", 
-  "Elements",
+    "Elements",
    "Articles", 
-   //"Basic"
   ];
   return (
     <Block

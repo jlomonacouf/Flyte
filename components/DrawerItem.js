@@ -3,6 +3,10 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
 import Icon from "./Icon";
+import {MaterialIcons} from '@expo/vector-icons';
+//https://expo.github.io/vector-icons/
+
+
 import argonTheme from "../constants/Theme";
 
 class DrawerItem extends React.Component {
@@ -15,19 +19,67 @@ class DrawerItem extends React.Component {
           <Icon
             name="shop"
             family="ArgonExtra"
-            size={14}
+            size={20}
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Create a Trip":
+        case "Profile":
+          return (
+            <Icon
+              name= "person-pin-circle" //perm-identity, person, person-outline. person-pin, potrait
+              family="MaterialIcons"
+              size={28}
+              color={focused ? "white" : argonTheme.COLORS.INFO}
+            />); 
+        case "Account":
+           return (
+                <Icon
+                  name="chart-pie-35" //settings 
+                  family="ArgonExtra"
+                  size={18}
+                  color={focused ? "white" : argonTheme.COLORS.WARNING}
+                />
+         );
+         case "View Plans":
+          return (<Icon
+            name="event-note" //pageview,view-list, view-module,history, 
+            family="MaterialIcons"
+            size={24}
+            color={focused ? "white" : argonTheme.COLORS.PRIMARY}
+          />);
+          case "Create a Plan":
+            return (
+              <Icon
+                name="edit-location" 
+                family="MaterialIcons"
+                size={24}
+                color={focused ? "white" : argonTheme.COLORS.ERROR}
+              />
+            );
+            case "View Trips":
+              return (<Icon
+                name="calendar-date" //group-add, local-airport
+                family="ArgonExtra"
+                size={20}
+                color={focused ? "white" : argonTheme.COLORS.INFO}
+              />);
+       case "Create a Trip":
         return (
           <Icon
+            name="flight-takeoff" //plus-one
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : argonTheme.COLORS.WARNING}
+          />
+        );
+        case "Elements":
+          return (<Icon
             name="map-big"
             family="ArgonExtra"
             size={14}
-            color={focused ? "white" : argonTheme.COLORS.ERROR}
-          />
-        );
+            color={focused ? "white" :  argonTheme.COLORS.ERROR}
+          />);
+        
       case "Articles":
         return (
           <Icon
@@ -36,41 +88,7 @@ class DrawerItem extends React.Component {
             size={14}
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
-        );
-        case "Create a Plan":
-          return (
-            <Icon
-              name="spaceship"
-              family="ArgonExtra"
-              size={14}
-              color={focused ? "white" : argonTheme.COLORS.PRIMARY}
-            />
-          );
-      case "Account":
-        return (
-          <Icon
-            name="chart-pie-35"
-            family="ArgonExtra"
-            size={14}
-            color={focused ? "white" : argonTheme.COLORS.WARNING}
-          />
-        );
-      case "Profile":
-        return (
-          <Icon
-            name="calendar-date"
-            family="ArgonExtra"
-            size={14}
-            color={focused ? "white" : argonTheme.COLORS.INFO}
-          />
-        );
-      case "Getting Started":
-        return (<Icon
-          name="spaceship"
-          family="ArgonExtra"
-          size={14}
-          color={focused ? "white" : "rgba(0,0,0,0.5)"}
-        />);
+        );   
       case "Log out":
         return <Icon />;
       default:
