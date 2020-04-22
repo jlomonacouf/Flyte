@@ -127,12 +127,12 @@ class Account extends React.Component {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
-                    {avatar_path : this.state.avatar_path},
-                    {username: this.state.username},
-                    {first_name: this.state.first_name},
-                    {last_name:this.state.last_name}, 
-                    {phone_number:this.state.phone_number},
-                    {password: this.state.password} 
+                    {avatar_path : this.state.avatar_path,
+                    username: this.state.username,
+                    first_name: this.state.first_name,
+                    last_name:this.state.last_name, 
+                    phone_number:this.state.phone_number,
+                    password: this.state.password} 
                     ),
                 redirect: 'follow'
               };
@@ -366,7 +366,7 @@ class Account extends React.Component {
 
 {!this.state.showPassword && <Block row space="between" style={styles.inputRow}>
               <Block>
-                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Phone Number</Text>
+                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Password</Text>
                  <  Text bold>{this.state.password}</Text>
               </Block>
               <TouchableOpacity onPress={() =>this.setState({showPassword: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
