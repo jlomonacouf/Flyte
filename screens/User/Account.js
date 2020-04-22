@@ -234,7 +234,7 @@ class Account extends React.Component {
           <Block style={styles.inputBlock}>
                 <Input
                         borderless
-                        placeholder={this.state.username} 
+                        placeholder="Username"
                         iconContent={
                           <Icon
                             size={16}
@@ -270,7 +270,7 @@ class Account extends React.Component {
           <Block style={styles.inputBlock}>
                 <Input
                         borderless
-                        placeholder={this.state.first_name} 
+                        placeholder="First Name"
                         iconContent={
                           <Icon
                             size={16}
@@ -306,7 +306,7 @@ class Account extends React.Component {
           <Block style={styles.inputBlock}>
                 <Input
                         borderless
-                        placeholder={this.state.last_name} 
+                        placeholder="Last Name"
                         iconContent={
                           <Icon
                             size={16}
@@ -342,7 +342,7 @@ class Account extends React.Component {
           <Block style={styles.inputBlock}>
                 <Input
                         borderless
-                        placeholder={this.state.phone_number} 
+                        placeholder="800-000-0000"
                         iconContent={
                           <Icon
                             size={16}
@@ -378,7 +378,7 @@ class Account extends React.Component {
                 <Input  
                         password
                         borderless
-                        placeholder={this.state.password} 
+                        placeholder="Password"
                         iconContent={
                           <Icon
                             size={16}
