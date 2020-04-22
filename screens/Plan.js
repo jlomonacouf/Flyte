@@ -30,9 +30,26 @@ const initialRegion={
 
 
 class Trip extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+  }
+
+  componentWillReceiveProps(props) {
+    //this.setState({id: props.route.params.id})
+  }
+
   componentDidMount = () => {
     const { route } = this.props;
 
+    this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.forceUpdate();
+      }
+    );
+       
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
@@ -270,7 +287,7 @@ class Trip extends React.Component {
               <Text bold size={24} style={styles.title}>
                 {this.state.title}
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile', { view_username: this.state.author })}>
+              <TouchableOpacity onPress={() => /*navigation.navigate('Profile', { view_username: this.state.author })*/this.props.navigation.navigate('tripRecommendPlans', {id: "4"})}>
                 <Text center color="green" size={12}>@{this.state.author}</Text>
               </TouchableOpacity>
               <Block>
@@ -316,6 +333,10 @@ class Trip extends React.Component {
 
 
   render() {
+    if(this.props.route.params.id !== this.state.id) {
+      this.componentDidMount();
+    }
+    
     if(this.state.loaded === false) {
       return (
         <Block flex style={styles.container}>

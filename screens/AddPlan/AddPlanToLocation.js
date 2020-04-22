@@ -15,6 +15,7 @@ import { Button, Block, Text, Icon, theme } from "galio-framework";
 import MapView, {Marker} from 'react-native-maps';
 import { articles, Images, argonTheme } from "../../constants";
 import { Card } from "../../components";
+import { HeaderHeight } from "../../constants/utils";
 import Spinner from 'react-native-loading-spinner-overlay';
 const { width, height } = Dimensions.get("screen");
 import { backendEndpoint, SINGLE_TRIP_URL } from '../../src/api_methods/shared_base'; 
@@ -141,7 +142,7 @@ class Trip extends React.Component {
         else {
             return (
                 <View height={height}>
-                    <Block style={{paddingTop: 95}}>
+                    <Block style={{paddingTop: 100}}>
                         {this.renderLocationCards()}
                     </Block>
                     <Block row style={{marginTop: "auto", marginBottom: 40}}>

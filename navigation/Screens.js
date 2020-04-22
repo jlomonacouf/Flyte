@@ -53,7 +53,7 @@ import tripDescription from "../screens/CreateTrip/tripDescription"
 import tripTags from "../screens/CreateTrip/tripTags";
 import tripImages from "../screens/CreateTrip/tripImages";
 import tripDates from  "../screens/CreateTrip/tripDates";
-
+import tripRecommendPlans from "../screens/CreateTrip/tripRecommendItineraries";
 
 
 // drawer
@@ -280,6 +280,23 @@ const userTripMenu= [
           ),
           headerTransparent: true
         }}/>
+        
+      <Stack.Screen
+        name="tripRecommendPlans"
+        component={tripRecommendPlans}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Home"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          )
+        }}
+      />
     
      <Stack.Screen
     name="Profile"

@@ -68,11 +68,13 @@ class tripImages extends React.Component {
       },
       body: JSON.stringify(this.props.route.params)
     })
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((data) => {
       this.setState({uploading: false, error: false});
   
-      this.props.navigation.reset({index: 0, routes: [{ name: 'Home' }],})
+      this.props.navigation.navigate('tripRecommendItineraries', {id: data.id})
+    }).catch((error) => {
+      console.log(error);
     })
   }
 
