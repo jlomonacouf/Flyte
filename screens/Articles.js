@@ -12,7 +12,8 @@ import { Block, Text, theme } from "galio-framework";
 //argon
 import { articles, Images, argonTheme } from "../constants/";
 import { Card } from "../components/";
-
+import * as ImagePicker from 'expo-image-picker';
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -37,6 +38,7 @@ const cardWidth = width - theme.SIZES.BASE * 2;
 // ];
 
 class Articles extends React.Component {
+
   renderProduct = (item, index) => {
     const { navigation } = this.props;
 

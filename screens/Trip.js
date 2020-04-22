@@ -162,6 +162,7 @@ class Trip extends React.Component {
         )
     }
     render() {
+        console.log(this.state.locations)
         if(this.state.loading === true) {
             return (
               <Block flex style={styles.container}>
