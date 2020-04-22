@@ -17,14 +17,15 @@ import { argonTheme } from "../../constants/";
 import Spinner from 'react-native-loading-spinner-overlay';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
-import { backendEndpoint, RECOMMEND_PLANS } from "../../src/api_methods/shared_base";
+import { backendEndpoint, RECOMMEND_PLANS, ADD_SINGLE_PLAN } from "../../src/api_methods/shared_base";
 import GLOBAL from '../../src/api_methods/global.js';
 
 
-class Account extends React.Component {
+class tripRecommendItineraries extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             loading: true,
         }
@@ -53,8 +54,22 @@ class Account extends React.Component {
         this.getArticleData();
     }
 
-    addToTrip = (stuff) => {
-        console.log(stuff)
+    addToTrip = (itinerary) => {
+        fetch(backendEndpoint + ADD_SINGLE_PLAN, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({trip_id: this.props.route.params.id, city: itinerary.city, country: itinerary.country, itinerary_id: itinerary.itineraryID})
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({uploading: false, error: false});
+        
+            alert("Successfully added Plan")
+          }).catch((error) => {
+            console.log(error);
+          })
     }
 
     renderItineraryCards = (itineraryIndex) => {
@@ -64,7 +79,7 @@ class Account extends React.Component {
                     {this.articles[itineraryIndex].itineraries.map((itinerary, index) => {
                         var item = {id: itinerary.id, title: itinerary.itinerary_name, image: itinerary.image_path, cta: "View Plan"};
                         return (
-                            <Card item={item} id={itinerary.id} callback={this.addToTrip} nextScreen={'Plan'} style={{marginHorizontal: 20, width: 200}}/>
+                            <Card item={item} id={itinerary.id} tripID={this.props.route.params.id} callback={this.addToTrip} nextScreen={'Plan'} style={{marginHorizontal: 20, width: 200}}/>
                         )
                     })}
                 </ScrollView>
@@ -83,6 +98,7 @@ class Account extends React.Component {
         return(
             <Block>
                 {this.articles.map((itinerary, index) => {
+                    console.log(itinerary.location)
                     return (
                         <View width={width}>
                             <Block flex>
@@ -96,6 +112,7 @@ class Account extends React.Component {
         )
     }
     render() {
+        console.log(this.props.navigation)
         if(this.state.loading === true) {
             return (
               <Block flex style={styles.container}>
@@ -120,4 +137,4 @@ class Account extends React.Component {
 const styles = StyleSheet.create({
     
 });
-export default Account;
+export default tripRecommendItineraries;

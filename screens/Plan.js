@@ -36,20 +36,9 @@ class Trip extends React.Component {
 
   }
 
-  componentWillReceiveProps(props) {
-    //this.setState({id: props.route.params.id})
-  }
-
   componentDidMount = () => {
     const { route } = this.props;
 
-    this.props.navigation.addListener(
-      'didFocus',
-      payload => {
-        this.forceUpdate();
-      }
-    );
-       
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
@@ -58,7 +47,7 @@ class Trip extends React.Component {
         .then(response => response.json())
         .then(result => {
           this.setState({id: route.params.id, author: result.itinerary.username, title: result.itinerary.name, text: result.itinerary.text, 
-            tags: result.itinerary.hashtags, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3},
+            tags: result.itinerary.hashtags, city: result.itinerary.city, country: result.itinerary.country, region: {latitude: result.itinerary.latitude, longitude: result.itinerary.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3},
             likes: result.itinerary.likes, isLiked: result.itinerary.is_liked, loaded: true});
 
           var photos = [];
@@ -137,7 +126,9 @@ class Trip extends React.Component {
     title: "",
     text: "",
     tags: "",
-    photos: []
+    photos: [],
+    city: "",
+    country: ""
 };
 
   renderProduct = (item, index) => {
@@ -241,7 +232,7 @@ class Trip extends React.Component {
     let initialRegion = Object.assign({}, this.state.initialRegion);
     initialRegion["latitudeDelta"] = 0.005;
     initialRegion["longitudeDelta"] = 0.005;
-    this.mapView.animateToRegion(initialRegion, 2000);
+    //this.mapView.animateToRegion(initialRegion, 2000);
   }
 
   renderCards = () => {
@@ -266,6 +257,12 @@ class Trip extends React.Component {
               loadingBackgroundColor="#eeeeee"
               moveOnMarkerPress = {false}
               showsCompass={true}
+              initialRegion= {{
+                latitude: this.state.region.latitude,
+                longitude: this.state.region.longitude,
+                latitudeDelta: 1.1022,
+                longitudeDelta: 1.1721
+                }}
              //region={this.state.region}
             // onRegionChange={this.onRegionChange}
              provider="google">
@@ -287,14 +284,23 @@ class Trip extends React.Component {
               <Text bold size={24} style={styles.title}>
                 {this.state.title}
               </Text>
-              <TouchableOpacity onPress={() => /*navigation.navigate('Profile', { view_username: this.state.author })*/this.props.navigation.navigate('tripRecommendPlans', {id: "4"})}>
+              <TouchableOpacity onPress={() => /*navigation.navigate('Profile', { view_username: this.state.author })*/this.props.navigation.navigate('tripRecommendPlans', {id: "6"})}>
                 <Text center color="green" size={12}>@{this.state.author}</Text>
               </TouchableOpacity>
               <Block>
                 <Text size={15} style={styles.subTitle}>
                   {this.state.text}
                 </Text>
-                <Button color="info" style={{width: width * 0.30, marginTop: 25}} onPress={() => this.props.navigation.navigate('AddPlan', {itineraryID: this.state.id})}>
+                <Button color="info" style={{width: width * 0.30, marginTop: 25}} 
+                onPress={() => {
+                    if(this.props.route.params.callback) {
+                      this.props.route.params.callback({itineraryID: this.props.route.params.id, city: this.state.city, country: this.state.country})
+                      this.props.navigation.navigate('tripRecommendPlans', {id: this.props.route.params.tripID})
+                    }
+                    else {
+                      this.props.navigation.navigate('AddPlan', {itineraryID: this.state.id})
+                    }
+                  }}>
                   <Text bold size={16} color={argonTheme.COLORS.WHITE}>Save to Trip</Text>
                 </Button>
                 {this.renderLikes()}
@@ -336,7 +342,7 @@ class Trip extends React.Component {
     if(this.props.route.params.id !== this.state.id) {
       this.componentDidMount();
     }
-    
+
     if(this.state.loaded === false) {
       return (
         <Block flex style={styles.container}>

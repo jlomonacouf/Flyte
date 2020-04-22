@@ -72,7 +72,7 @@ class tripImages extends React.Component {
     .then((data) => {
       this.setState({uploading: false, error: false});
   
-      this.props.navigation.navigate('tripRecommendItineraries', {id: data.id})
+      this.props.navigation.navigate('tripRecommendPlans', {id: data.id})
     }).catch((error) => {
       console.log(error);
     })

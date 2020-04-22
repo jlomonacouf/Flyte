@@ -208,6 +208,23 @@ const userTripMenu= [
 
         }}/>
 
+      <Stack.Screen
+        name="tripRecommendPlans"
+        component={tripRecommendPlans}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Recommended Plans"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" }
+        }}/>
+
        <Stack.Screen
         name="Plan"
         component={Plan}
@@ -280,23 +297,6 @@ const userTripMenu= [
           ),
           headerTransparent: true
         }}/>
-        
-      <Stack.Screen
-        name="tripRecommendPlans"
-        component={tripRecommendPlans}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Home"
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          )
-        }}
-      />
     
      <Stack.Screen
     name="Profile"
@@ -528,7 +528,22 @@ function TripStack(props) {
           headerTransparent: true
         }}
       />
-
+    <Stack.Screen
+        name="tripRecommendPlans"
+        component={tripRecommendPlans}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Recommended Plans"
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" }
+        }}/>
     </Stack.Navigator>
   );
 }

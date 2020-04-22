@@ -216,7 +216,7 @@ class Account extends React.Component {
               console.log(result);//NEED STATES TO GIVE MORE CONTEXT 
             }else{   
             console.log("SUCCESS? " + result);
-            navigation.navigate('Profile', { username: this.state.username }); 
+            navigation.navigate('Profile', { username: this.state.username, refresh: true }); 
           } 
           }).catch(error => {
             alert("Network error, please try again in a moment");

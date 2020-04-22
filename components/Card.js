@@ -11,7 +11,7 @@ class Card extends React.Component {
   render() {
 
     const { navigation, item, horizontal, nextScreen, full, style, ctaColor, imageStyle, } = this.props;
-    //console.log(nextScreen); 
+
     const imageStyles = [
       full ? styles.fullImage : styles.horizontalImage,
       imageStyle
@@ -24,12 +24,12 @@ class Card extends React.Component {
 
     return (
       <Block row={horizontal} card flex style={cardContainer}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate(nextScreen, {id: this.props.id, callback: this.props.callback})}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate(nextScreen, {id: this.props.id, tripID: this.props.tripID, callback: this.props.callback})}>
           <Block flex style={imgContainer}>
             <Image source={{uri: item.image}} style={imageStyles} />
           </Block>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate(nextScreen, {id: this.props.id, callback: this.props.callback})}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate(nextScreen, {id: this.props.id, tripID: this.props.tripID, callback: this.props.callback})}>
           <Block flex space="between" style={styles.cardDescription}>
             <Text size={14} bold={item.description} style={styles.cardTitle}>{item.title}</Text>
             <Text size={14} visible={item.description} style={styles.cardTitle}>{item.description}</Text>

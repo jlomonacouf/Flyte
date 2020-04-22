@@ -22,21 +22,25 @@ const thumbMeasure = (width - 48 - 32) / 3;
 
 
 class Profile extends React.Component {
+    constructor(props) {
+      super(props)
 
-    state ={
-      plans : [], 
-      trips: [],
-      user : {}, 
-      public: false, 
-      privacyBtn: {
-        public: 'PUBLIC', 
-        btnColor: argonTheme.COLORS.INFO
-      },
-      followBtn: {
-        isFollowing: false, 
-        btnFollow: 'FOLLOW'
-      }, 
-      showNewTripBtn: false,
+      this.state ={
+        plans : [], 
+        trips: [],
+        user : {}, 
+        public: false, 
+        privacyBtn: {
+          public: 'PUBLIC', 
+          btnColor: argonTheme.COLORS.INFO
+        },
+        followBtn: {
+          isFollowing: false, 
+          btnFollow: 'FOLLOW'
+        }, 
+        showNewTripBtn: false,
+        refresh: false,
+      }
     }
 
     instaFamous = (props) =>{
@@ -59,7 +63,7 @@ class Profile extends React.Component {
         const information = fetch(backendEndpoint + GET_USER_URL + fetchID, requestOptions)
         .then( response => response.json())
         .then( result => { 
-           this.setState({user : result.results[0]});
+           this.setState({user : result.results[0], refresh: true});
            this.setState({public: result.results[0].public });
            this.setState({privacyBtn: (result.results[0].public) ? 
             { 
@@ -168,6 +172,7 @@ class Profile extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
+      this.setState({refresh: false})
       this.instaFamous(newProps) 
     }
 
@@ -177,6 +182,11 @@ class Profile extends React.Component {
 
 
   render() {
+    console.log("hello")
+    if(this.state.refresh === false) {
+      this.setState({refresh: true})
+      this.instaFamous(this.props)
+    }
 
     if (!this.state.user) {
       return (
