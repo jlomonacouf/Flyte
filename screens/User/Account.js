@@ -36,8 +36,6 @@ var num =false;
 var userN = false; 
 var pass =false ; 
 
-
-
 class Account extends React.Component {
 
     state = {
@@ -196,8 +194,11 @@ class Account extends React.Component {
                                 style={styles.avatar} />
                      </Block>
                      </TouchableOpacity> 
+
+
                 </Block>
             </Block>
+
             <Block style={styles.inputBlock}>
                       <Input
                         borderless
@@ -205,9 +206,10 @@ class Account extends React.Component {
                         onChangeText={val => this.handleChange(this.state.update_this, val)}
                       />
                </Block>
+
                <Block flex={0.17} middle>
                        {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
-                    </Block>
+                </Block>
 
          <ScrollView showsVerticalScrollIndicator={false}>  
          <Block style={styles.inputs}>
@@ -246,7 +248,7 @@ class Account extends React.Component {
               </Block>
               <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
             </Block>
-        </Block>
+             </Block>
              </ScrollView>
 
              <Block row > 
