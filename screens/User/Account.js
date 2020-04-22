@@ -119,6 +119,7 @@ class Account extends React.Component {
      }; 
 
     executeUpdate = () => {
+      const { navigation } = this.props;
 
         var requestOptions = {
                 method: 'PUT',
@@ -182,6 +183,7 @@ class Account extends React.Component {
 
 
     render(){
+      const { navigation } = this.props;
 
         if (!this.state.user) {
             return (
