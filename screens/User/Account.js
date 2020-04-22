@@ -39,17 +39,24 @@ var pass =false ;
 class Account extends React.Component {
 
     state = {
+
         avatar_path: "",
         first_name :"", 
         last_name : "", 
         phone_number: "", 
         password: "",
         confirm_password: "", 
-        update_this : "", 
-        isEditting: true, 
+
+        //Show input boxes. 
+        uploadImage: false, 
+        showUsername : false, 
+        showFirst : false, 
+        showLast : false, 
+        showNumber: false, 
+        showPassword: false,
       }; 
-  
-        
+      
+
     handleChange = (name, val) => {
           this.setState({ [name]: val });
           switch (name){
@@ -158,6 +165,7 @@ class Account extends React.Component {
           .then( result => { 
              this.setState({user : result.results[0]});
              this.setState({avatar_path : result.results[0].avatar_path});
+             this.setState({username: result.results[0].username});
              this.setState({first_name: result.results[0].first_name});
              this.setState({last_name: result.results[0].last_name});
              this.setState({phone_number: result.results[0].phone_number});
@@ -199,55 +207,190 @@ class Account extends React.Component {
                 </Block>
             </Block>
 
-            <Block style={styles.inputBlock}>
-                      <Input
-                        borderless
-                        placeholder={this.state.update_this} 
-                        onChangeText={val => this.handleChange(this.state.update_this, val)}
-                      />
-               </Block>
-
-               <Block flex={0.17} middle>
-                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
-                </Block>
 
          <ScrollView showsVerticalScrollIndicator={false}>  
+
          <Block style={styles.inputs}>
-          <Block row space="between" style={styles.inputRow}>
+
+
+
+          {!this.state.showUsername && <Block row space="between" style={styles.inputRow}>
               <Block>
                   <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Username</Text>
                  <  Text bold>{this.state.username}</Text>
               </Block>
-              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
-          </Block>
+              <TouchableOpacity onPress={() =>this.setState({showUsername: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+           </Block>
+        } 
+
+        {this.state.showUsername && 
+
           <Block row space="between" style={styles.inputRow}>
+          <Block style={styles.inputBlock}>
+                <Input
+                        borderless
+                        placeholder={this.state.username} 
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('username', val)}
+                      />
+              <TouchableOpacity onPress={() =>this.setState({showUsername: false})} ><Text bold style={styles.doneTap}>Done</Text></TouchableOpacity>
+              <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                </Block>
+           </Block>
+           </Block>
+        } 
+
+
+{!this.state.showFirst && <Block row space="between" style={styles.inputRow}>
               <Block>
-                  <Text  color={theme.COLORS.MUTED}  style={{ marginBottom: 10 }}>First Name</Text>
-                  <  Text bold>{this.state.first_name}</Text>
+                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>First Name</Text>
+                 <  Text bold>{this.state.first_name}</Text>
               </Block>
-              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
-          </Block>
+              <TouchableOpacity onPress={() =>this.setState({showFirst: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+           </Block>
+        } 
+
+        {this.state.showFirst && 
+
           <Block row space="between" style={styles.inputRow}>
+          <Block style={styles.inputBlock}>
+                <Input
+                        borderless
+                        placeholder={this.state.first_name} 
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('first_name', val)}
+                      />
+              <TouchableOpacity onPress={() =>this.setState({showFirst: false})} ><Text bold style={styles.doneTap}>Done</Text></TouchableOpacity>
+              <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                </Block>
+           </Block>
+           </Block>
+        } 
+
+
+{!this.state.showLast && <Block row space="between" style={styles.inputRow}>
               <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Last Name</Text>
-                  <  Text bold>{this.state.last_name}</Text>
+                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Last Name</Text>
+                 <  Text bold>{this.state.last_name}</Text>
               </Block>
-              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
-            </Block>
-            <Block row space="between" style={styles.inputRow}>
+              <TouchableOpacity onPress={() =>this.setState({showLast: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+           </Block>
+        } 
+
+        {this.state.showLast && 
+
+          <Block row space="between" style={styles.inputRow}>
+          <Block style={styles.inputBlock}>
+                <Input
+                        borderless
+                        placeholder={this.state.last_name} 
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('last_name', val)}
+                      />
+              <TouchableOpacity onPress={() =>this.setState({showLast: false})} ><Text bold style={styles.doneTap}>Done</Text></TouchableOpacity>
+              <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                </Block>
+           </Block>
+           </Block>
+        } 
+
+
+{!this.state.showNum && <Block row space="between" style={styles.inputRow}>
               <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Phone Number </Text>
-                  <  Text bold>{this.state.phone_number}</Text>
+                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Phone Number</Text>
+                 <  Text bold>{this.state.phone_number}</Text>
               </Block>
-              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
-            </Block>
-            <Block row space="between" style={styles.inputRow}>
+              <TouchableOpacity onPress={() =>this.setState({showNum: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+           </Block>
+        } 
+
+        {this.state.showNum && 
+
+          <Block row space="between" style={styles.inputRow}>
+          <Block style={styles.inputBlock}>
+                <Input
+                        borderless
+                        placeholder={this.state.phone_number} 
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('phone_number', val)}
+                      />
+              <TouchableOpacity onPress={() =>this.setState({showNum: false})} ><Text bold style={styles.doneTap}>Done</Text></TouchableOpacity>
+              <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                </Block>
+           </Block>
+           </Block>
+        } 
+
+{!this.state.showPassword && <Block row space="between" style={styles.inputRow}>
               <Block>
-                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Password </Text>
-                  <  Text bold>{this.state.password}</Text>
+                  <Text color={theme.COLORS.MUTED} style={{ marginBottom: 10 }}>Phone Number</Text>
+                 <  Text bold>{this.state.password}</Text>
               </Block>
-              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
-            </Block>
+              <TouchableOpacity onPress={() =>this.setState({showPassword: true})} ><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+           </Block>
+        } 
+
+        {this.state.showPassword && 
+
+          <Block row space="between" style={styles.inputRow}>
+          <Block style={styles.inputBlock}>
+                <Input
+                        borderless
+                        placeholder={this.state.password} 
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                        onChangeText={val => this.handleChange('password', val)}
+                      />
+              <TouchableOpacity onPress={() =>this.setState({showPassword: false})} ><Text bold style={styles.doneTap}>Done</Text></TouchableOpacity>
+              <Block flex={0.17} middle>
+                       {this.state.warningMessage && <Text style={{fontSize: 14, color: 'orange', padding: 5}}>{this.state.warningMessage}</Text>}
+                </Block>
+           </Block>
+           </Block>
+        } 
              </Block>
              </ScrollView>
 
@@ -280,7 +423,10 @@ const styles = StyleSheet.create({
         marginRight: 75,    
     }, 
     editTap: {
-        color :'#00d084'
+      color :'#00d084'
+    },
+    doneTap: {
+        color : theme.COLORS.MUTED
     },
     header: {
         marginTop: 60,
@@ -325,7 +471,14 @@ const styles = StyleSheet.create({
       }, 
       inputBlock:{
         padding: 20, 
-      }
+        width: width * 0.9, 
+        marginTop: 5, 
+        marginBottom: 5, 
+        alignItems: 'flex-end'
+      },
+      inputIcons: {
+        marginRight: 12
+      },
       
 });
 
@@ -334,3 +487,85 @@ const styles = StyleSheet.create({
 export default Account;
 
 
+/* DELETED CODE 
+
+
+ <Block row space="between" style={styles.inputRow}>
+              <Block>
+                  <Text  color={theme.COLORS.MUTED}  style={{ marginBottom: 10 }}>First Name</Text>
+                  <  Text bold>{this.state.first_name}</Text>
+              </Block>
+              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+              <Block>
+                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Last Name</Text>
+                  <  Text bold>{this.state.last_name}</Text>
+              </Block>
+              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Block>
+                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Phone Number </Text>
+                  <  Text bold>{this.state.phone_number}</Text>
+              </Block>
+              <TouchableOpacity><Text bold style={styles.editTap} >Edit </Text></TouchableOpacity>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Block>
+                  <Text  color={theme.COLORS.MUTED} style={{ marginBottom: 10}}>Password </Text>
+                  <  Text bold>{this.state.password}</Text>
+              </Block>
+              <TouchableOpacity><Text bold style={styles.editTap}>Edit </Text></TouchableOpacity>
+            </Block>
+
+
+  doneUpdating = (valueUpdated) => {
+      switch (valueUpdated){
+        case 'avatar_path':
+            this.setState({uploadImage: false});
+            break; 
+        case 'username':
+          this.setState({showUsername: false});
+          break; 
+        case 'first_name':
+          this.setState({showFirst: false});
+          break; 
+        case 'last_name': 
+          this.setState({showLast: false});
+          break; 
+        case 'phone_number':
+          this.setState({showNumber: false});
+          break; 
+        case 'username':
+          this.setState({showPassword: false});
+          break; 
+
+      }
+  }; 
+
+    showInputBox = (valueToUpdate) =>{
+        switch (valueToUpdate){
+          case 'avatar_path':
+              this.setState({uploadImage: true});
+              break; 
+          case 'username':
+            this.setState({showUsername: true});
+            break; 
+          case 'first_name':
+            this.setState({showFirst: true});
+            break; 
+          case 'last_name': 
+            this.setState({showLast: true});
+            break; 
+          case 'phone_number':
+            this.setState({showNumber: true});
+            break; 
+          case 'username':
+            this.setState({showPassword: true});
+            break; 
+
+      }
+    }; 
+
+    */
