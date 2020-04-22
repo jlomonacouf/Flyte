@@ -1,4 +1,4 @@
-export const backendEndpoint = 'https://6cc10074.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
+export const backendEndpoint = 'https://5f2b13d5.ngrok.io/'; //Note to self: MAKE SURE TO PUT A / AFTER THE NGROK URL http://localhost:3000
 
 export const LOGIN_URL = 'users/login';
 export const REGISTER_URL = 'users/signup';
@@ -54,4 +54,4 @@ export const DELETE_TRIP_URL = 'trips/delete-trip';
 export const USER_TRIPS_URL ='trips/get/'; //REVIEW 
 export const ALL_TRIPS_URL ='trips/get-all-trips';
 export const SINGLE_TRIP_URL= 'trips/get-by-id/' ; //REVIEW :id';
-
+export const ADD_PLAN_TO_TRIP_URL = 'trips/add-itinerary'

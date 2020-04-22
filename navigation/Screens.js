@@ -25,6 +25,8 @@ import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 import Plan from "../screens/Plan";
 import Trip from "../screens/Trip";  
+import AddPlan from "../screens/AddPlan/AddPlan"
+import AddPlanToLocation from "../screens/AddPlan/AddPlanToLocation"
 import Itinerary from "../screens/Itinerary"; 
 
 //User Pages 
@@ -240,6 +242,43 @@ const userTripMenu= [
               scene={scene}
             />
           ),
+        }}/>
+
+      <Stack.Screen
+        name="AddPlan"
+        component={AddPlan}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Choose a Trip"
+              white 
+              back
+             // bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="black" 
+              iconColor="black"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
+        }}/>
+      <Stack.Screen
+        name="AddPlanToLocation"
+        component={AddPlanToLocation}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Choose a Location"
+              white 
+              back
+              // bgColor={argonTheme.COLORS.ACTIVE} 
+              titleColor="black" 
+              iconColor="black"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true
         }}/>
     
      <Stack.Screen

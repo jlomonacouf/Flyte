@@ -277,7 +277,7 @@ class Trip extends React.Component {
                 <Text size={15} style={styles.subTitle}>
                   {this.state.text}
                 </Text>
-                <Button color="info" style={{width: width * 0.30, marginTop: 25}} onPress={() => this.updateText(editTitle, editCaption)}>
+                <Button color="info" style={{width: width * 0.30, marginTop: 25}} onPress={() => this.props.navigation.navigate('AddPlan', {itineraryID: this.state.id})}>
                   <Text bold size={16} color={argonTheme.COLORS.WHITE}>Save to Trip</Text>
                 </Button>
                 {this.renderLikes()}

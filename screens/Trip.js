@@ -109,43 +109,42 @@ class Trip extends React.Component {
                     return (
                         <Block>
                             <View flex={8}>
-                            <ScrollView nestedScrollEnabled = {true}>
-                                <Block style={styles.mapContainer} >
-                                    <MapView 
-                                    ref={MapView => (this.MapView = MapView)} //NEW 
-                                    style={styles.mapStyle} 
-                                    loadingEnabled ={true}
-                                    loadingIndicatorColor="#666666"
-                                    loadingBackgroundColor="#eeeeee"
-                                    moveOnMarkerPress = {false}
-                                    showsCompass={true}
-                                    provider="google"
-                                    initialRegion= {{
-                                    latitude: location.latitude,
-                                    longitude: location.longitude,
-                                    latitudeDelta: 2.1022,
-                                    longitudeDelta: 1.1721
-                                    }}>
-                                    </MapView>
-                                </Block>
-                                <View style={{width: width}}>
-                                    <Text bold size={24} style={styles.title}>
-                                        {location.address}
+                                <ScrollView nestedScrollEnabled = {true}>
+                                    <Block style={styles.mapContainer} >
+                                        <MapView 
+                                        ref={MapView => (this.MapView = MapView)} //NEW 
+                                        style={styles.mapStyle} 
+                                        loadingEnabled ={true}
+                                        loadingIndicatorColor="#666666"
+                                        loadingBackgroundColor="#eeeeee"
+                                        moveOnMarkerPress = {false}
+                                        showsCompass={true}
+                                        provider="google"
+                                        initialRegion= {{
+                                        latitude: location.latitude,
+                                        longitude: location.longitude,
+                                        latitudeDelta: 2.1022,
+                                        longitudeDelta: 1.1721
+                                        }}>
+                                        </MapView>
+                                    </Block>
+                                    <View style={{width: width}}>
+                                        <Text bold size={24} style={styles.title}>
+                                            {location.address}
+                                        </Text>
+                                        <Text size={17} style={styles.subTitle}>
+                                            {this.formatDate(location.start_date) + " - " + this.formatDate(location.end_date)}
+                                        </Text>
+                                    </View>
+                                    <Text bold size={20} style={styles.title}>
+                                            Current Plans:
                                     </Text>
-                                    <Text size={17} style={styles.subTitle}>
-                                        {this.formatDate(location.start_date) + " - " + this.formatDate(location.end_date)}
-                                    </Text>
-                                </View>
-                                <Text bold size={20} style={styles.title}>
-                                        Current Plans:
-                                </Text>
-                                <View style={{width: width}}>
-                                    <ScrollView horizontal={true} style={{marginTop: -10}} nestedScrollEnabled = {true}>
-                                        {this.renderItineraryCards(location.id)}
-                                    </ScrollView>
-                                </View>
-
-                            </ScrollView>
+                                    <View style={{width: width}}>
+                                        <ScrollView horizontal={true} style={{marginTop: -10}} nestedScrollEnabled = {true}>
+                                            {this.renderItineraryCards(location.id)}
+                                        </ScrollView>
+                                    </View>
+                                </ScrollView>
                             </View>
                             <Block flex={0.8} row style={{alignSelf: "center"}}>
                                 {this.state.locations.map((l, i) => {
